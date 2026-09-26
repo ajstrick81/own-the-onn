@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "What the onn 4K Plus talks to",
+    "output": "onn-traffic-map.html",
+    "quality_profile": "showcase",
+    "views": [
+      { "id": "os-only", "label": "The device itself", "focus": ["os", "google", "tv"], "note": "The Google TV OS only talks to Google. The TV it's plugged into is offline." },
+      { "id": "netflix", "label": "Preinstalled Netflix", "focus": ["nflx", "nflxcloud", "lan"], "note": "Never opened, yet it logs while asleep, boots itself on wake and does SSDP discovery." },
+      { "id": "apps", "label": "Installed apps", "focus": ["apps", "trackers"], "note": "Most tracking traffic comes from apps phoning home while you aren't using them." },
+      { "id": "factory", "label": "Factory leftover", "focus": ["factory", "mes"], "note": "A system-privileged factory test tool is installed but dormant. Its servers were never contacted." }
+    ]
+  },
+  "components": [
+    { "id": "tv", "type": "external", "label": "Samsung TV", "sublabel": "HDMI screen only", "tag": "offline", "pos": [40, 100], "size": [160, 64] },
+    { "id": "lan", "type": "external", "label": "Home network", "sublabel": "other devices", "pos": [40, 240], "size": [160, 64] },
+    { "id": "os", "type": "backend", "label": "Google TV OS", "sublabel": "launcher · Play · Assistant", "pos": [320, 100], "size": [190, 64] },
+    { "id": "nflx", "type": "backend", "label": "Preinstalled Netflix", "sublabel": "system app, never opened", "pos": [320, 240], "size": [190, 64] },
+    { "id": "apps", "type": "frontend", "label": "Installed apps", "sublabel": "Twitch · ESPN · NordVPN …", "pos": [320, 380], "size": [190, 64] },
+    { "id": "factory", "type": "security", "label": "Factory test tool", "sublabel": "com.gretzky.hwinfo", "tag": "dormant", "pos": [320, 520], "size": [190, 64] },
+    { "id": "google", "type": "cloud", "label": "Google services", "sublabel": "check-ins · Firebase logs", "pos": [640, 100], "size": [200, 64] },
+    { "id": "nflxcloud", "type": "cloud", "label": "Netflix servers", "sublabel": "logs · appboot · push", "pos": [640, 240], "size": [200, 64] },
+    { "id": "trackers", "type": "external", "label": "Analytics SDKs", "sublabel": "Sentry · New Relic · FB · comScore", "pos": [640, 380], "size": [200, 64] },
+    { "id": "mes", "type": "external", "label": "Factory MES servers", "sublabel": "Luxshare · Twowing", "pos": [640, 520], "size": [200, 64] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "onn 4K Plus (coffey) · Android 14", "wraps": ["os", "nflx", "apps", "factory"] }
+  ],
+  "connections": [
+    { "id": "os-google", "from": "os", "to": "google", "label": "~1/min", "variant": "emphasis" },
+    { "id": "nflx-cloud", "from": "nflx", "to": "nflxcloud", "label": "even asleep", "variant": "emphasis" },
+    { "id": "apps-trackers", "from": "apps", "to": "trackers", "label": "while unused", "variant": "emphasis" },
+    { "id": "factory-mes", "from": "factory", "to": "mes", "label": "never seen", "variant": "dashed" },
+    { "id": "os-tv", "from": "os", "to": "tv", "label": "HDMI" },
+    { "id": "nflx-lan", "from": "nflx", "to": "lan", "label": "SSDP", "variant": "dashed" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "Not observed anywhere", "items": ["ACR vendors (Samba, Alphonso, Inscape, Gracenote)", "Walmart / onn, Amlogic / SDMC", "Background microphone use"] },
+    { "dot": "amber", "title": "Traffic rates", "items": ["~72 connections/h awake idle", "~173/h asleep after inactivity", "Power-button standby: rerun pending"] },
+    { "dot": "rose", "title": "Worth knowing", "items": ["Netflix boots itself over plain HTTP", "Apps use hardcoded DNS (8.8.8.8, 1.1.1.1)", "One device, one evening: draft"] }
+  ]
+}

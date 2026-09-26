@@ -1,0 +1,177 @@
+{
+  "schema_version": 1,
+  "diagram_type": "lifecycle",
+  "meta": {
+    "title": "Power states vs. network activity",
+    "output": "power-states.html",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "screen-off",
+        "label": "Screen off isn't offline",
+        "focus": [
+          "awake",
+          "dozing"
+        ],
+        "note": "After the inactivity timeout the screen goes dark, but traffic went up, not down."
+      },
+      {
+        "id": "open-questions",
+        "label": "Still being measured",
+        "focus": [
+          "boot",
+          "standby",
+          "wake"
+        ],
+        "note": "Boot check-ins and power-button standby are pending reruns."
+      }
+    ]
+  },
+  "lanes": [
+    {
+      "id": "main",
+      "label": "Screen on"
+    },
+    {
+      "id": "dark",
+      "label": "Screen dark"
+    },
+    {
+      "id": "terminal",
+      "label": "Truly offline"
+    }
+  ],
+  "states": [
+    {
+      "id": "boot",
+      "type": "start",
+      "label": "Boot",
+      "sublabel": "first check-ins",
+      "lane": "main",
+      "col": 0,
+      "step": "01",
+      "tag": "pending"
+    },
+    {
+      "id": "awake",
+      "type": "active",
+      "label": "Awake, idle",
+      "sublabel": "~72 conn/h",
+      "lane": "main",
+      "col": 1,
+      "step": "02",
+      "tag": "measured"
+    },
+    {
+      "id": "playing",
+      "type": "active",
+      "label": "Playing",
+      "sublabel": "~673 conn/h (Prime)",
+      "lane": "main",
+      "col": 2,
+      "step": "03",
+      "tag": "measured"
+    },
+    {
+      "id": "wake",
+      "type": "active",
+      "label": "Wake",
+      "sublabel": "check-in burst",
+      "lane": "main",
+      "col": 4,
+      "step": "05",
+      "tag": "measured"
+    },
+    {
+      "id": "dozing",
+      "type": "waiting",
+      "label": "Screen off",
+      "sublabel": "~173 conn/h",
+      "lane": "dark",
+      "col": 0,
+      "tag": "measured"
+    },
+    {
+      "id": "standby",
+      "type": "neutral",
+      "label": "Standby",
+      "sublabel": "power button",
+      "lane": "dark",
+      "col": 2,
+      "step": "04",
+      "tag": "rerun"
+    },
+    {
+      "id": "unplugged",
+      "type": "success",
+      "label": "Unplugged",
+      "sublabel": "only sure silence",
+      "lane": "terminal",
+      "col": 2
+    }
+  ],
+  "transitions": [
+    {
+      "id": "playing-dozing",
+      "from": "playing",
+      "to": "dozing",
+      "label": "idle timeout",
+      "route": "straight",
+      "labelDy": 24
+    },
+    {
+      "id": "dozing-standby",
+      "from": "dozing",
+      "to": "standby",
+      "route": "auto"
+    },
+    {
+      "id": "standby-wake",
+      "from": "standby",
+      "to": "wake",
+      "label": "remote",
+      "route": "straight"
+    },
+    {
+      "id": "standby-unplugged",
+      "from": "standby",
+      "to": "unplugged",
+      "variant": "dashed",
+      "route": "straight"
+    },
+    {
+      "id": "wake-awake",
+      "from": "wake",
+      "to": "awake",
+      "label": "back to idle",
+      "variant": "emphasis",
+      "route": "top-channel"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "amber",
+      "title": "Screen off isn't offline",
+      "items": [
+        "The network stays up after the inactivity timeout",
+        "Preinstalled Netflix and background apps keep reporting"
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "On wake",
+      "items": [
+        "Deferred check-ins fire within 30 seconds",
+        "Netflix boots itself (appboot over plain HTTP)"
+      ]
+    },
+    {
+      "dot": "slate",
+      "title": "Pending",
+      "items": [
+        "Boot capture (scenario F)",
+        "Overnight power-button standby rerun"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+# Raw data never goes in this repo; it contains personal identifiers.
+*.jsonl
+*.pcap
+*.pcapng
+*.apk
+*.apks
+*.apkm
+markers.txt
+raw/
+captures/
+decoded/
+dumps/
+*.tsv
+settings_*.txt
+dumpsys_*.txt
+__pycache__/
+
+# archify visual-check evidence (regenerable)
+diagrams/*.visual-check.*

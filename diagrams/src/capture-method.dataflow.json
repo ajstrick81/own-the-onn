@@ -1,0 +1,185 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Passthrough capture: see who, never what",
+    "output": "capture-method.html",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "traffic-path",
+        "label": "Traffic path",
+        "focus": [
+          "device",
+          "wg",
+          "mitm",
+          "internet"
+        ],
+        "note": "Every app's traffic, system apps included, is relayed byte-for-byte. TLS is never intercepted."
+      },
+      {
+        "id": "evidence-path",
+        "label": "Evidence path",
+        "focus": [
+          "mitm",
+          "log",
+          "adb",
+          "markers",
+          "summary"
+        ],
+        "note": "Only DNS names, TLS SNI and destinations are logged, then cut into scenario windows."
+      }
+    ]
+  },
+  "stages": [
+    {
+      "label": "On the onn"
+    },
+    {
+      "label": "Tunnel"
+    },
+    {
+      "label": "Capture PC"
+    },
+    {
+      "label": "Out / analysis"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "device",
+      "type": "frontend",
+      "label": "Every app + OS",
+      "sublabel": "system UID included",
+      "stage": 0,
+      "row": 0
+    },
+    {
+      "id": "adb",
+      "type": "external",
+      "label": "adb event log",
+      "sublabel": "screen on/off, app focus",
+      "stage": 0,
+      "row": 2
+    },
+    {
+      "id": "wg",
+      "type": "security",
+      "label": "WireGuard app",
+      "sublabel": "tunnel onn-wg",
+      "stage": 1,
+      "row": 0,
+      "tag": "VPN"
+    },
+    {
+      "id": "markers",
+      "type": "database",
+      "label": "markers.txt",
+      "sublabel": "scenario windows",
+      "stage": 1,
+      "row": 2
+    },
+    {
+      "id": "mitm",
+      "type": "backend",
+      "label": "mitmproxy",
+      "sublabel": "--mode wireguard",
+      "stage": 2,
+      "row": 0,
+      "tag": "passthrough"
+    },
+    {
+      "id": "log",
+      "type": "database",
+      "label": "study.jsonl",
+      "sublabel": "DNS · SNI · dst",
+      "stage": 2,
+      "row": 2
+    },
+    {
+      "id": "internet",
+      "type": "cloud",
+      "label": "Internet",
+      "sublabel": "real destinations",
+      "stage": 3,
+      "row": 0
+    },
+    {
+      "id": "summary",
+      "type": "frontend",
+      "label": "summarize.py",
+      "sublabel": "hosts & rates per window",
+      "stage": 3,
+      "row": 2
+    }
+  ],
+  "flows": [
+    {
+      "from": "device",
+      "to": "wg",
+      "label": "all traffic",
+      "variant": "emphasis",
+      "route": "straight"
+    },
+    {
+      "from": "wg",
+      "to": "mitm",
+      "label": "UDP 51820",
+      "variant": "emphasis",
+      "route": "straight"
+    },
+    {
+      "from": "mitm",
+      "to": "internet",
+      "label": "bytes untouched",
+      "classification": "no decryption",
+      "variant": "emphasis",
+      "route": "straight"
+    },
+    {
+      "from": "mitm",
+      "to": "log",
+      "label": "metadata only",
+      "variant": "security",
+      "route": "vertical-channel"
+    },
+    {
+      "from": "adb",
+      "to": "markers",
+      "label": "sleep / wake",
+      "route": "straight"
+    },
+    {
+      "from": "log",
+      "to": "summary",
+      "label": "records",
+      "route": "straight"
+    },
+    {
+      "from": "markers",
+      "to": "summary",
+      "label": "windows",
+      "route": "bottom-channel"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Why passthrough",
+      "items": [
+        "Every TLS ClientHello is marked ignore_connection",
+        "Apps behave as if the tunnel weren't there",
+        "No CA needed: nothing is weakened"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Blind spots",
+      "items": [
+        "LAN-only traffic (mDNS, SSDP, ARP) needs a LAN capture",
+        "Can't attribute a host to a specific app",
+        "The capture PC must stay awake"
+      ]
+    }
+  ]
+}
