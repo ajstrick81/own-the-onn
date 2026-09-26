@@ -5,9 +5,28 @@ Paste this into the new session. Status as of 2026-09-26.
 > **Local values (kept out of the repo):** `<stick-ip>` is shown on the stick under Developer options → Wireless debugging
 > (it was the reserved AdGuard client address). `<router-ip>` is the GL.iNet Flint 2 / AdGuard Home address. Ask the user if unsure.
 
+## RESULT — 2026-09-26: bootloader cannot be unlocked; stick cannot be rooted
+
+The read-only fastboot check was run on the second PC (Windows 11, USB-C data cable, WinUSB bound with Zadig). Outcome:
+
+- Device booted normally on factory build `UKRB.260113.027.A1`; every property was unchanged from this handoff (`sys.oem_unlock_allowed=1`, `ro.boot.flash.locked=1`, `verifiedbootstate=green`, slot `_b`, abi `armeabi-v7a`). No OTA slipped through — the AdGuard blocks held.
+- `adb reboot bootloader` worked. The stick entered the bootcode bootloader and enumerated over USB as a Google fastboot device (`USB\VID_18D1&PID_4E40`, serial `WUSA…`). Windows showed Code 28 (no driver) until WinUSB was bound with Zadig on that exact `18D1/4E40` device; after that `fastboot devices` listed it.
+- With the driver bound, **every fastboot command failed identically** with `FAILED (remote: 'unknown reason')`: `getvar unlocked`, `getvar all`, `getvar product`, `getvar current-slot`, `getvar version`, `getvar partition-type:boot`, `getvar is-userspace`, and `fastboot reboot`.
+- Leaving the bootloader required a power-cycle (unplug/replug), since `fastboot reboot` also fails.
+
+**Conclusion:** this unit **shipped from the factory locked on `260113.027.A1`**, and its bootcode fastboot rejects all commands while locked — the same dead-fastboot behavior XDA reported for units that *updated* into `027`. Because the bootloader is locked and fastboot will not accept `flashing unlock`, **there is no way to unlock, and therefore no known way to root, this stick.** This appears to be the first recorded test of a factory-`027` unit, and the result matches the updated-unit reports: no known way back.
+
+Userspace fastbootd (`adb reboot fastboot`) was not attempted and is not a workaround — flashing there still requires an unlocked bootloader, which is unreachable here.
+
+### Cleanup / next
+- **Returning the stick:** turn **OEM unlocking OFF** (Developer options) to restore the normal factory-locked state.
+- **Keeping the stick:** leave the AdGuard OTA blocks on (or scope them to the stick, section below) so it can't update to `260113.075.A1`.
+
+---
+
 ## Goal
 Find out whether this stick's bootloader can still be unlocked, and if it can, root it with Magisk.
-The next action is a **read-only** fastboot check. Nothing has been flashed or unlocked yet.
+~~The next action is a **read-only** fastboot check.~~ **Done — see RESULT above. The bootloader is locked with dead fastboot; it cannot be unlocked or rooted.** Nothing was flashed or unlocked.
 
 ## Device
 - onn 4K Streaming Stick 2026: codename `wayne`, Realtek RTD1325, Android TV 14, 32-bit (armeabi-v7a), Virtual A/B
