@@ -1,0 +1,264 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "onn 4K Stick (wayne) Root Run",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "net",
+      "label": "AdGuard Home (router)"
+    },
+    {
+      "id": "stick",
+      "label": "Stick setup (TV + remote)"
+    },
+    {
+      "id": "pc",
+      "label": "PC · adb Wi-Fi + fastboot USB"
+    },
+    {
+      "id": "glass",
+      "label": "Break glass",
+      "variant": "exception"
+    }
+  ],
+  "phases": [
+    {
+      "id": "prep",
+      "label": "Prep",
+      "fromCol": 0,
+      "toCol": 0
+    },
+    {
+      "id": "pass1",
+      "label": "Setup pass 1 (no OTA)",
+      "fromCol": 1,
+      "toCol": 2,
+      "variant": "emphasis"
+    },
+    {
+      "id": "unlockph",
+      "label": "Unlock",
+      "fromCol": 3,
+      "toCol": 3
+    },
+    {
+      "id": "rootph",
+      "label": "Pass 2 + root",
+      "fromCol": 4,
+      "toCol": 5,
+      "variant": "dashed"
+    }
+  ],
+  "mainPath": [
+    "block",
+    "firstboot",
+    "signin",
+    "unlock",
+    "setup2",
+    "root"
+  ],
+  "nodes": [
+    {
+      "id": "block",
+      "lane": "net",
+      "col": 0,
+      "type": "security",
+      "label": "Block OTA domains",
+      "sublabel": "verified 0.0.0.0",
+      "tag": "DONE",
+      "width": 124
+    },
+    {
+      "id": "firstboot",
+      "lane": "stick",
+      "col": 1,
+      "type": "frontend",
+      "label": "Join Wi-Fi",
+      "sublabel": "cannot reach internet",
+      "tag": "DONE",
+      "width": 124
+    },
+    {
+      "id": "unblock",
+      "lane": "net",
+      "col": 2,
+      "type": "security",
+      "label": "Allow android API",
+      "sublabel": "re-block after sign-in",
+      "tag": "DONE",
+      "width": 124
+    },
+    {
+      "id": "signin",
+      "lane": "stick",
+      "col": 2,
+      "type": "frontend",
+      "label": "Sign in",
+      "sublabel": "after update fails",
+      "tag": "DONE",
+      "width": 124
+    },
+    {
+      "id": "unlock",
+      "lane": "pc",
+      "col": 3,
+      "type": "backend",
+      "label": "Unlock bootloader",
+      "sublabel": "getvar test pending",
+      "tag": "PAUSED",
+      "width": 124
+    },
+    {
+      "id": "setup2",
+      "lane": "stick",
+      "col": 4,
+      "type": "frontend",
+      "label": "Setup pass 2",
+      "sublabel": "same block sequence",
+      "tag": "PENDING",
+      "width": 124
+    },
+    {
+      "id": "initboot",
+      "lane": "pc",
+      "col": 4,
+      "type": "database",
+      "label": "Stock init_boot",
+      "sublabel": "XDA + SHA256 check",
+      "tag": "PENDING",
+      "width": 124
+    },
+    {
+      "id": "root",
+      "lane": "pc",
+      "col": 5,
+      "type": "backend",
+      "label": "Magisk init_boot",
+      "sublabel": "flash via fastbootd",
+      "tag": "PENDING",
+      "width": 124
+    },
+    {
+      "id": "wipe",
+      "lane": "glass",
+      "col": 1,
+      "type": "security",
+      "label": "Pull power + wipe",
+      "sublabel": "recovery reset",
+      "width": 124
+    },
+    {
+      "id": "usbfix",
+      "lane": "glass",
+      "col": 3,
+      "type": "external",
+      "label": "No fastboot device",
+      "sublabel": "charge-only cable",
+      "width": 124,
+      "tag": "HIT"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e-block-boot",
+      "from": "block",
+      "to": "firstboot",
+      "label": "power on",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e-boot-signin",
+      "from": "firstboot",
+      "to": "signin",
+      "label": "reconnect",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e-unblock",
+      "from": "unblock",
+      "to": "signin",
+      "variant": "security",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "e-signin-unlock",
+      "from": "signin",
+      "to": "unlock",
+      "label": "dev options",
+      "variant": "emphasis",
+      "fromSide": "bottom",
+      "toSide": "left"
+    },
+    {
+      "id": "e-unlock-setup2",
+      "from": "unlock",
+      "to": "setup2",
+      "label": "wiped",
+      "variant": "emphasis",
+      "fromSide": "top",
+      "toSide": "left"
+    },
+    {
+      "id": "e-setup2-root",
+      "from": "setup2",
+      "to": "root",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e-initboot-root",
+      "from": "initboot",
+      "to": "root",
+      "variant": "dashed"
+    },
+    {
+      "id": "e-ota-wipe",
+      "from": "firstboot",
+      "to": "wipe",
+      "label": "update downloads",
+      "variant": "security",
+      "role": "error"
+    },
+    {
+      "id": "e-usb",
+      "from": "unlock",
+      "to": "usbfix",
+      "variant": "security",
+      "role": "error",
+      "fromSide": "bottom",
+      "toSide": "top"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "Firmware Gate",
+      "items": [
+        "Unlock works only on factory UKRB.251217.001.A1",
+        "First OTA swaps bootcode, fastboot dies",
+        "Unlocked before an OTA stays unlocked"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Learned This Run",
+      "items": [
+        "Sign-in fails if android.googleapis is blocked",
+        "Stick shipped on 260113.027.A1",
+        "Resume with a USB-C data cable"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Connections",
+      "items": [
+        "HDMI to TV for screens and grants",
+        "USB-A cable to PC for fastboot only",
+        "adb over Wireless debugging"
+      ]
+    }
+  ]
+}
