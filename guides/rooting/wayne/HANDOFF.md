@@ -21,6 +21,59 @@ Userspace fastbootd (`adb reboot fastboot`) was not attempted and is not a worka
 ### Cleanup / next
 - **Returning the stick:** turn **OEM unlocking OFF** (Developer options) to restore the normal factory-locked state.
 - **Keeping the stick:** leave the AdGuard OTA blocks on (or scope them to the stick, section below) so it can't update to `260113.075.A1`.
+  *(Superseded by PIVOT below: the stick is kept and updated.)*
+
+## PIVOT (2026-09-26): keep the stick as a second test device, and let it update
+
+The stick stays as a **second Morphe test device**. It has a different chip from the main test unit (Realtek RTD1325 vs the
+Amlogic S905X5M in the onn 4K Plus "coffey"); both are 32-bit armeabi-v7a. The AdGuard OTA blocks were **removed** and the stick
+was allowed to update. Updating costs nothing unlock-wise (see the bootcode finding below).
+
+### The 027 → .075 update package (captured and decoded)
+- URL, taken from the stick's own log (`adb shell logcat -d -b all | grep system_update`; tags `system_update`,
+  `SystemUpdate`, `update_engine` "initial url"):
+  `https://android.googleapis.com/packages/ota-api/package/a071255680cfc22e0fdaaa81ff92e621ab865e9c.zip`
+  (the earlier 251217 → 027 package posted on XDA by BigEmpty is `…/1c3424dc57b4b031859673c52caee97b806a154c.zip`)
+- 85,362,772 bytes; `payload.bin` SHA256 (base64) `D7w0pbX/UXJg7z8UA/KXKODWVcQ4NSsmuC3pbQtvqXY=`, verified after download.
+- `pre-build`: `UKRB.260113.027.A1/14997501` → `post-build`: **`UKRB.260113.075.A1/15646418`**, security patch
+  2026-06-01, timestamp 1781542725 (2026-06-15). `ota-type=AB`, payload v2, **incremental** (29 partitions).
+- The same URL was already logged on the stick's first setup attempt. That's the download the AdGuard block stopped.
+- Tip: live `adb logcat` over Wi-Fi stalled on this stick. Use `logcat -d` dumps instead.
+
+### What changes in .075
+| Partition | Change | Note |
+|---|---|---|
+| `bootcode` | **SOURCE_COPY only**; result sha256 `4c0f826fcfe9e459…` | = XDA's "260113.027 OTA bootcode". **.075 keeps the same fastboot-dead bootloader**, so the unlock gate is unchanged |
+| `init_boot` | BROTLI_BSDIFF against 027; result sha256 `96b387e8361153eb…` (full value in the payload manifest) | rebuildable, see below |
+| `boot`, `vendor_boot`, `dtbo`, `vbmeta*` | diffs | new kernel/ramdisk and verified-boot metadata |
+| `system`, `system_ext`, `product`, `vendor`, `vendor_dlkm` | BSDIFF + ZUCCHINI | normal OS update |
+| `hifi`, `video` | full REPLACE; `audio` diff | Realtek audio and video processor firmware |
+| `rescueRootFS`, `rescueDT`, `ta`, `pcpu` | copy or diff | Realtek rescue system, trusted apps, secure CPU. Worth a look for the privacy study |
+
+### Why a rebuilt .075 init_boot matters (for OTHER people's sticks)
+It's no use on this locked unit, but it fills a real gap:
+
+- **Who needs it:** anyone whose stick was unlocked while on 251217 and then updated to .075. Unlocked sticks stay
+  unlocked across updates, and fastbootd still works for them. XDA user **Broly** is exactly this case: unlocked, then
+  updated to `UKRB.260113.075.A1/15646418`. They asked in the root thread for the latest build's link and init_boot, and
+  couldn't root because **no stock .075 init_boot has been posted**.
+- **Why they can't just dump it:** reading the `init_boot` partition off the device needs root, which is what they're
+  trying to get. So the image has to come from the update package.
+- **Why not flash the 027 image instead:** Magisk patches the init_boot ramdisk, which has to match the running kernel,
+  vendor_boot and build. A mismatched image is a gamble on a bootloop. The root thread already reports one stick bricked
+  by mixing images after 027, so a matching image is the safe path.
+- **Why the update package alone isn't enough:** the package is incremental. It holds `init_boot` only as a patch against
+  the 027 image, not as a full image.
+- **How to rebuild it:** apply the payload's `init_boot` operations (SOURCE_COPY + BROTLI_BSDIFF + ZERO) to the stock 027
+  init_boot from the XDA root thread (`49278be4…`). AOSP's `update_payload` / `ota_extractor`, or a payload dumper with
+  incremental support, can do this.
+- **Correctness is provable, not guessed:** the manifest carries the expected sha256 of **both** the 027 input and the .075
+  output. If the rebuilt image hashes to `96b387e8…`, it's byte-for-byte what `update_engine` writes on a real stick.
+- **How to share it without redistributing firmware:** publish the method, both hashes and a small script. Anyone can then
+  rebuild the image from Google's public update URL plus XDA's 027 image. Post that recipe in the XDA root thread
+  (crediting almyz125, BigEmpty and Broly).
+- **Needed first:** the 027 init_boot image (the XDA attachment needs a login to download). Local copies of the update
+  package and notes are kept off-repo.
 
 ---
 
