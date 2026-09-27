@@ -69,9 +69,9 @@ It's no use on this locked unit, but it fills a real gap:
   incremental support, can do this.
 - **Correctness is provable, not guessed:** the manifest carries the expected sha256 of **both** the 027 input and the .075
   output. If the rebuilt image hashes to `96b387e8…`, it's byte-for-byte what `update_engine` writes on a real stick.
-- **How to share it without redistributing firmware:** publish the method, both hashes and a small script. Anyone can then
-  rebuild the image from Google's public update URL plus XDA's 027 image. Post that recipe in the XDA root thread
-  (crediting almyz125, BigEmpty and Broly).
+- **DECISION (user, 2026-09-26): NOT sharing this.** A matching hash proves the bytes, not that flashing is safe on someone
+  else's stick, and we can't flash-test it on our locked unit. Nothing gets posted for other people's devices without an
+  on-device proof on our own hardware first. The findings stay research notes only.
 - **Needed first:** the 027 init_boot image (the XDA attachment needs a login to download). Local copies of the update
   package and notes are kept off-repo.
 
