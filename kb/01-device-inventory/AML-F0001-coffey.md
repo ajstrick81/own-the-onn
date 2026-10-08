@@ -48,6 +48,9 @@ Discipline: `uname` returns `armv8l` from a 32-bit adb shell, which does not by
 itself prove a 64-bit kernel; the arm64-GKI claim (`ab14657224`) is marked
 **probable** pending a 64-bit-context confirmation. Board revision stays
 `unknown` — the Device-Tree `model` node is absent and `compatible` is
-permission-denied without root (recorded, not escalated).
+permission-denied without root (recorded, not escalated). The locked /
+verifiedbootstate-green / AVB values are **device-reported state**, not an
+independent cryptographic attestation (the device reports the bootloader's
+outcome; we did not re-verify the AVB chain).
 
 Partition/boot architecture → `AML-F0002`; diagnostic interfaces → `AML-F0003`.
