@@ -77,6 +77,11 @@ def _as_list(v):
     return v if isinstance(v, list) else [v]
 
 
+def _norm(s):
+    """Normalize a device_model string for comparison: lowercase, collapse whitespace."""
+    return " ".join(str(s or "").lower().split())
+
+
 def validate_tree(root: str, rep: Report):
     records = []
     for path in kbrecord.iter_record_files(root):
@@ -87,13 +92,15 @@ def validate_tree(root: str, rep: Report):
 
     seen_ids: dict[str, str] = {}
     all_ids: set[str] = set()
-    source_scope: dict[str, str] = {}  # AML-S#### -> its declared scope
+    source_scope: dict[str, str] = {}   # AML-S#### -> its declared scope
+    source_device: dict[str, str] = {}  # AML-S#### -> its declared device_model (may be "")
 
     for rec in records:
         if _kind(rec) == "source_id":
             sid = rec.get("source_id", "")
             if isinstance(sid, str) and sid:
                 source_scope[sid] = rec.get("scope", "")
+                source_device[sid] = str(rec.get("device_model", "") or "")
 
     for rec in records:
         id_field = _kind(rec)
@@ -161,8 +168,8 @@ def validate_tree(root: str, rep: Report):
             rep.error(rec.path, "evidence_scope=exact-device but no supporting source_refs, "
                                 "source_urls, or source_revision")
             continue
-        device_backed = any(source_scope.get(r) == "exact-device" for r in refs)
-        if not device_backed:
+        device_sources = [r for r in refs if source_scope.get(r) == "exact-device"]
+        if not device_sources:
             msg = ("evidence_scope=exact-device is not backed by any exact-device source "
                    "(source existence does not prove device-scope support; cite an "
                    "exact-device source/observation)")
@@ -170,6 +177,22 @@ def validate_tree(root: str, rep: Report):
                 rep.error(rec.path, msg)
             else:
                 rep.warn(rec.path, msg + " — allowed at inferred/unknown confidence, but note it")
+        else:
+            # An exact-device source must be for THIS device. Source existence
+            # (even at exact-device scope) does not prove it supports the
+            # finding's specific device unless the device_model matches.
+            fdm = _norm(rec.get("device_model", ""))
+            declared = [(r, _norm(source_device.get(r, ""))) for r in device_sources]
+            matches = [r for r, sdm in declared if sdm and sdm == fdm]
+            mismatches = [(r, source_device.get(r, "")) for r, sdm in declared if sdm and sdm != fdm]
+            undeclared = [r for r, sdm in declared if not sdm]
+            if not matches:
+                for r, sdm in mismatches:
+                    rep.error(rec.path, f"exact-device source {r} is for a different device_model "
+                                        f"('{sdm}') than this finding ('{rec.get('device_model', '')}')")
+                if undeclared and not mismatches:
+                    rep.warn(rec.path, f"cited exact-device source(s) {undeclared} declare no device_model; "
+                                       "cannot confirm the device identity matches this finding")
 
     return len(records)
 

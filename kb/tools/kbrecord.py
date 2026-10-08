@@ -99,6 +99,16 @@ def parse_frontmatter(text: str, path: str = "<string>") -> Record:
         key, _, rest = line.partition(":")
         key = key.strip()
         rest = _strip_comment(rest.strip())
+        if key in fields:
+            raise FrontmatterError(f"{path}: line {i+1}: duplicate key '{key}' (ambiguous)")
+        if rest[:1] == "{":
+            raise FrontmatterError(f"{path}: line {i+1}: flow mappings ({{...}}) are not supported; "
+                                   "use flat top-level keys")
+        if rest in ("|", ">", "|-", "|+", ">-", ">+"):
+            raise FrontmatterError(f"{path}: line {i+1}: block scalars ('|','>') are not supported; "
+                                   "put the value on one line or move prose to the body")
+        if rest[:1] in ("&", "*", "!"):
+            raise FrontmatterError(f"{path}: line {i+1}: YAML anchors/aliases/tags are not supported")
         if rest == "":
             # could be an empty scalar or the start of a block list
             block: list = []

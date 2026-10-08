@@ -20,10 +20,34 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import validate  # noqa: E402
 
 
-SOURCE_DEVICE = """---
+DEVICE = "onn 4K Plus (coffey)"
+
+SOURCE_DEVICE = f"""---
 source_id: AML-S0001
 title: "device readout"
 type: observation
+device_model: "{DEVICE}"
+credibility: primary
+scope: exact-device
+---
+body
+"""
+
+SOURCE_DEVICE_NODM = """---
+source_id: AML-S0003
+title: "device readout, no model declared"
+type: observation
+credibility: primary
+scope: exact-device
+---
+body
+"""
+
+SOURCE_DEVICE_OTHER = """---
+source_id: AML-S0004
+title: "a different device"
+type: observation
+device_model: "Some Other Streamer"
 credibility: primary
 scope: exact-device
 ---
@@ -125,6 +149,48 @@ class ValidatorTests(unittest.TestCase):
         errs, warns = _run({"s.md": SOURCE_FAMILY,
                             "f.md": _finding(evidence_scope="related-family", source_refs="[AML-S0002]")})
         self.assertTrue(any("non-device scope" in w for w in warns))
+
+    def test_device_model_mismatch_errors(self):
+        # exact-device finding backed only by a source for a DIFFERENT device
+        errs, _ = _run({"s.md": SOURCE_DEVICE_OTHER, "f.md": _finding(source_refs="[AML-S0004]")})
+        self.assertTrue(any("different device_model" in e for e in errs))
+
+    def test_multiple_sources_one_device_matches_passes(self):
+        # cites a family source AND the matching device source -> clean
+        errs, warns = _run({
+            "s1.md": SOURCE_FAMILY,
+            "s2.md": SOURCE_DEVICE,
+            "f.md": _finding(source_refs="[AML-S0002, AML-S0001]"),
+        })
+        self.assertEqual(errs, [])
+        self.assertEqual(warns, [])
+
+    def test_multiple_sources_only_other_device_errors(self):
+        # cites a family source AND an exact-device source for the WRONG device
+        errs, _ = _run({
+            "s1.md": SOURCE_FAMILY,
+            "s2.md": SOURCE_DEVICE_OTHER,
+            "f.md": _finding(source_refs="[AML-S0002, AML-S0004]"),
+        })
+        self.assertTrue(any("different device_model" in e for e in errs))
+
+    def test_exact_device_source_without_model_warns(self):
+        # exact-device source that declares no device_model -> cannot confirm -> warn
+        errs, warns = _run({"s.md": SOURCE_DEVICE_NODM, "f.md": _finding(source_refs="[AML-S0003]")})
+        self.assertFalse(any("device_model" in e for e in errs))
+        self.assertTrue(any("cannot confirm the device identity" in w for w in warns))
+
+    def test_flow_mapping_fails_clearly(self):
+        errs, _ = _run({"f.md": "---\nfinding_id: AML-F0001\nmeta: {a: b}\n---\nbody\n"})
+        self.assertTrue(any("flow mappings" in e for e in errs))
+
+    def test_duplicate_key_fails_clearly(self):
+        errs, _ = _run({"f.md": "---\nfinding_id: AML-F0001\ntitle: a\ntitle: b\n---\nbody\n"})
+        self.assertTrue(any("duplicate key" in e for e in errs))
+
+    def test_block_scalar_fails_clearly(self):
+        errs, _ = _run({"f.md": "---\nfinding_id: AML-F0001\nnote: |\n  multi\n  line\n---\nbody\n"})
+        self.assertTrue(any("block scalars" in e for e in errs))
 
     def test_malformed_frontmatter(self):
         errs, _ = _run({"bad.md": "no frontmatter here\njust text\n"})

@@ -14,7 +14,8 @@ revisit_if:
 
 ## Question
 Where should the Amlogic architecture knowledge base live, and how should
-memory-safety research (the GhostLock / CVE-2026-43499 Option A work) be
+memory-safety research (the "GhostLock" kernel workstream; specific CVE id
+retained in private research records) be
 handled, given `own-the-onn` is a public repository with explicit ground
 rules (no working exploits, no vendor code/firmware redistribution, no
 personal data)?
@@ -34,9 +35,10 @@ KB lives at `kb/` inside `own-the-onn`. The AML-TASK-001 scaffold
 (templates, source registry, validation, section READMEs, illustrative and
 already-public seed records) is committed publicly. GhostLock Option A
 content is **deferred**: the reproduction + patch-validation story is a
-candidate for a future public case study, but the exploitation-direction
-material (stack re-groom, futex re-entrancy aliasing) stays out of the public
-repo and in the private working area regardless.
+candidate for a future public case study, but the specific
+exploitation-direction material stays out of the public repo and in the
+private working area regardless. (Techniques, offsets, and the CVE id are
+recorded only in the private `E:` research records.)
 
 ## Rationale
 The existing repo already enforces the posture the roadmap's evidence
