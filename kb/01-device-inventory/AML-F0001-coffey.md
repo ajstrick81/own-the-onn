@@ -9,33 +9,45 @@ evidence_scope: exact-device
 confidence: confirmed
 source_refs:
   - AML-S0001
+  - AML-S0003
 source_urls: []
-source_revision: "SPL 2026-03"
-related_findings: []
+source_revision: "URO4.260304.011.B1 (build 15051976), SPL 2026-03-01"
+related_findings:
+  - AML-F0002
+  - AML-F0003
 status: promoted
 ---
 
 # Device inventory — onn 4K Plus (coffey)
 
+All values are **device-reported** (getprop / kernel interfaces), not
+independent hardware measurements.
+
 | Field | Value | Confidence | Source |
 |---|---|---|---|
-| Marketing name | Walmart onn 4K Plus | confirmed | AML-S0001 |
-| Codename / platform | coffey / s7d | confirmed | AML-S0001 |
-| SoC | Amlogic S905X5M | confirmed | AML-S0001 |
-| SoC family / generation | S7D | confirmed | AML-S0001 |
-| CPU / arch | arm64 kernel, 32-bit userland | confirmed | AML-S0001 |
-| Android version | 14 | confirmed | AML-S0001 |
-| Security patch level | 2026-03 | confirmed | AML-S0001 |
-| Kernel version | GKI 5.15.196-android14-11 | confirmed | AML-S0001 |
-| Bootloader state | welded: OEM-unlock disabled, flash locked, AVB green | confirmed | AML-S0001 |
-| Board revision | not recorded | unknown | — |
-| Firmware build id | not recorded here | unknown | — |
+| Marketing name | onn. 4K Plus Streaming (brand onn) | confirmed | AML-S0003 |
+| Codename / platform | coffey / s7d | confirmed | AML-S0003 |
+| SoC | Amlogic S905X5M (`ro.soc.model AMLS905X5M`) | confirmed | AML-S0003 |
+| SoC family / generation | S7D | confirmed | AML-S0003 |
+| CPU core | ARM Cortex-A55 (impl 0x41, part 0xd05, ARMv8-A) | confirmed | AML-S0003 |
+| Userland arch | 32-bit (`abilist armeabi-v7a,armeabi`) | confirmed | AML-S0003 |
+| Kernel bitness | 64-bit GKI (arm64) | probable | AML-S0003 |
+| Android version | 14 (SDK 34) | confirmed | AML-S0003 |
+| Security patch level | 2026-03-01 | confirmed | AML-S0003 |
+| Kernel version | 5.15.196-android14-11-g3d26c188ef7e-ab14657224 (clang 17, +pgo +bolt +lto) | confirmed | AML-S0003 |
+| Firmware build id | URO4.260304.011.B1 (build 15051976), coffey-user, release-keys | confirmed | AML-S0003 |
+| Bootloader / verified boot | flash locked, verifiedbootstate green, AVB 1.2 (sha256), vbmeta state locked | confirmed | AML-S0003 |
+| Board revision | not obtainable read-only (DT model absent, DT compatible denied) | unknown | — |
 
 ## Notes
-All `confirmed` fields are read from the device's own build properties and
-`/proc/config.gz` (AML-S0001), not from a retail listing or spec aggregator —
-per this repo's rule that device identity is settled against primary sources.
-A fuller device/attack-surface narrative is in `../../research/root-study.md`.
+Device identity is settled against the device's own build properties and kernel
+interfaces (AML-S0003, read-only), re-confirming and tightening the earlier
+public-derived facts (AML-S0001 / `root-study.md`).
 
-Board revision and exact firmware build id are left `unknown` rather than
-guessed; fill them from a device read before marking confirmed.
+Discipline: `uname` returns `armv8l` from a 32-bit adb shell, which does not by
+itself prove a 64-bit kernel; the arm64-GKI claim (`ab14657224`) is marked
+**probable** pending a 64-bit-context confirmation. Board revision stays
+`unknown` — the Device-Tree `model` node is absent and `compatible` is
+permission-denied without root (recorded, not escalated).
+
+Partition/boot architecture → `AML-F0002`; diagnostic interfaces → `AML-F0003`.

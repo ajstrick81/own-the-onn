@@ -9,10 +9,13 @@ prerequisites:
   - "adb over network to coffey (see CLAUDE.local.md for current IP; confirm reachable)"
   - "Device already set up and owner-operated; USB-debugging/ADB enabled"
   - "A gitignored raw-evidence dir (raw/ is already ignored) to hold dumps off-repo"
-result: not-started
-artifacts: []
+result: done
+artifacts:
+  - "off-repo scratch: raw/ captures + manifest.tsv (sha256, exit codes, timestamps); not committed"
 related_findings:
   - AML-F0001
+  - AML-F0002
+  - AML-F0003
 ---
 
 # AML-E0001 — coffey read-only device baseline
@@ -121,16 +124,34 @@ Scalar facts tied to a specific key/command. Device-confirmed facts →
 inferences stay `related-family`/`inferred` until the device read confirms.
 
 ## Actual observations
-<fill after the read-only session>
+Run 2026-10-08T23:24Z, adb 1.0.41, build `URO4.260304.011.B1` (15051976). All
+14 steps executed read-only; raw + sha256 manifest held off-repo. Recorded into
+`AML-S0003`; facts promoted to `AML-F0001` (identity), `AML-F0002` (partitions/
+boot), `AML-F0003` (interfaces). Key reads: `ro.soc.model AMLS905X5M`, platform
+`s7d`, Cortex-A55; kernel `5.15.196-android14-11-g3d26c188ef7e-ab14657224`;
+userland 32-bit; AVB 1.2 locked / verifiedbootstate green; dynamic + Virtual
+A/B super partitions (dm-verity) on eMMC `mmcblk0`; adb-over-tcp:5555, user
+build (`ro.debuggable=0`).
 
-## Evidence summary (produce after collection)
-- **Confirmed observations:** device-reported facts settled by this read.
-- **Unresolved questions:** fields still unknown or access-denied.
-- **Hypotheses for further investigation:** inferences needing more evidence.
+## Evidence summary
+- **Confirmed (device-reported):** SoC AMLS905X5M / s7d; Cortex-A55; Android 14
+  (SDK 34), SPL 2026-03-01; firmware `URO4.260304.011.B1`; kernel 5.15.196 exact
+  tag; 32-bit userland; AVB-1.2 locked verified boot (green); A/B + Virtual A/B
+  dynamic/super partitions under dm-verity; eMMC mmcblk0 (31 parts); ADB over
+  TCP, non-debuggable user build; serial nodes ttyS0 (root) / ttyS1 (BT).
+- **Unresolved / access-denied (no escalation):** partition sizes/offsets
+  (`/proc/partitions` denied); kernel cmdline (`/proc/cmdline` denied); DT
+  model (absent) and DT compatible (denied) → **board revision unknown**;
+  authoritative super-partition map (`lpdump`, needs privilege).
+- **Hypotheses needing further evidence:** 64-bit kernel (probable from
+  `ab14657224` GKI, but `uname` in a 32-bit shell can't prove it); full
+  partition layout obtainable only via an approved offline-image method.
 
 ## Conclusion
-<which AML-F0001 fields moved from prior-public to device-confirmed; what
-remains unknown>
+AML-F0001 fields SoC, kernel, Android/SPL, verified-boot, and **firmware build
+id** moved from prior-public to **device-confirmed**; partition/boot and
+interface baselines are newly established (`AML-F0002`, `AML-F0003`). Board
+revision and exact partition geometry remain `unknown` by read-only means.
 
 ## Next steps
 - One `AML-S` per capture group (type `observation`, scope `exact-device`,
