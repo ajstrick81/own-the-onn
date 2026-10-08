@@ -35,10 +35,19 @@ Completion checklist:
 - [x] Research templates created (`kb/_templates/`)
 - [x] Evidence and source standards documented
 - [x] Device inventory template available (+ coffey entry `AML-F0001`)
-- [x] Record validation implemented (`kb/tools/validate.py`)
-- [ ] Implementation reviewed (coordinator review pending)
-- [ ] First real research findings entered (coffey inventory + sources seeded;
-      more to follow from triaged research inputs)
+- [x] Record validation implemented (`kb/tools/validate.py` + `test_validate.py`)
+- [x] Implementation reviewed — **Phase 1 provisionally approved** (coordinator
+      2026-10-08, `AML-D0002`); final acceptance pending artifact verification
+      (AML-TASK-002)
+- [x] First real research findings entered (coffey inventory `AML-F0001` +
+      sources `AML-S0001`/`AML-S0002`; more to follow from triaged inputs)
+
+### AML-TASK-002 — Foundation Verification (in progress)
+Evidence package for coordinator sign-off: full tree, validator source + test
+cases, representative records, success/negative command outputs, raw-vs-verified
+separation check, and a public-docs sensitive-material scan. New validator
+feature delivered: the **exact-device evidence rule** (see README). **Not
+pushed** until coordinator sign-off.
 
 ## Ground rules (inherited from the repo)
 Owner's own hardware. Local-first. No working exploits, no weaponized

@@ -87,6 +87,13 @@ def validate_tree(root: str, rep: Report):
 
     seen_ids: dict[str, str] = {}
     all_ids: set[str] = set()
+    source_scope: dict[str, str] = {}  # AML-S#### -> its declared scope
+
+    for rec in records:
+        if _kind(rec) == "source_id":
+            sid = rec.get("source_id", "")
+            if isinstance(sid, str) and sid:
+                source_scope[sid] = rec.get("scope", "")
 
     for rec in records:
         id_field = _kind(rec)
@@ -133,6 +140,36 @@ def validate_tree(root: str, rep: Report):
             for ref in _as_list(rec.fields.get(fld)):
                 if ref not in all_ids:
                     rep.error(rec.path, f"{fld} references unknown id '{ref}'")
+
+    # third pass: exact-device evidence rule (AML-TASK-002)
+    # A finding claiming exact-device scope must (1) name a specific device and
+    # (2) be backed by appropriate evidence. The existence of *a* source does
+    # not by itself prove device-scope support: for a confirmed/probable
+    # exact-device claim, at least one cited source must itself be exact-device
+    # scope. Inferred/unknown device claims are warned, not blocked.
+    for rec in records:
+        if _kind(rec) != "finding_id":
+            continue
+        if rec.get("evidence_scope") != "exact-device":
+            continue
+        if not str(rec.get("device_model", "")).strip():
+            rep.error(rec.path, "evidence_scope=exact-device but device_model is empty "
+                                "(an exact-device finding must name a specific device)")
+        refs = _as_list(rec.get("source_refs"))
+        has_any_support = bool(refs or _as_list(rec.get("source_urls")) or str(rec.get("source_revision", "")).strip())
+        if not has_any_support:
+            rep.error(rec.path, "evidence_scope=exact-device but no supporting source_refs, "
+                                "source_urls, or source_revision")
+            continue
+        device_backed = any(source_scope.get(r) == "exact-device" for r in refs)
+        if not device_backed:
+            msg = ("evidence_scope=exact-device is not backed by any exact-device source "
+                   "(source existence does not prove device-scope support; cite an "
+                   "exact-device source/observation)")
+            if rec.get("confidence") in {"confirmed", "probable"}:
+                rep.error(rec.path, msg)
+            else:
+                rep.warn(rec.path, msg + " — allowed at inferred/unknown confidence, but note it")
 
     return len(records)
 

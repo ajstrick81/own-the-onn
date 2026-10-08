@@ -48,6 +48,15 @@ Findings cite sources by id (`source_refs: [AML-S0001]`).
 - A `confirmed` finding must cite a source. `confirmed` at `related-family`/
   `general` scope is flagged — confirm it is confirmed *for that scope*, not
   upgraded from another device.
+- **Exact-device rule:** a finding with `evidence_scope: exact-device` must name
+  a specific device (`device_model`) **and** be backed by a device-appropriate
+  source. Source *existence* is not proof of device-scope support: a
+  `confirmed`/`probable` exact-device claim must cite at least one source whose
+  own `scope` is `exact-device` (an on-device observation counts). At
+  `inferred`/`unknown` confidence this is a warning, not a block.
+- **Prefer atomic findings** for significant technical claims (one claim per
+  `AML-F####`). Keep per-field confidence only in composite records — device
+  inventories and compatibility matrices.
 - Preserve contradictions and failed experiments. Never silently upgrade.
 
 ## Validate
