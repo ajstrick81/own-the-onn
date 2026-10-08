@@ -28,6 +28,9 @@ block_list:                 # -> ["item one","item two"]
   quote pair and an optional trailing ` # comment` (comment detection respects
   quotes).
 - **Lists** are either inline flow (`[a, b]`) or a block of `  - ` lines.
+  Inline-list splitting is **quote-aware**: `["A,B", C]` parses to `["A,B","C"]`
+  (a comma inside quotes does not split). An **unterminated quote** inside an
+  inline list is a hard error.
 - **Comments:** a `#` preceded by whitespace (or at line start) begins a
   comment; `#` inside quotes is literal.
 - **Blank lines** and full-line `#` comments inside the block are ignored.

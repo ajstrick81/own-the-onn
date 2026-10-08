@@ -38,7 +38,7 @@ class FrontmatterError(ValueError):
     pass
 
 
-def _parse_scalar(raw: str):
+def _parse_scalar(raw: str, path: str = "<string>", lineno: int = 0):
     raw = raw.strip()
     if raw == "":
         return ""
@@ -48,8 +48,33 @@ def _parse_scalar(raw: str):
         inner = raw[1:-1].strip()
         if inner == "":
             return []
-        return [_unquote(p.strip()) for p in inner.split(",") if p.strip() != ""]
+        return _split_flow(inner, path, lineno)
     return _unquote(raw)
+
+
+def _split_flow(inner: str, path: str, lineno: int):
+    """Quote-aware split of an inline list body on commas not inside quotes.
+    So `"A,B", C` -> ['A,B', 'C']. An unterminated quote is a clear error."""
+    parts: list = []
+    buf = ""
+    q = None
+    for ch in inner:
+        if q:
+            buf += ch
+            if ch == q:
+                q = None
+        elif ch in "\"'":
+            q = ch
+            buf += ch
+        elif ch == ",":
+            parts.append(buf)
+            buf = ""
+        else:
+            buf += ch
+    if q is not None:
+        raise FrontmatterError(f"{path}: line {lineno}: unterminated quote in inline list")
+    parts.append(buf)
+    return [_unquote(p.strip()) for p in parts if p.strip() != ""]
 
 
 def _unquote(s: str):
@@ -127,7 +152,7 @@ def parse_frontmatter(text: str, path: str = "<string>") -> Record:
             fields[key] = block if block else ""
             i = j
         else:
-            fields[key] = _parse_scalar(rest)
+            fields[key] = _parse_scalar(rest, path, i + 1)
             i += 1
 
     body = "\n".join(lines[end + 1:]).strip()

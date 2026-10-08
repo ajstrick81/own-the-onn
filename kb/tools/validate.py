@@ -44,6 +44,19 @@ REQUIRED = {
 # list-typed fields that hold references to other record IDs
 REF_FIELDS = ["source_refs", "related_findings", "supporting_evidence"]
 
+# fields that must be scalar strings; a list here is a malformed record, not a crash
+SCALAR_FIELDS = {
+    "finding_id", "experiment_id", "decision_id", "source_id",
+    "title", "component", "device_model", "soc", "generation",
+    "evidence_scope", "confidence", "scope", "credibility", "type",
+    "risk_level", "result", "status", "research_question", "hypothesis",
+    "target_device", "question", "decision", "url", "repo", "commit",
+    "source_revision",
+}
+
+# a .md file whose name starts like this is expected to be a record (must have frontmatter)
+REC_NAME = re.compile(r"^AML-[FEDS]\d{4}")
+
 
 class Report:
     def __init__(self):
@@ -90,6 +103,27 @@ def validate_tree(root: str, rep: Report):
         except kbrecord.FrontmatterError as exc:
             rep.error(path, str(exc))
 
+    # malformed-record detection: a file named like a record (AML-<type><id>...)
+    # but missing its opening '---' is skipped by the loader — flag it rather
+    # than let a record directory silently hold an unvalidated file. README and
+    # template (_*) files remain exempt.
+    for dirpath, dirnames, filenames in os.walk(root):
+        dirnames[:] = [d for d in dirnames if not d.startswith(".") and not d.startswith("_")]
+        for name in filenames:
+            if not name.endswith(".md") or name == "README.md" or name.startswith("_"):
+                continue
+            if not REC_NAME.match(name):
+                continue
+            full = os.path.join(dirpath, name)
+            try:
+                with open(full, "r", encoding="utf-8") as fh:
+                    first = fh.readline()
+            except OSError:
+                continue
+            if first.strip() != "---":
+                rep.error(full, "file name looks like a record (AML-<type><id>) but has no "
+                                "opening '---' frontmatter block")
+
     seen_ids: dict[str, str] = {}
     all_ids: set[str] = set()
     source_scope: dict[str, str] = {}   # AML-S#### -> its declared scope
@@ -119,6 +153,13 @@ def validate_tree(root: str, rep: Report):
             else:
                 seen_ids[rec_id] = rec.path
                 all_ids.add(rec_id)
+
+        # type guard: scalar fields must not be lists (prevents TypeError crashes
+        # in membership checks and gives an actionable error instead)
+        for sf in SCALAR_FIELDS:
+            if sf in rec.fields and isinstance(rec.fields[sf], list):
+                rep.error(rec.path, f"field '{sf}' must be a scalar, got a list")
+                rec.fields[sf] = ""  # coerce so downstream checks don't crash
 
         for req in REQUIRED.get(id_field, []):
             val = rec.fields.get(req, None)
@@ -187,12 +228,19 @@ def validate_tree(root: str, rep: Report):
             mismatches = [(r, source_device.get(r, "")) for r, sdm in declared if sdm and sdm != fdm]
             undeclared = [r for r, sdm in declared if not sdm]
             if not matches:
+                confirmed_like = rec.get("confidence") in {"confirmed", "probable"}
                 for r, sdm in mismatches:
                     rep.error(rec.path, f"exact-device source {r} is for a different device_model "
                                         f"('{sdm}') than this finding ('{rec.get('device_model', '')}')")
                 if undeclared and not mismatches:
-                    rep.warn(rec.path, f"cited exact-device source(s) {undeclared} declare no device_model; "
-                                       "cannot confirm the device identity matches this finding")
+                    # An unnamed source must not establish CONFIRMED/PROBABLE device identity.
+                    if confirmed_like:
+                        rep.error(rec.path, f"confidence={rec.get('confidence')} exact-device claim needs a cited "
+                                            f"exact-device source whose device_model matches this finding; "
+                                            f"source(s) {undeclared} name no device")
+                    else:
+                        rep.warn(rec.path, f"cited exact-device source(s) {undeclared} declare no device_model; "
+                                           "cannot confirm the device identity matches this finding")
 
     return len(records)
 
@@ -200,6 +248,8 @@ def validate_tree(root: str, rep: Report):
 def _check_vocab(rec, field_name, allowed, rep):
     if field_name in rec.fields:
         val = rec.fields[field_name]
+        if not isinstance(val, str):
+            return  # non-scalar already reported by the type guard
         if val not in allowed and val != "":
             rep.error(rec.path, f"{field_name}='{val}' not in {sorted(allowed)}")
 

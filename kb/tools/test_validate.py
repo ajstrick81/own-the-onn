@@ -18,6 +18,7 @@ import unittest
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import validate  # noqa: E402
+import kbrecord  # noqa: E402
 
 
 DEVICE = "onn 4K Plus (coffey)"
@@ -174,11 +175,35 @@ class ValidatorTests(unittest.TestCase):
         })
         self.assertTrue(any("different device_model" in e for e in errs))
 
-    def test_exact_device_source_without_model_warns(self):
-        # exact-device source that declares no device_model -> cannot confirm -> warn
-        errs, warns = _run({"s.md": SOURCE_DEVICE_NODM, "f.md": _finding(source_refs="[AML-S0003]")})
-        self.assertFalse(any("device_model" in e for e in errs))
+    def test_exact_device_source_without_model_warns_at_inferred(self):
+        # exact-device source with no device_model, INFERRED confidence -> warn (not error)
+        errs, warns = _run({"s.md": SOURCE_DEVICE_NODM,
+                            "f.md": _finding(confidence="inferred", source_refs="[AML-S0003]")})
+        self.assertFalse(any("name no device" in e for e in errs))
         self.assertTrue(any("cannot confirm the device identity" in w for w in warns))
+
+    def test_exact_device_source_without_model_errors_at_confirmed(self):
+        # same, but CONFIRMED -> an unnamed source must not establish confirmed identity
+        errs, _ = _run({"s.md": SOURCE_DEVICE_NODM, "f.md": _finding(source_refs="[AML-S0003]")})
+        self.assertTrue(any("name no device" in e for e in errs))
+
+    def test_list_where_scalar_expected_does_not_crash(self):
+        # evidence_scope given as an inline list -> actionable error, not a TypeError
+        errs, _ = _run({"s.md": SOURCE_DEVICE, "f.md": _finding(evidence_scope="[a, b]")})
+        self.assertTrue(any("must be a scalar" in e for e in errs))
+
+    def test_malformed_record_in_dir_is_flagged(self):
+        # a file named like a record but with no frontmatter must not be silently skipped
+        errs, _ = _run({"AML-F0002-x.md": "no frontmatter here\njust prose\n"})
+        self.assertTrue(any("opening '---'" in e for e in errs))
+
+    def test_quoted_comma_in_inline_list_parses(self):
+        rec = kbrecord.parse_frontmatter('---\nfinding_id: AML-F0001\nfiles: ["A,B", C]\n---\nbody\n')
+        self.assertEqual(rec.get("files"), ["A,B", "C"])
+
+    def test_unterminated_quote_in_list_errors(self):
+        errs, _ = _run({"f.md": '---\nfinding_id: AML-F0001\nfiles: ["A,B, C]\n---\nbody\n'})
+        self.assertTrue(any("unterminated quote" in e for e in errs))
 
     def test_flow_mapping_fails_clearly(self):
         errs, _ = _run({"f.md": "---\nfinding_id: AML-F0001\nmeta: {a: b}\n---\nbody\n"})
