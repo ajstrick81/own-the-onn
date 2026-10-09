@@ -125,7 +125,18 @@ the method (full provenance off-repo in `scratchpad/y0c-dryrun`):
   "raw ext4" guess. coffey R3 needs a coffey `super.img`.
 Nothing here promoted to coffey.
 
+## Acquisition status (coffey, AML-TASK-005)
+A coffey **exact-build OTA** is acquired PC-side (no device): `AML-S0005`
+(URO4.260304.011.B1, archive sha256 `ec755bd0…`, fingerprint-matched to the
+device, signed). 17-partition payload inventory recorded. This **unblocks**:
+- **R1** (dtbo + base DTB from boot/vendor_boot → model/compatible values),
+- **R2** cross-confirm (coffey boot Image → ARM64 header),
+- **R3 sizes** (per-partition sizes from the payload manifest).
+Still **not** obtainable from an A/B OTA (expected): physical GPT offsets and
+super LP grouping (need on-device `lpdump` or a factory image).
+
 ## Actual observations / Conclusion / Next steps (coffey)
-<fill as coffey artifacts are analyzed; promote per-provenance into
-AML-F0001/F0002 and new atomic findings; keep unresolved items unresolved until
-a coffey artifact settles them (correction #5).>
+<next: extract boot/vendor_boot/dtbo only (payload_dumper --partitions), verify
+against manifest hashes, then promote R1 DT values + R2 cross-confirm into
+AML-F0004/F0001 (exact-device, source AML-S0005); keep physical GPT + super
+grouping unresolved.>
