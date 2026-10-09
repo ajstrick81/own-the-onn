@@ -8,9 +8,10 @@ risk_level: read-only
 prerequisites:
   - "coffey base DT (extracted, AML-S0005)"
   - "upstream S7D/SC2 DT source (CoreELEC linux-amlogic) — NOT yet local; needs a passive source fetch"
-result: in-progress
+result: done
 related_findings:
   - AML-F0004
+  - AML-F0007
 ---
 
 # AML-E0003 — Phase 3 cross-generation DT comparison (begun)
@@ -47,5 +48,15 @@ fetch, not firmware) would let us diff register bases, clock/reset indices,
 interrupt maps, and memory regions to classify each subsystem **identical vs
 similar**. Pending that fetch (and Director nod on the source fetch).
 
-## Actual observations / Conclusion
-<fill once upstream DT sources are fetched and the subsystem-level diff is run.>
+## Actual observations / Conclusion (DONE — source-backed)
+Upstream S7D/SC2 DT source fetched (`AML-S0006`, CoreELEC common_drivers
+5.15.196_20260225). Comparison run → `AML-F0007`:
+- coffey DT = upstream board `s7d_s905x5m_bm202` (name match).
+- **SC2 inheritance confirmed at source:** `meson-s7d.dtsi` reuses
+  `meson-sc2-reset`/`meson-sc2-wdt`.
+- **s7d-specific:** `s7d-clkc`, `s7d-power-domain` (absent in sc2 ref).
+- **Identical register bases** for uart/mmc/sd/sdio/eth/usbphy (coffey ≡ s7d ref).
+- **Shared both gens:** meson-uart, meson-i2c.
+Discipline: identical compatible+reg = identical DT-level binding, not a
+silicon-mask identity proof. Phase-3 first comparison complete; further
+subsystems (pinctrl pin maps, clock/reset index tables) can extend it later.
