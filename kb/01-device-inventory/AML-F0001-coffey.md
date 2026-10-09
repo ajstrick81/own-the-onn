@@ -10,6 +10,7 @@ confidence: confirmed
 source_refs:
   - AML-S0001
   - AML-S0003
+  - AML-S0004
 source_urls: []
 source_revision: "URO4.260304.011.B1 (build 15051976), SPL 2026-03-01"
 related_findings:
@@ -31,7 +32,7 @@ independent hardware measurements.
 | SoC family / generation | S7D | confirmed | AML-S0003 |
 | CPU core | ARM Cortex-A55 (impl 0x41, part 0xd05, ARMv8-A) | confirmed | AML-S0003 |
 | Userland arch | 32-bit (`abilist armeabi-v7a,armeabi`) | confirmed | AML-S0003 |
-| Kernel bitness | 64-bit GKI (arm64) | probable | AML-S0003 |
+| Kernel bitness | 64-bit GKI (arm64) — config-derived: `CONFIG_ARM64=y`, `CONFIG_64BIT=y` | confirmed | AML-S0004 |
 | Android version | 14 (SDK 34) | confirmed | AML-S0003 |
 | Security patch level | 2026-03-01 | confirmed | AML-S0003 |
 | Kernel version | 5.15.196-android14-11-g3d26c188ef7e-ab14657224 (clang 17, +pgo +bolt +lto) | confirmed | AML-S0003 |
@@ -45,8 +46,10 @@ interfaces (AML-S0003, read-only), re-confirming and tightening the earlier
 public-derived facts (AML-S0001 / `root-study.md`).
 
 Discipline: `uname` returns `armv8l` from a 32-bit adb shell, which does not by
-itself prove a 64-bit kernel; the arm64-GKI claim (`ab14657224`) is marked
-**probable** pending a 64-bit-context confirmation. Board revision stays
+itself prove a 64-bit kernel — so bitness was not inferred from CPU arch.
+Kernel bitness is now **confirmed as configuration-derived evidence from the
+target device**: coffey's own `/proc/config.gz` (AML-S0004) has `CONFIG_ARM64=y`
+and `CONFIG_64BIT=y`. Board revision stays
 `unknown` — the Device-Tree `model` node is absent and `compatible` is
 permission-denied without root (recorded, not escalated). The locked /
 verifiedbootstate-green / AVB values are **device-reported state**, not an
