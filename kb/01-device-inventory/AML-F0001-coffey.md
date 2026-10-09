@@ -48,8 +48,13 @@ public-derived facts (AML-S0001 / `root-study.md`).
 Discipline: `uname` returns `armv8l` from a 32-bit adb shell, which does not by
 itself prove a 64-bit kernel — so bitness was not inferred from CPU arch.
 Kernel bitness is now **confirmed as configuration-derived evidence from the
-target device**: coffey's own `/proc/config.gz` (AML-S0004) has `CONFIG_ARM64=y`
-and `CONFIG_64BIT=y`. Board revision stays
+target device**: *the running Onn reports a kernel configuration with
+`CONFIG_ARM64=y` and `CONFIG_64BIT=y`, establishing a configured 64-bit ARM
+kernel* (coffey's own `/proc/config.gz`, AML-S0004). Provenance note: the
+config's sha256 matches the independent AML-E0001 capture — that proves the two
+are **identical bytes, not two independent origins**; the device-capture record
+(AML-S0004: 2026-10-07, adb, shell-uid, no root) is the authority. Board
+revision stays
 `unknown` — the Device-Tree `model` node is absent and `compatible` is
 permission-denied without root (recorded, not escalated). The locked /
 verifiedbootstate-green / AVB values are **device-reported state**, not an
