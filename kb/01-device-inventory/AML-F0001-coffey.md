@@ -11,6 +11,7 @@ source_refs:
   - AML-S0001
   - AML-S0003
   - AML-S0004
+  - AML-S0005
 source_urls: []
 source_revision: "URO4.260304.011.B1 (build 15051976), SPL 2026-03-01"
 related_findings:
@@ -32,13 +33,14 @@ independent hardware measurements.
 | SoC family / generation | S7D | confirmed | AML-S0003 |
 | CPU core | ARM Cortex-A55 (impl 0x41, part 0xd05, ARMv8-A) | confirmed | AML-S0003 |
 | Userland arch | 32-bit (`abilist armeabi-v7a,armeabi`) | confirmed | AML-S0003 |
-| Kernel bitness | 64-bit GKI (arm64) — config-derived: `CONFIG_ARM64=y`, `CONFIG_64BIT=y` | confirmed | AML-S0004 |
+| Kernel bitness | 64-bit GKI (arm64) — config `CONFIG_ARM64=y`/`CONFIG_64BIT=y` **and** OTA boot Image ARM64 magic @0x38 (two methods) | confirmed | AML-S0004, AML-S0005 |
+| DT board id | `s7d_s905x5m_bm202` (platform s7d / SoC S905X5M / board `bm202`) | confirmed | AML-S0005 |
 | Android version | 14 (SDK 34) | confirmed | AML-S0003 |
 | Security patch level | 2026-03-01 | confirmed | AML-S0003 |
 | Kernel version | 5.15.196-android14-11-g3d26c188ef7e-ab14657224 (clang 17, +pgo +bolt +lto) | confirmed | AML-S0003 |
 | Firmware build id | URO4.260304.011.B1 (build 15051976), coffey-user, release-keys | confirmed | AML-S0003 |
 | Bootloader / verified boot | flash locked, verifiedbootstate green, AVB 1.2 (sha256), vbmeta state locked | confirmed | AML-S0003 |
-| Board revision | not obtainable read-only (DT model absent, DT compatible denied) | unknown | — |
+| Board revision | DT board id `bm202` (from OTA base DT); physical hardware-rev stamp not independently read | probable | AML-S0005 |
 
 ## Notes
 Device identity is settled against the device's own build properties and kernel

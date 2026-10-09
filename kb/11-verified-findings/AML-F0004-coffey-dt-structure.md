@@ -10,8 +10,9 @@ confidence: confirmed
 source_refs:
   - AML-S0004
   - AML-S0002
+  - AML-S0005
 source_urls: []
-source_revision: "coffey /proc/device-tree node names, 2026-10-07"
+source_revision: "coffey /proc/device-tree node names 2026-10-07; DT values from OTA base DT (AML-S0005)"
 related_findings:
   - AML-F0001
 status: promoted
@@ -44,10 +45,19 @@ dump — so this is a structural/name-level comparison, not a full-DT diff.
 Node-name presence/absence can reflect SELinux visibility and DT-overlay
 application, not only silicon differences. Names are not values.
 
-## Validation needed / explicitly NOT claimed
-- **NOT confirmed:** DT `model`, `compatible` strings, `amlogic-dt-id` value, or
-  physical **board revision** — these are property *values*, denied on-device.
-  They remain **unresolved** pending a coffey DTB (dtbo partition dump = root,
-  or a Director-approved firmware-image carve → AML-E0002 R1).
-- The comparison counts depend on the two inputs' capture methods (device
+## DT values — RESOLVED from the OTA base DT (AML-S0005, exact-build)
+The base Device Tree carved from the acquired OTA's `vendor_boot` gives
+(exact-device for build URO4.260304.011.B1):
+- **`amlogic-dt-id = "s7d_s905x5m_bm202"`**
+- **`compatible = "s7d_s905x5m_bm202"`**  (platform **s7d**, SoC **S905X5M**,
+  board code **`bm202`**)
+- GPU node `arm,malit60x` (Mali Valhall); CPU `arm,cortex-a55` — consistent with
+  the device cpuinfo (part 0xd05).
+The `dtbo` partition held only **overlays** (`dummy-battery`/`dummy-charger`);
+board identity was taken from the **base DT**, not inferred from overlays.
+
+## Still not independently established
+- **`bm202`** is the firmware's **board identifier** from the DT; it is not an
+  independently-read hardware revision stamp. Treat as the DT-declared board id.
+- The 130/132 structural comparison depends on capture method (device
   `/proc/device-tree` names vs CoreELEC source DT); treat as structural.
