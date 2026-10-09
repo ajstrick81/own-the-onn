@@ -110,7 +110,19 @@ device modification; no privileged on-device operation. Verified-boot facts are
 **device-reported state**, not independent cryptographic attestation
 (correction #4).
 
-## Actual observations / Conclusion / Next steps
-<fill as artifacts are analyzed; promote per-provenance into AML-F0001/F0002 and
-new atomic findings; keep unresolved items unresolved until an artifact settles
-them (correction #5).>
+## Toolchain validation (y0c sibling, related-family — NOT coffey)
+Director-authorized dry-run 2026-10-09 on `E:/Morphe/device/y0c-uro1` validated
+the method (full provenance off-repo in `scratchpad/y0c-dryrun`):
+- **R1 tooling OK** (`extract-dtb`+`dtc`); lesson: `dtbo.img` = overlays, so
+  coffey `model`/`compatible` must come from the **base DT** (boot/vendor_boot).
+- **R2 method validated end-to-end**: boot v4 → extract kernel → **decompress
+  (gzip)** → ARM64 Image magic `0x644d5241` @0x38. Lesson: decompress before the
+  header check.
+- **R3**: `lpdump`/`lpunpack` **not exercised** — y0c has no packed `super.img`
+  (raw separate images); coffey R3 needs a `super.img`. `simg2img` ready.
+Nothing here promoted to coffey.
+
+## Actual observations / Conclusion / Next steps (coffey)
+<fill as coffey artifacts are analyzed; promote per-provenance into
+AML-F0001/F0002 and new atomic findings; keep unresolved items unresolved until
+a coffey artifact settles them (correction #5).>
