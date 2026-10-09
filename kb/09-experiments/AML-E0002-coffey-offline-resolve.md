@@ -39,8 +39,15 @@ S905X5M/s7d image → `related-family`, never silently upgraded).
    Read-only OTA capture (OTACaptor logs the URL; DNS sinkhole prevents apply)
    → `payload_dumper` extracts images on the PC. Execution is gated; planning is
    not.
-Provenance record per artifact: origin/URL, package sha256, each extracted
-image's sha256 + byte length, extraction tool+version, and scope.
+Provenance record per artifact, kept **separately** (refinement #4):
+origin/URL, **exact build identifier**, **A/B slot relationship**, package +
+per-image **sha256** and byte length, extraction tool+version, and
+**correspondence with the running device** (does it match coffey's
+`URO4.260304.011.B1` / slot `_b`, and how was that correspondence established).
+**Scope rule (refinement #5):** a package advertising the same version string
+is **not** automatically `exact-device` — version-match alone never upgrades a
+finding; exact-device requires verified correspondence to the running build,
+not just a matching label. Absent that, scope stays `related-family`/`exact-soc`.
 
 ## Analysis tools
 moria (identify/extract), mithril (boot posture), payload_dumper (OTA payload),
@@ -50,17 +57,21 @@ moria (identify/extract), mithril (boot posture), payload_dumper (OTA payload),
 ## Procedure (per unresolved item)
 
 ### R1. Device Tree identity
-Extract the DTB from `boot.img`/`vendor_boot.img` and overlays from `dtbo.img`;
-`fdtdump`/`dtc` → `model`, `compatible`, and any board-revision node. This is
-the offline path around the SELinux-blocked `/proc/device-tree` reads that
-failed in AML-E0001. Expected: Amlogic s7d / S905X5M board compatible strings;
-board revision *if* encoded in DT.
+**Discover the actual firmware layout first** — do not assume DTBs live in
+`boot.img`/`vendor_boot.img`. On Amlogic they may be in `dtb.img`/`dtbo.img`, a
+vendor `dtb` partition, appended to the kernel, or need vendor-specific
+extraction (refinement #2). Once located, `fdtdump`/`dtc` → `model`,
+`compatible`, board-revision node. This is the offline path around the
+SELinux-blocked `/proc/device-tree` reads that failed in AML-E0001. Expected:
+Amlogic s7d / S905X5M compatible strings; board revision *if* encoded in DT.
 
 ### R2. Kernel architecture confirmation (correction #1 — Image ≠ ELF)
 - A raw kernel **`Image`** (from `boot.img`) is **not** ELF. Confirm AArch64 by
-  its **arm64 Image header**: little-endian `magic` `0x644d5241` ("ARM\x64") at
-  offset 0x38, `MZ` at offset 0x0 (EFI stub). `file` → "Linux kernel ARM64 boot
-  executable Image".
+  the **arch-specific arm64 Image header**: little-endian `magic` `0x644d5241`
+  ("ARM\x64") at offset 0x38. The `MZ` at offset 0x0 is only present when the
+  **EFI stub** is compiled in — **do not require `MZ`** (refinement #1); the
+  0x38 magic is the authoritative check. `file` typically → "Linux kernel ARM64
+  boot executable Image".
 - A **`vmlinux`** is ELF: `readelf -h` → `ELFCLASS64`, `EM_AARCH64`. Keep these
   two checks distinct and name which artifact each applies to.
 - Scope note: on-hand `vmlinux` are 5.15.216 / our builds (sibling), **not**
@@ -75,6 +86,11 @@ board revision *if* encoded in DT.
   metadata (names, sizes, group, slot); `lpunpack` enumerates logical
   partitions. Report logical and physical as **separate** layers; do not
   conflate the super container's logical map with the eMMC GPT.
+- An OTA payload typically ships images (incl. `super`) but **no raw GPT** —
+  treat a missing physical GPT as an **expected limitation, not a failure**
+  (refinement #3). Record whatever logical (super) and physical (GPT, if a
+  factory/full image provides it) geometry each artifact actually yields,
+  independently.
 
 ## Expected findings & scope
 DT model/compatible + board rev (R1); AArch64 kernel (R2); physical GPT + logical
