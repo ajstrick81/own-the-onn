@@ -51,8 +51,10 @@ The base Device Tree carved from the acquired OTA's `vendor_boot` gives
 - **`amlogic-dt-id = "s7d_s905x5m_bm202"`**
 - **`compatible = "s7d_s905x5m_bm202"`**  (platform **s7d**, SoC **S905X5M**,
   board code **`bm202`**)
-- GPU node `arm,malit60x` (Mali Valhall); CPU `arm,cortex-a55` — consistent with
-  the device cpuinfo (part 0xd05).
+- GPU node declares `arm,malit60x` (a Mali/Valhall-class **compatibility
+  string**); CPU `arm,cortex-a55` — consistent with cpuinfo (part 0xd05).
+  Per review #5: the exact Mali product is **not** inferable from the
+  `arm,malit60x` compatible alone — recorded as the declared compatible only.
 The `dtbo` partition held only **overlays** (`dummy-battery`/`dummy-charger`);
 board identity was taken from the **base DT**, not inferred from overlays.
 
