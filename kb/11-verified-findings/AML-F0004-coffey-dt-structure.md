@@ -20,8 +20,12 @@ status: promoted
 # coffey Device-Tree node structure + s7d comparison
 
 ## Observations (device-reported structure only)
-- coffey exposes **130 `/proc/device-tree` node names** (SELinux-visible
-  structure; property **values** were permission-denied and are NOT captured).
+- coffey exposes **132 `/proc/device-tree` entries** when counted as **full
+  node names with unit-addresses** (e.g. `drm-vpu@0xff900000`, `rtc@0xfe010288`,
+  `memory@00000000`); **130** when counted as **collapsed base names** (`@addr`
+  stripped). Same structure, two normalizations — not a discrepancy. The
+  normalized comparison below uses the **base-name** form (130) on both sides.
+  Property **values** were permission-denied and are NOT captured.
 - Normalized comparison vs the CoreELEC **s7d** DT node set (`AML-S0002`
   lineage, 454 nodes):
   - **shared:** 113

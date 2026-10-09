@@ -19,8 +19,12 @@ status: promoted
 # coffey physical partition names & A/B by-name map
 
 ## Observations (device-reported)
-- 34 `/dev/block/by-name` entries mapping to `mmcblk0pN` (eMMC). Partitions
-  carry **A/B slots** (`_a`/`_b`) for: `boot`, `bootloader`, `dtbo`,
+- **34 `/dev/block/by-name` entries** = **31 distinct physical GPT partitions**
+  (`mmcblk0p1..p31`) **+ 3 eMMC hardware areas** (`mmcblk0` whole device,
+  `mmcblk0boot0`, `mmcblk0boot1`). Reconciles the "31 vs 34" counts: 31 =
+  distinct data partitions, 34 = by-name symlinks incl. the 3 eMMC areas. Both
+  the AML-E0001 and AML-S0004 captures agree (31 pN / 34 by-name).
+- Partitions carry **A/B slots** (`_a`/`_b`) for: `boot`, `bootloader`, `dtbo`,
   `init_boot`, `odm_ext`, `oem`, `vbmeta`, `vbmeta_system`, `vendor_boot`.
 - Non-slotted include `env`, `frp`, `factory`, `cri_data` (physical partitions).
 - Logical super members (`odm`, `odm_dlkm`, `product`, `vendor`, `system…`)

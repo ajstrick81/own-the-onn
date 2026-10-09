@@ -118,8 +118,11 @@ the method (full provenance off-repo in `scratchpad/y0c-dryrun`):
 - **R2 method validated end-to-end**: boot v4 → extract kernel → **decompress
   (gzip)** → ARM64 Image magic `0x644d5241` @0x38. Lesson: decompress before the
   header check.
-- **R3**: `lpdump`/`lpunpack` **not exercised** — y0c has no packed `super.img`
-  (raw separate images); coffey R3 needs a `super.img`. `simg2img` ready.
+- **R3**: `lpdump`/`lpunpack` **not exercised** — y0c has no packed `super.img`.
+  Its partition images (odm/vendor/product…) are **EROFS (LZ4) filesystems**,
+  **not** ext4 and **not** Android-sparse (confirmed by `file` + EROFS
+  superblock; `simg2img` → "Invalid sparse file format"). Corrects the earlier
+  "raw ext4" guess. coffey R3 needs a coffey `super.img`.
 Nothing here promoted to coffey.
 
 ## Actual observations / Conclusion / Next steps (coffey)
