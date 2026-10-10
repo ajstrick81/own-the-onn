@@ -17,7 +17,8 @@ data in this repo. *You own the glass.* That line and the philosophy behind it c
 | Question | Answer so far | Evidence |
 |---|---|---|
 | ACR / audio or HDMI fingerprinting on the onn? | **No evidence.** No ACR vendor packages; no app can capture the screen or TV input. | [findings](findings/coffey-2026-09.md#acr) |
-| Background microphone use? | **No.** Every mic use is a ~5 s foreground voice-button press. | [findings](findings/coffey-2026-09.md#microphone) |
+| Background microphone use? | **No.** Voice is push-to-talk through the remote only; in a privacy-mode profile the Assistant refuses and capture never starts. | [findings](findings/coffey-2026-09.md#e-voice-button-press--5-min-silence) |
+| Trackers dodging blocklists? | **Yes, in one app.** Angel TV's Kochava SDK called a rotating fallback domain (`int.dewrain.life`), not `kochava.com`. | [findings](findings/coffey-2026-09.md#rotating-tracker-domains-kochava-in-angel-tv) |
 | Phones home while idle / asleep? | **Yes, mostly Google plus your installed apps.** About 72 conn/h awake-idle, about 173 conn/h screen-off. The preinstalled Netflix keeps logging while asleep. | [findings](findings/coffey-2026-09.md#traffic) |
 | Contacts Walmart / onn / chipset vendor / ACR companies? | **Not observed** so far. | [findings](findings/coffey-2026-09.md#traffic) |
 | Leftover factory software? | **Yes.** A factory test tool runs with system privileges; its upload flow is dormant on retail units. | [findings](findings/coffey-2026-09.md#factory-tool) |
