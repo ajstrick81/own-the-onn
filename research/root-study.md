@@ -117,7 +117,9 @@ loop, not a root** — the write "fails verification at the next boot, which is 
 anything you would first have to **unlock the bootloader** (flip the OEM-unlock state so it accepts other
 images and relaxes verified boot) — which on this device is the welded, bootloader-enforced lock from
 **section A**, not a software flag runtime root can flip. GhostLock is a ceiling, not a stepping stone to a
-custom ROM.
+custom ROM. The separate question of whether coffey exposes *any* authenticated maintenance path to an
+alternate OS (CoreELEC / custom ROM), and what the weld actually verifies, is tracked in
+[`boot-policy-track.md`](boot-policy-track.md) — agenda only, no bypass established.
 
 | Capability | GhostLock runtime root | Needs bootloader unlock |
 |---|---|---|
