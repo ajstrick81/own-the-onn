@@ -100,6 +100,33 @@ A public write-up (see Credits: Acheron) documents a per-boot kernel root on the
 - **Scope confirms ours:** their root is **per-boot only** (verified boot stays green, no persistence, an
   accepted OTA closes it permanently) — the same ceiling section A/Status describes for coffey.
 
+**Runtime root is not a path to a custom ROM.** This is the key ceiling to understand, because it is easy to
+assume uid 0 means "flash whatever you want." It does not. Runtime root and bootloader unlock are **two
+separate locks**, and GhostLock only defeats one:
+
+- **Runtime root** is control over the *already-running kernel in RAM*, per boot — it sits *downstream* of
+  boot, after the system has verified and loaded.
+- **Flashing a ROM/kernel/recovery** means writing new partition images that must be *loaded and verified at
+  the next boot* — gated *upstream* by the signed Amlogic bootloader and the verified-boot chain, which run
+  before any of your code does. Runtime root is on the wrong side of that line.
+
+So even as uid 0, writing a custom image to `boot`/`system`/`vendor` does not boot it: **dm-verity/AVB** hash
+those partitions against a hardware-anchored signature at the next boot, and on a **locked** device
+(`verifiedbootstate=green`, `flash.locked=1`, no OEM-unlock token) a verification failure is a **brick / boot
+loop, not a root** — the write "fails verification at the next boot, which is a brick, not a miss." To flash
+anything you would first have to **unlock the bootloader** (flip the OEM-unlock state so it accepts other
+images and relaxes verified boot) — which on this device is the welded, bootloader-enforced lock from
+**section A**, not a software flag runtime root can flip. GhostLock is a ceiling, not a stepping stone to a
+custom ROM.
+
+| Capability | GhostLock runtime root | Needs bootloader unlock |
+|---|---|---|
+| Read partitions, `kallsyms`, ptrace live procs, full network egress, Alpine chroot | ✅ (per boot) | — |
+| Modify files on `/data` | ✅ | — |
+| Persist root across reboot | ❌ | ✅ |
+| Flash custom ROM / kernel / recovery | ❌ | ✅ |
+| Write `boot` / `system` / `vendor` | ❌ (bricks) | ✅ |
+
 We have **not** run any of this against a device. This entry records the CVE identity and applicability for
 the next owner-researcher; we do not reproduce or host the exploit.
 
