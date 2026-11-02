@@ -80,6 +80,29 @@ public exploit's technique additionally relies on `/proc/kmsg`, `/proc/iomem`, a
 — all locked down on the device — so its leak and finish would need replacing. Bad Epoll's `/proc/self/fdinfo`
 arbitrary-read is the more Android-viable primitive.
 
+### D-bis. Related external work: GhostLock / CVE-2026-43499 (sibling device)
+A public write-up (see Credits: Acheron) documents a per-boot kernel root on the **onn 4K Pro** (board
+`jarvis2`), a *sibling* of coffey, not the same device. It is a useful external data point for this study:
+
+- **Bug:** CVE-2026-43499, a use-after-free in the **futex PI requeue** path of the `android14-5.15` GKI
+  kernel (a walked waiter references a task that is freed under controlled PI churn). It is a **port of a
+  public bug** to a specific build, not a new discovery — the same shape as our "kernel memory-safety bug is
+  the live lane" thesis, just a different subsystem than the two epoll CVEs above.
+- **Why it matters for coffey:** coffey runs the **same GKI branch** (`5.15.196-android14-11`) and sits at an
+  **older security patch level** (2026-03 vs the Pro's 2026-06), while the upstream futex-PI fix is reported
+  as still in branch HEAD after both builds. On patch-level grounds coffey is a **priority candidate to be
+  affected by the same CVE** — a third confirmed-applicable n-day to check, alongside the epoll pair.
+- **Why it does not drop in:** the exploit is **build-, offset-, and RAM-specific**. The Pro has a different
+  SoC and ~3 GB RAM (vs coffey's S905X5M); the published binary is built for the Pro's kernel hash and would
+  need rebuilding from the family sources with new offsets, plus re-derived spray/reclaim geometry for
+  coffey. The author notes a **miss panics the kernel**, and repeated panics wedged the Pro's f2fs into a
+  factory-reset boot loop — which is exactly why our kernel work stays in the emulator (section Method).
+- **Scope confirms ours:** their root is **per-boot only** (verified boot stays green, no persistence, an
+  accepted OTA closes it permanently) — the same ceiling section A/Status describes for coffey.
+
+We have **not** run any of this against a device. This entry records the CVE identity and applicability for
+the next owner-researcher; we do not reproduce or host the exploit.
+
 ## Method & toolchain (reusable)
 
 - **Firmware pipeline:** [moria](https://github.com/nmatt0/moria) (identify + extract partition images,
@@ -107,7 +130,8 @@ arbitrary-read is the more Android-viable primitive.
 
 - The **bootloader is genuinely welded** (bootloader-enforced, not a flippable software flag).
 - The **userland factory-tool doors are real but SELinux-boxed** (system-UID, not root).
-- The **live path to root is a kernel memory-safety bug**; two confirmed-applicable epoll CVEs exist, but
+- The **live path to root is a kernel memory-safety bug**; two confirmed-applicable epoll CVEs exist (plus a
+  third candidate, the GhostLock futex-PI CVE-2026-43499, demonstrated on the sibling 4K Pro — see D-bis), but
   turning them into a working **arm64** root on this device is substantial, un-finished exploit-development
   — and will be done in the emulator first. Nothing here has been run against a device to gain root.
 - This is a **learning project on owned hardware**, published so the next owner-researcher starts further
@@ -148,6 +172,9 @@ This research stands entirely on other people's work. Please go to the originals
 - **Nicholas Carlini** — reported/authored the CVE-2026-43074 fix.
 - **Christian Brauner** — the kernel maintainer who authored/committed the epoll UAF fixes.
 - **2045castor** — the public 1-day exploit for CVE-2026-43074.
+- **Acheron** ([acheronsec.com](https://acheronsec.com/research/adb-to-root-on-a-locked-android-tv/)) — the
+  GhostLock / **CVE-2026-43499** (futex-PI UAF) per-boot root write-up on the sibling onn 4K Pro (`jarvis2`);
+  the external reference for section D-bis. (Device/offset-specific; not reproduced here.)
 - **Google kernelCTF / [google/kernel-research](https://github.com/google/kernel-research)** — `libxdk`,
   the exploitation framework the PoCs build on.
 - **[@xairy](https://github.com/xairy/linux-kernel-exploitation)** — the linux-kernel-exploitation
