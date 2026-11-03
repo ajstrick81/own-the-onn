@@ -1,18 +1,46 @@
 # own-the-onn
 
-> **Status: study in progress.** Findings below are from one device and one evening. They will change as the
-> remaining scenarios finish. Nothing here is final.
+> **Status: study in progress, nothing final.** An owner's investigation of a streaming box they bought —
+> what it does by itself, and how locked-down it really is. Findings are evidence-graded and change as work
+> lands. For the current state at a glance, read **[`STATUS.md`](STATUS.md)**.
 
-What does an **onn Google TV streamer** (Walmart's house brand) collect and send by itself, meaning the OS and
-the preinstalled apps, not the apps you install? This repo is a repeatable, local-only audit, modeled on the
-LG smart-TV investigation by Gamers Nexus and Level1Techs (see [Credits](#credits)) (ACR audio fingerprinting,
-home-network scanning, heavy phoning-home while "off").
+What does an **onn Google TV streamer** (Walmart's house brand) collect and send by itself — the OS and the
+preinstalled apps, not the apps you install? And, separately: **how locked is the device you supposedly own?**
+This repo answers both for one unit, the onn 4K Plus Streaming (`coffey`, Amlogic S905X5M), with a repeatable,
+local-only method. The telemetry half is modeled on the LG smart-TV investigation by Gamers Nexus and
+Level1Techs (see [Credits](#credits)): ACR audio fingerprinting, home-network scanning, phoning home while
+"off".
 
-**Ground rules.** Local-first, no decryption of anyone's traffic, no redistribution of vendor code, and no personal
-data in this repo. *You own the glass.* That line and the philosophy behind it come from Rory Gallagher's project
-(see [Credits](#credits)). This repo's name, **own-the-onn**, is a nod to it.
+**Scope & ground rules.** This is **owner-authorized research on the maintainer's own hardware**, documented
+for the next owner-researcher. It is **not** an attack kit:
 
-## Headline answers (onn 4K Plus "coffey", 2026-09)
+- **Documentation only — no bypass, exploit, or weaponization is published here.** We record CVE *identities
+  and applicability*, enforcement *boundaries*, and honest dead ends. A documented boundary is a valid result;
+  "we could not" is written as plainly as "we did."
+- **Local-first.** No decryption of anyone's traffic, no network probing of third parties, no redistribution
+  of vendor firmware (large blobs stay out of the repo; their hashes don't).
+- **No personal data in the repo** (enforced by the privacy checklist below).
+- **Evidence-graded.** Every claim carries **P** (inspected primary) / **R** (first-hand report) / **B**
+  (inherited baseline) / **H** (hypothesis) / **U** (unresolved); a sibling device's result never becomes a
+  `coffey` fact without `coffey`'s own evidence.
+
+*You own the glass.* That line and the philosophy behind it come from Rory Gallagher's project (see
+[Credits](#credits)); this repo's name is a nod to it.
+
+## Two studies in one repo
+
+1. **Telemetry audit** — what the box sends by itself. Largely done for `coffey` (headline answers below);
+   `findings/`, `method/`, `tools/`.
+2. **Root & boot-policy research** — the bootloader "weld", the runtime-root ceiling, and whether `coffey`
+   could boot an alternate OS. **Honest state: no root, no bootloader unlock, no alternate-OS boot, and no
+   bypass has been achieved or published** — the work maps *what enforces the lock* and which questions a
+   future artifact capture would settle. See [`research/`](research/) and the
+   [`boot-policy-track.md`](research/boot-policy-track.md) agenda.
+
+The dashboard [`STATUS.md`](STATUS.md) carries the live picture: confirmed findings, the hard walls, ranked
+open leads, and bounded dead ends.
+
+## Headline answers — telemetry audit (onn 4K Plus "coffey", 2026-09)
 
 | Question | Answer so far | Evidence |
 |---|---|---|
@@ -80,5 +108,14 @@ This study exists because of other people's work. Please go to the originals.
   repo. We borrowed the phrase (and riffed on it for this repo's name), not the code.
 - **Tools:** [mitmproxy](https://mitmproxy.org) (WireGuard mode), [archify](https://github.com/tt-a1i/archify) (diagrams),
   apktool, and Android's own `dumpsys`.
+
+**Root & boot-policy track** builds on others' published work, cited inline in `research/` and its packets:
+the Amlogic U-Boot / AVB / ARM Trusted Firmware documentation; the CoreELEC project; the Acheron GhostLock
+(CVE-2026-43499) write-up on the sibling onn 4K Pro; the public epoll / futex kernel-CVE records and Android
+Security Bulletins; and the firmware-analysis tooling (moria/mithril, payload_dumper, jadx, dtc). These are
+referenced as **comparators and primary records**, never reproduced as exploits. We do not publish firmware,
+vendor code, or working exploits. (Some supporting research sweeps were run with AI assistants under the
+discipline in [`research/search-methodology.md`](research/search-methodology.md); every result is primary-source
+pinned and evidence-graded.)
 
 If we've credited something wrongly or missed someone, please open an issue.
