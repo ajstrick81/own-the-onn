@@ -77,7 +77,30 @@ GSI via DSU** — it is not a locked-device bypass.
 
 > Status (2026-11-02): a **provenance-backed darkknight OTA was not obtained** — N1/N2 don't supply a verified
 > one, and no donor was relabeled as darkknight. The CoreELEC *Xiaomi Box S 3rd Gen* DT is a comparator but is
-> **not** darkknight stock firmware. Acquiring a hash-verified darkknight OTA is still an open Task-2 item.
+> **not** darkknight stock firmware. Public searches found no provenance-backed darkknight stock image, so this
+> artifact stays **U — unresolved**; do not substitute a comparator for it.
+>
+> Treat the Xiaomi owner guide (N1/N2) as a **device-specific documentation source, not the firmware itself**.
+> Its "no OTA" statement may be **stale** — a later owner report mentions build **OS3.0.2.0**, so a normal
+> darkknight update flow likely does serve an OTA. The highest-value darkknight input is therefore the **exact
+> OTA package captured from darkknight's normal update flow**, with URL, request/response headers, date,
+> SHA-256, and source/target build metadata. Only after **matching build identity** should it be compared
+> offline against coffey, and no darkknight offsets/keys/DTB/images transfer into a coffey conclusion.
+
+## 3a. Next evidence priority (2026-11-02)
+
+The public-artifact pass is largely spent; further general web searching is low-yield. The two inputs that
+actually close the biggest gaps are:
+
+1. **coffey's own artifacts** (the keystone, device-side — Adam's step): the matching `systemcontrol` ELF and
+   the coffey DTB, each with **SHA-256 + build ID/fingerprint**, plus the coffey OTA/bootloader container.
+   These turn every `B`/`U` cell in §2–§3 and Phases A/B/D/E/F into build-specific results.
+2. **A provenance-backed darkknight OTA** captured from its normal update flow, with full metadata (see §3) —
+   compared offline against coffey *only after* build-identity match.
+
+Everything else (more donor comparators, more forum reports) is secondary until these land. Keep the
+P/R/B/H/U labels on every new item, and do not transfer donor offsets, keys, DTBs, or images into coffey
+conclusions.
 
 ## 4. Corrections to keep (do not regress — from handoff §7)
 
