@@ -1,0 +1,6 @@
+5125559bce726ff880719d774a9a1e5b1df3c57a5381925e489cf31f60939d1c  COFFEY-R2-5-FCC-PHOTO-REVIEW.md
+79911efe04eb89a04a28806ec83b18bdbac4be47537ea2c653bb99caf6a1a485  FCCID-7952340-CS116K4Y-Internal-Photos.pdf
+633249258371b990447a394c888dc058722e946b06acb8340fd9eff9d97d821f  FCCID-7952339-CS116K4Y-Label-Location.pdf
+0d359c42d7db6b31572123e767885b95c7ab3f401797581270616d46baf12ed6  FCCID-7952199-CS116K4O-Internal-Photos.pdf
+
+# EDN images 79, 80, 89, 103 pinned by the exact image URLs and article figure IDs in the report; source image-byte SHA-256 was not computed.

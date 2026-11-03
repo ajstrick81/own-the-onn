@@ -50,7 +50,7 @@ artifact has been analyzed. Nothing here demonstrates a bypass.
 | 1 | **Capture coffey's own OTA + kernel + DTB + `systemcontrol` ELF** | pending (device-side) | OTACaptor → hash → `payload_dumper`; unblocks all Phases A–F + settles C8 |
 | 2 | CVE-2026-43499 applicability to coffey's kernel | H (patch-level) | extract coffey `vmlinux`, check `rtmutex.c` control flow / build ID vs fix |
 | 3 | Two epoll CVEs (Bad Epoll / CVE-2026-43074) arm64 root | H, un-finished exploit-dev | emulator-first arm64 post-ex; never on-device |
-| 4 | UART / serial-console path to the env/misc/param wall | U | inspect FCC internal-photo exhibits for pads (task R2-5), then owner's board |
+| 4 | **UART / serial-console path to the env/misc/param wall** | **H — candidate pads found** | match board rev to owner's retail unit label, then continuity/scope-probe the actual board |
 | 5 | darkknight provenance-backed OTA (build-identity comparator) | U | capture from darkknight's real update flow, match build identity |
 | 6 | twilight (Box S 3rd Gen) A14 OTA — `systemcontrol` ELF comparator | U (EROFS unread) | read EROFS (`dump.erofs`) once the 1.14 GB OTA is on a capable host |
 
@@ -61,7 +61,7 @@ artifact has been analyzed. Nothing here demonstrates a bypass.
 | Newer public Android 12–14 `CPQControl`/`systemcontrol` source | all 1 branch + 67 tags of Amlogic frameworks repo (2016–2020), AOSP yukawa a12/13/14/main + BayLibre pkg, enumerated ROM-dump set | `…/COFFEY-PQ-ANCHORS-AD14-DELTA-v2.md` |
 | Provenance-backed **darkknight** stock OTA | not found publicly; Xiaomi guide is docs not firmware; OS3.0.2.0 is a Box 5 *MAX* (`MOB1MB-5M`) report, model-code mismatch vs `MOB2MB-5P` | `…/COFFEY-DARKKNIGHT-OTA-RECON.md` |
 | Prior coffey-specific root/CoreELEC/unlock work | bounded negative across CoreELEC Discourse/4PDA/XDA/freaktab/Reddit/GitHub + listed queries; only user-space ADB debloat exists | `…/COFFEY-R2-3-COMMUNITY-SWEEP.md` |
-| UART pinout / boot log from public docs | not in FCC filing text or EDN teardown text (`U`); image inspection still open (R2-5) | `…/COFFEY-R2-2-FCC-HARDWARE-ACCESS.md` |
+| ~~UART pinout from public docs~~ | **reopened → lead found:** FCC photo review (R2-5) found a candidate 4-pad `GND/TX/RX/GND` header; now priority vector #4, no longer a dead end | `…/COFFEY-R2-5-FCC-PHOTO-REVIEW.md` |
 | Booting donor CoreELEC recovery as a shortcut | disqualified — it mutates persistent env (C7) | `…/COFFEY-CE-RECOVERY-AUDIT.md` |
 | Runtime root → custom ROM | impossible without bootloader unlock (two separate locks) | `research/root-study.md` §D-bis |
 

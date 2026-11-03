@@ -115,9 +115,11 @@ conclusions.
 > worked and bounded:
 > - **R2-1** dated the GhostLock futex-PI fix (first GKI tag 2026-08-05, first ASB Nov 2026) → coffey's 2026-03
 >   SPL is likely pre-fix (`H`); folded into [`root-study.md`](root-study.md) D-bis.
-> - **R2-2** found FCC IDs `2AYYS-CS116K4Y`/`…K4O` (Luxshare), internal-photo exhibits, and the FORESEE 16 GB
->   eMMC + S905X5M board — but **no public UART pinout/boot-log** (`U`). The non-root hardware/serial path to
->   the `env`/`misc`/`param` blocker exists on paper but needs the owner's own board photos.
+> - **R2-2 + R2-5** found FCC IDs `2AYYS-CS116K4Y`/`…K4O` (Luxshare), the FORESEE 16 GB eMMC + S905X5M board,
+>   and — on inspecting the exhibit photos (R2-5) — a **candidate 4-pad `GND/TX/RX/GND` header** on p.3 of
+>   internal-photo exhibit 7952340 (`H`, photo lead). First concrete lead on the serial-console path to the
+>   `env`/`misc`/`param` blocker; needs a board-revision match to the owner's retail unit, then physical
+>   probing. No pin order/voltage inferred from the photo.
 > - **R2-3** bounded negative: no prior coffey-specific root/CoreELEC/unlock work exists (only user-space ADB
 >   debloat).
 > - **R2-4** pinned a public coffey OTA catalog fingerprint `onn/coffey/coffey:14/URO4.260304.011.B1/15051976`

@@ -51,8 +51,8 @@
      "next": "extract coffey vmlinux; check rtmutex.c / build id vs fix"},
     {"rank": 3, "vector": "epoll CVEs arm64 root (Bad Epoll / CVE-2026-43074)", "state": "H",
      "next": "emulator-first arm64 post-exploitation; never on-device"},
-    {"rank": 4, "vector": "UART/serial-console path to env/misc/param wall", "state": "U",
-     "next": "inspect FCC internal-photo exhibits (R2-5), then owner's board"},
+    {"rank": 4, "vector": "UART/serial-console path to env/misc/param wall", "state": "H-candidate-pads-found",
+     "next": "FCC photo review (R2-5) found a 4-pad GND/TX/RX/GND header on exhibit 7952340 p.3; match board rev to owner unit label, then continuity/scope-probe the actual board"},
     {"rank": 5, "vector": "darkknight provenance-backed OTA (build-identity comparator)", "state": "U",
      "next": "capture from darkknight real update flow; match build identity"},
     {"rank": 6, "vector": "twilight A14 OTA systemcontrol ELF comparator", "state": "U-erofs-unread",
@@ -62,7 +62,6 @@
     "newer public A12-14 CPQControl/systemcontrol source (all 1 branch + 67 tags, AOSP yukawa, ROM-dump set)",
     "provenance-backed darkknight stock OTA (OS3.0.2.0 is Box 5 MAX MOB1MB-5M, model-code mismatch)",
     "prior coffey-specific root/CoreELEC/unlock work (bounded across named forums + queries)",
-    "UART pinout/boot-log from public filing+teardown text (image inspection still open)",
     "booting donor CoreELEC recovery as a shortcut (mutates persistent env)",
     "runtime root -> custom ROM (requires bootloader unlock; two separate locks)"
   ]
