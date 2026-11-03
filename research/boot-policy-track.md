@@ -175,12 +175,20 @@ input from writable copies/reseeds.
 **Acceptance:** `COFFEY-ODMEXT-CONSUMERS.md` consumer graph, proven vs possible edges; no assumed path from
 shell-controlled bytes to a privileged parser.
 
-### Phase F — Finish PQ/HIDL caller authorization  _(donor search done 2026-11-02 — no A12–14 source; blocked on A)_
-A search for a newer public `systemcontrol`/`CPQControl` closer to Android 14 found **none** (see
-[`boot-policy-packet-2026-11-02/public-lookups-addendum/COFFEY-PQ-ANCHORS-AD14-DELTA.md`](boot-policy-packet-2026-11-02/public-lookups-addendum/COFFEY-PQ-ANCHORS-AD14-DELTA.md)):
-the only public implementation remains the **Android-Pie** `khadas-vims-pie_64` donor, whose stubbed/permissive
-permission routine says nothing about coffey. So the authorization model genuinely waits on coffey's own
-`systemcontrol` ELF (pin by SHA-256 + GNU Build ID first). The trace steps below are unchanged.
+### Phase F — Finish PQ/HIDL caller authorization  _(donor search done + bounded 2026-11-02/03; blocked on A)_
+A search for a newer public `systemcontrol`/`CPQControl` closer to Android 14 found **none**, and the negative
+is now **bounded** (v2 re-sweep,
+[`…/COFFEY-PQ-ANCHORS-AD14-DELTA-v2.md`](boot-policy-packet-2026-11-02/public-lookups-addendum/COFFEY-PQ-ANCHORS-AD14-DELTA-v2.md)):
+**all 1 branch + 67 tags** of `Amlogic-Lineage/android_vendor_amlogic_common_frameworks` are 2016–2020 / Pie-era;
+AOSP `yukawa` (android12/13/14/main) + its BayLibre vendor package carry no such service; and an enumerated
+GitHub ROM-dump set yielded no qualifying `systemcontrol` ELF. The only public implementation remains the
+**Android-Pie** `khadas-vims-pie_64` donor, whose stubbed/permissive permission routine says nothing about
+coffey. **New comparator lead:** the `twilight` (Xiaomi Box S 3rd Gen) **Android-14 full OTA** is now pinned and
+its `system`/`vendor` extracted — but both are **EROFS** and were unreadable on the author's host, so whether a
+`systemcontrol` ELF is present is `U`. Enumerating that EROFS (read-only `dump.erofs`/`fsck.erofs`) is the one
+open public step; it would at best yield an **H** build-ID/symbol comparator, never a coffey fact. The
+authorization model still genuinely waits on coffey's own `systemcontrol` ELF (pin by SHA-256 + GNU Build ID
+first). The trace steps below are unchanged.
 Reconcile the recorded handler offset against the exact ELF+hash. Trace service registration, Binder/HIDL
 transport access, SELinux service-discovery/call policy, UID/PID checks, wrappers, callee checks, file access.
 Map side effects of `factorySetParamsDefault()` **offline — do not invoke**; establish prerequisites of
