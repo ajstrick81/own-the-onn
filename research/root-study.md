@@ -80,6 +80,64 @@ public exploit's technique additionally relies on `/proc/kmsg`, `/proc/iomem`, a
 — all locked down on the device — so its leak and finish would need replacing. Bad Epoll's `/proc/self/fdinfo`
 arbitrary-read is the more Android-viable primitive.
 
+### D-bis. Related external work: GhostLock / CVE-2026-43499 (sibling device)
+A public write-up (see Credits: Acheron) documents a per-boot kernel root on the **onn 4K Pro** (board
+`jarvis2`), a *sibling* of coffey, not the same device. It is a useful external data point for this study:
+
+- **Bug:** CVE-2026-43499, a use-after-free in the **futex PI requeue** path of the `android14-5.15` GKI
+  kernel (a walked waiter references a task that is freed under controlled PI churn). It is a **port of a
+  public bug** to a specific build, not a new discovery — the same shape as our "kernel memory-safety bug is
+  the live lane" thesis, just a different subsystem than the two epoll CVEs above.
+- **Why it matters for coffey (dated 2026-11-03):** coffey runs the **same GKI branch** (`5.15.196-android14-11`)
+  and sits at an **older security patch level** (2026-03 vs the Pro's 2026-06). The fix is now dated (see
+  [`boot-policy-packet-round2-2026-11-03/COFFEY-R2-1-CVE-TIMELINE.md`](boot-policy-packet-round2-2026-11-03/COFFEY-R2-1-CVE-TIMELINE.md)):
+  upstream Linux `3bfdc639…`, Android common cherry-pick `74b647b4` (2026-07-23), **first GKI release tag
+  `android14-5.15-2025-07_r5` (released 2026-08-05)**, stable 5.15.212, and **first Android Security Bulletin
+  listing in November 2026** (A-496407345). Both coffey (2026-03-01) and the sibling Pro (2026-06-01) **predate
+  the first ASB that lists the fix** — so on patch-level grounds coffey is **likely affected (`H` — patch-level
+  inference)**, a third candidate n-day alongside the epoll pair. Not a vulnerable-code proof: an OEM could
+  backport ahead of the ASB, and SPL does not prove the `vmlinux` contents — confirm against coffey's own
+  extracted kernel (`rtmutex.c` control flow / build ID) before calling it affected.
+- **Why it does not drop in:** the exploit is **build-, offset-, and RAM-specific**. The Pro has a different
+  SoC and ~3 GB RAM (vs coffey's S905X5M); the published binary is built for the Pro's kernel hash and would
+  need rebuilding from the family sources with new offsets, plus re-derived spray/reclaim geometry for
+  coffey. The author notes a **miss panics the kernel**, and repeated panics wedged the Pro's f2fs into a
+  factory-reset boot loop — which is exactly why our kernel work stays in the emulator (section Method).
+- **Scope confirms ours:** their root is **per-boot only** (verified boot stays green, no persistence, an
+  accepted OTA closes it permanently) — the same ceiling section A/Status describes for coffey.
+
+**Runtime root is not a path to a custom ROM.** This is the key ceiling to understand, because it is easy to
+assume uid 0 means "flash whatever you want." It does not. Runtime root and bootloader unlock are **two
+separate locks**, and GhostLock only defeats one:
+
+- **Runtime root** is control over the *already-running kernel in RAM*, per boot — it sits *downstream* of
+  boot, after the system has verified and loaded.
+- **Flashing a ROM/kernel/recovery** means writing new partition images that must be *loaded and verified at
+  the next boot* — gated *upstream* by the signed Amlogic bootloader and the verified-boot chain, which run
+  before any of your code does. Runtime root is on the wrong side of that line.
+
+So even as uid 0, writing a custom image to `boot`/`system`/`vendor` does not boot it: **dm-verity/AVB** hash
+those partitions against a hardware-anchored signature at the next boot, and on a **locked** device
+(`verifiedbootstate=green`, `flash.locked=1`, no OEM-unlock token) a verification failure is a **brick / boot
+loop, not a root** — the write "fails verification at the next boot, which is a brick, not a miss." To flash
+anything you would first have to **unlock the bootloader** (flip the OEM-unlock state so it accepts other
+images and relaxes verified boot) — which on this device is the welded, bootloader-enforced lock from
+**section A**, not a software flag runtime root can flip. GhostLock is a ceiling, not a stepping stone to a
+custom ROM. The separate question of whether coffey exposes *any* authenticated maintenance path to an
+alternate OS (CoreELEC / custom ROM), and what the weld actually verifies, is tracked in
+[`boot-policy-track.md`](boot-policy-track.md) — agenda only, no bypass established.
+
+| Capability | GhostLock runtime root | Needs bootloader unlock |
+|---|---|---|
+| Read partitions, `kallsyms`, ptrace live procs, full network egress, Alpine chroot | ✅ (per boot) | — |
+| Modify files on `/data` | ✅ | — |
+| Persist root across reboot | ❌ | ✅ |
+| Flash custom ROM / kernel / recovery | ❌ | ✅ |
+| Write `boot` / `system` / `vendor` | ❌ (bricks) | ✅ |
+
+We have **not** run any of this against a device. This entry records the CVE identity and applicability for
+the next owner-researcher; we do not reproduce or host the exploit.
+
 ## Method & toolchain (reusable)
 
 - **Firmware pipeline:** [moria](https://github.com/nmatt0/moria) (identify + extract partition images,
@@ -107,7 +165,8 @@ arbitrary-read is the more Android-viable primitive.
 
 - The **bootloader is genuinely welded** (bootloader-enforced, not a flippable software flag).
 - The **userland factory-tool doors are real but SELinux-boxed** (system-UID, not root).
-- The **live path to root is a kernel memory-safety bug**; two confirmed-applicable epoll CVEs exist, but
+- The **live path to root is a kernel memory-safety bug**; two confirmed-applicable epoll CVEs exist (plus a
+  third candidate, the GhostLock futex-PI CVE-2026-43499, demonstrated on the sibling 4K Pro — see D-bis), but
   turning them into a working **arm64** root on this device is substantial, un-finished exploit-development
   — and will be done in the emulator first. Nothing here has been run against a device to gain root.
 - This is a **learning project on owned hardware**, published so the next owner-researcher starts further
@@ -148,6 +207,9 @@ This research stands entirely on other people's work. Please go to the originals
 - **Nicholas Carlini** — reported/authored the CVE-2026-43074 fix.
 - **Christian Brauner** — the kernel maintainer who authored/committed the epoll UAF fixes.
 - **2045castor** — the public 1-day exploit for CVE-2026-43074.
+- **Acheron** ([acheronsec.com](https://acheronsec.com/research/adb-to-root-on-a-locked-android-tv/)) — the
+  GhostLock / **CVE-2026-43499** (futex-PI UAF) per-boot root write-up on the sibling onn 4K Pro (`jarvis2`);
+  the external reference for section D-bis. (Device/offset-specific; not reproduced here.)
 - **Google kernelCTF / [google/kernel-research](https://github.com/google/kernel-research)** — `libxdk`,
   the exploitation framework the PoCs build on.
 - **[@xairy](https://github.com/xairy/linux-kernel-exploitation)** — the linux-kernel-exploitation

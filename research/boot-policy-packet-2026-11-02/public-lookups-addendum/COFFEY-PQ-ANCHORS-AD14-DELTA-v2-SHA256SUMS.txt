@@ -1,0 +1,28 @@
+# SHA-256 integrity list for COFFEY-PQ-ANCHORS-AD14-DELTA-v2.
+# Report is included in this handoff. Research inputs below are hash-pinned but are not bundled unless noted.
+5ed00759a318023b99b2912a0e9c7de13c42c8148cdbfeb890c8e6a2999a7170  reports/COFFEY-PQ-ANCHORS-AD14-DELTA-v2.md
+a8770042cb04c0bfecd3079d94e9f8366102e721940aaa756f63ff00356eb61c  research/twilight-android14-ota.zip
+80ac782390c9c700ab9b25438535d9fb7b2c453602a4c5d610734ac0dd5082ba  research/twilight-partitions/vendor.img
+57c782747a04949ef0664eaebad76c91bd5be528dbc437cd85acd6868da1daed  research/twilight-partitions/system.img
+bbbb53a71955c69272afdef7bc7e83a1bb1770f453d0c21dcaf61a3ba0463c11  research/payload-dumper-go_2.1.0_linux_amd64.tar.gz
+
+# External AOSP Amlogic vendor package (not bundled)
+cf6335df4824ba15678448f11fd1a687237ad9af8fcb95683eb2ad06116f3acc  extract-yukawa_devices-20241217.tgz
+
+# Amlogic-Lineage/android_vendor_amlogic_common_frameworks @ 9f87fb04e81e4d5577bea584aa098d42b06f16ab
+c6b66c7509dc0e63e4a0b9de23451f5c2410b7f018653f28a675a66623de5558  research/amlogic-common-frameworks/services/systemcontrol/PQ/CPQControl.cpp
+3a0d7683d6b865989ec3452724459f4d0ea316b5de9737f961dcd66378ed74bd  research/amlogic-common-frameworks/services/systemcontrol/SystemControlService.cpp
+361056e4db33d213bb5062c49a8a4422bd081e0bbd407d2afb269a7aec376171  research/amlogic-common-frameworks/services/systemcontrol/SystemControl.cpp
+d2016efda1cad77312f7efa7c78c11b73c161cd5bf8ce9fe0c17c1dee80fb82e  research/amlogic-common-frameworks/services/systemcontrol/SystemControlHal.cpp
+174de439aca20662e0e15b981972b249174118f71db71cb09c85556b553ae5b3  research/amlogic-common-frameworks/services/systemcontrol/SystemControlClient.cpp
+
+# xpxp233333/xiaomi-mibox5-guides @ 56eae90381979a74040949790079e722e8903df0
+bf5593eafcbe03aaefb8a265d8eb0fb98a44065608ee853493327675bad683da  research/xiaomi-mibox5-guides/README.md
+eddf17bd71d679189dd6360d6debc19c8b98d0a07d28194a520416d19e056a68  research/xiaomi-mibox5-guides/docs/backup.md
+bb000fa522b5103e69cd6f867a6b20b42ad1faf6ef2c6daee2fa9e9f11d8673e  research/xiaomi-mibox5-guides/docs/root.md
+
+# samtheruby/coreelec-android-dualboot-twilight @ e4bc9f0361e6d834d67cdedba58c678803e79fe2
+fac761a0df71030fb12514e254e7e2a6e70ade60bc6ed388cd2850baa0470311  research/twilight-dualboot/research.md
+cc4155562f2bbced61388497e8b10c945acc65c6c13749ba1b00bfa92675b23c  research/twilight-dualboot/README.md
+5fa43f9282959980715f0d6ecbb7665a05250e742b95c0c5ecf76b2f05e9d5e1  research/twilight-dualboot/stock_gpt_first2m.bin
+42a1eb665533d653c9013705b6c3750b4d0efc32e3fe2e3ab50d9e412d2a4fe3  research/twilight-dualboot/stock_gpt_last2m.bin
