@@ -7,6 +7,9 @@ low-yield until coffey's own artifacts land.
 
 ## Search discipline (apply to every task)
 
+> The durable version of this — principles + a resource catalogue by class + a per-question playbook — lives in
+> [`search-methodology.md`](search-methodology.md). Read it before starting; the summary below is the short form.
+
 The round-1 PQ sweep improved sharply when the prompt named exact sources and demanded a *bounded* result.
 Do the same here:
 
