@@ -80,12 +80,34 @@ Make Adam's imminent on-device OTA capture fast to verify (mirror the darkknight
   returned package URL + advertised size/hash, HTTP headers/redirects, and the local SHA-256 of the unmodified
   package.
 
+## Task R2-5 — Inspect the FCC internal-photo exhibits for UART / test points (follow-up to R2-2)
+R2-2 located the filings but only text-searched the pages; it explicitly left "read the actual exhibit image
+before asserting pads" open. Now **look at the images themselves** — this is the one public lead on the
+serial-console path to the unreadable `env`/`misc`/`param` partitions.
+- **Enumerate and open the actual exhibit images** (not just the index pages): FCC ID **`2AYYS-CS116K4Y`**
+  internal-photos exhibit **7952340** and label/location **7952339**; FCC ID **`2AYYS-CS116K4O`** internal-photos
+  exhibit **7952199**; plus the EDN teardown board photos (article images 79/80/89/103). Pull the images via
+  `fccid.io`, and if the exhibit PDF is reachable, the FCC OET portal
+  (`apps.fcc.gov/oetcf/eas/reports/ViewExhibitReport.cfm`) by document ID.
+- **Look for, on the board photos:** an unpopulated **4-pad header or inline pad row** (TX/RX/GND/VCC), silk-screen
+  labels (`UART`, `TX`, `RX`, `GND`, `J*`, `TP*`, `DEBUG`, `CON*`), the **eMMC** (`FEMDNN016G`) and any nearby
+  test pads, and the SoC/PMIC placement for orientation. Note which exhibit/figure and board revision each
+  observation comes from.
+- **Required result:** a photo-backed candidate test-point sheet — annotated references to the specific
+  exhibit + figure where any pad group appears, marked **`H` — candidate from photo, unverified**; or a
+  **bounded** "no visible UART/test-point header in the enumerated exhibit images," naming each image reviewed.
+  **Hard limits:** do **not** assert pin order, function, or voltage from a photo; do not infer pads are absent
+  if a region is shielded/blurred/out of frame; a pad group is a lead to probe on the owner's actual unit
+  (continuity + scope), never a wiring instruction. Keep the FCC-suffix→retail-unit match unresolved until the
+  physical unit's regulatory label is read.
+
 ---
 
 ## Priority
 R2-1 and R2-2 first (R2-1 advances the root track with a concrete dated answer; R2-2 opens the only non-root
 hardware path to the bootloader/env blocker). R2-3 is cheap diligence; R2-4 directly smooths the pending
-capture. After these four, stop public lookups and wait for coffey's OTA + `systemcontrol` ELF + DTB.
+capture. **R2-5** is the last public squeeze — it turns R2-2's filing index into an actual photo inspection for
+candidate UART pads. After these, stop public lookups and wait for coffey's OTA + `systemcontrol` ELF + DTB.
 
 ## Out of scope
 Capturing coffey's own OTA/ELF/DTB (device-side, Adam's step); anything device-side; running any firmware
