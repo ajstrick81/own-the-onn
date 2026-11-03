@@ -48,8 +48,8 @@ artifact has been analyzed. Nothing here demonstrates a bypass.
 | Rank | Vector | State | Next discriminating step |
 |---|---|---|---|
 | 1 | **Capture coffey's own OTA + kernel + DTB + `systemcontrol` ELF** | pending (device-side) | OTACaptor → hash → `payload_dumper`; unblocks all Phases A–F + settles C8 |
-| 2 | CVE-2026-43499 applicability to coffey's kernel | H (patch-level) | extract coffey `vmlinux`, check `rtmutex.c` control flow / build ID vs fix |
-| 3 | Two epoll CVEs (Bad Epoll / CVE-2026-43074) arm64 root | H, un-finished exploit-dev | emulator-first arm64 post-ex; never on-device |
+| 2 | CVE-2026-43499 applicability + the ranked post-March CVE check-list | H (patch-level) | extract coffey OTA/`vmlinux`; check against the R3 matrix (`adbd` CVE-2026-0073 wireless-ADB config first, then framework/Wi-Fi/futex rows) |
+| 3 | Two epoll CVEs (Bad Epoll / CVE-2026-43074) arm64 root | H — **version-match downgraded** by R3 sweep | confirm coffey GKI fork backported the epoll code before treating as applicable; then emulator-first arm64 post-ex |
 | 4 | **UART / serial-console path to the env/misc/param wall** | **H — candidate pads found** | match board rev to owner's retail unit label, then continuity/scope-probe the actual board |
 | 5 | darkknight provenance-backed OTA (build-identity comparator) | U | capture from darkknight's real update flow, match build identity |
 | 6 | twilight (Box S 3rd Gen) A14 OTA — `systemcontrol` ELF comparator | U (EROFS unread) | read EROFS (`dump.erofs`) once the 1.14 GB OTA is on a capable host |
