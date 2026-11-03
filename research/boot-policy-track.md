@@ -110,6 +110,22 @@ Everything else (more donor comparators, more forum reports) is secondary until 
 P/R/B/H/U labels on every new item, and do not transfer donor offsets, keys, DTBs, or images into coffey
 conclusions.
 
+> **Round-2 public lookups done (2026-11-03)** —
+> [`boot-policy-packet-round2-2026-11-03/`](boot-policy-packet-round2-2026-11-03/). The public surface is now
+> worked and bounded:
+> - **R2-1** dated the GhostLock futex-PI fix (first GKI tag 2026-08-05, first ASB Nov 2026) → coffey's 2026-03
+>   SPL is likely pre-fix (`H`); folded into [`root-study.md`](root-study.md) D-bis.
+> - **R2-2** found FCC IDs `2AYYS-CS116K4Y`/`…K4O` (Luxshare), internal-photo exhibits, and the FORESEE 16 GB
+>   eMMC + S905X5M board — but **no public UART pinout/boot-log** (`U`). The non-root hardware/serial path to
+>   the `env`/`misc`/`param` blocker exists on paper but needs the owner's own board photos.
+> - **R2-3** bounded negative: no prior coffey-specific root/CoreELEC/unlock work exists (only user-space ADB
+>   debloat).
+> - **R2-4** pinned a public coffey OTA catalog fingerprint `onn/coffey/coffey:14/URO4.260304.011.B1/15051976`
+>   (SPL 2026-03-01) + the capture-fields checklist — a metadata comparator, not a captured package.
+>
+> Remaining public item: the queued **twilight EROFS** read (Phase F comparator). Everything else waits on the
+> coffey OTA/ELF/DTB capture.
+
 ## 4. Corrections to keep (do not regress — from handoff §7)
 
 1. Same S905X5M SoC ≠ identical U-Boot policy, keys, or OTP.

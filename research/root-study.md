@@ -88,10 +88,16 @@ A public write-up (see Credits: Acheron) documents a per-boot kernel root on the
   kernel (a walked waiter references a task that is freed under controlled PI churn). It is a **port of a
   public bug** to a specific build, not a new discovery — the same shape as our "kernel memory-safety bug is
   the live lane" thesis, just a different subsystem than the two epoll CVEs above.
-- **Why it matters for coffey:** coffey runs the **same GKI branch** (`5.15.196-android14-11`) and sits at an
-  **older security patch level** (2026-03 vs the Pro's 2026-06), while the upstream futex-PI fix is reported
-  as still in branch HEAD after both builds. On patch-level grounds coffey is a **priority candidate to be
-  affected by the same CVE** — a third confirmed-applicable n-day to check, alongside the epoll pair.
+- **Why it matters for coffey (dated 2026-11-03):** coffey runs the **same GKI branch** (`5.15.196-android14-11`)
+  and sits at an **older security patch level** (2026-03 vs the Pro's 2026-06). The fix is now dated (see
+  [`boot-policy-packet-round2-2026-11-03/COFFEY-R2-1-CVE-TIMELINE.md`](boot-policy-packet-round2-2026-11-03/COFFEY-R2-1-CVE-TIMELINE.md)):
+  upstream Linux `3bfdc639…`, Android common cherry-pick `74b647b4` (2026-07-23), **first GKI release tag
+  `android14-5.15-2025-07_r5` (released 2026-08-05)**, stable 5.15.212, and **first Android Security Bulletin
+  listing in November 2026** (A-496407345). Both coffey (2026-03-01) and the sibling Pro (2026-06-01) **predate
+  the first ASB that lists the fix** — so on patch-level grounds coffey is **likely affected (`H` — patch-level
+  inference)**, a third candidate n-day alongside the epoll pair. Not a vulnerable-code proof: an OEM could
+  backport ahead of the ASB, and SPL does not prove the `vmlinux` contents — confirm against coffey's own
+  extracted kernel (`rtmutex.c` control flow / build ID) before calling it affected.
 - **Why it does not drop in:** the exploit is **build-, offset-, and RAM-specific**. The Pro has a different
   SoC and ~3 GB RAM (vs coffey's S905X5M); the published binary is built for the Pro's kernel hash and would
   need rebuilding from the family sources with new offsets, plus re-derived spray/reclaim geometry for
