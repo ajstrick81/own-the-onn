@@ -73,6 +73,16 @@ exact kernel (built early 2026, missing several bulletins) surfaced two confirme
   fixed by Nicholas Carlini / Christian Brauner). Source-verified present-and-unpatched on this build;
   has a public 1-day.
 
+> **Correction (2026-11-03, from the R3 CVE sweep —
+> [`boot-policy-packet-round3-cve-2026-11-03/`](boot-policy-packet-round3-cve-2026-11-03/INDEX.md)):** the
+> "confirmed-applicable" label above is **downgraded to `H`, pending coffey's own kernel.** Upstream
+> version-range analysis puts Bad Epoll's vulnerable interval at `5.15.209`–`<5.15.222` — which the nominal
+> base `5.15.196` **predates** — and places CVE-2026-43074 in later-6.x code. On *nominal upstream* grounds
+> neither is an automatic match at `5.15.196`; they are real only if coffey's **GKI vendor fork** backported
+> the affected code (plausible — GKI trees cherry-pick independently — which is why they stay comparators, not
+> closed). Resolve by diffing coffey's extracted kernel history for the epoll functions, not by the version
+> string alone.
+
 **Honest blockers.** The public exploits are **x86_64** and built on **libxdk** (Google kernelCTF's
 exploitation library), whose post-exploitation primitives (KASLR leak, cross-cache, ROP) are x86-only. The
 *trigger* is generic and portable; the *post-exploitation* is from-scratch **arm64** work. The CVE-2026-43074
