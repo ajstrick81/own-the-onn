@@ -43,6 +43,8 @@ trustworthy — apply it to every lookup.
 - `research/boot-policy-packet-round2-2026-11-03/` — CVE timeline, FCC/hardware, community sweep, OTA prestage
 - `research/codex-task-list*.md` — task blocks handed to the second agent ("Chat")
 - `STATUS.md` / `progress.json` — the dashboard (confirmed / hard walls / priority vectors / dead ends)
+- `probes/README.md` — **design doc (not yet built)** for a probe→capture→ledger harness; build the minimal
+  version only once the first coffey artifact is captured
 
 ## Three tracks, one line each
 
