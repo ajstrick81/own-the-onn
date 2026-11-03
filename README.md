@@ -43,12 +43,19 @@ Interactive HTML (pan, zoom, guided views, light/dark), built with archify. Sour
 
 ## Layout
 
+- [`STATUS.md`](STATUS.md): single status dashboard — confirmed findings, hard walls, ranked leads, dead ends
+  (machine-readable mirror in [`progress.json`](progress.json))
 - `findings/`: per-device reports
 - `method/`: how to reproduce (adb collection + WireGuard passthrough capture)
-- `tools/`: scripts
+- `research/`: root & boot-policy study ([`root-study.md`](research/root-study.md),
+  [`boot-policy-track.md`](research/boot-policy-track.md), evidence packets) and the
+  [search methodology](research/search-methodology.md)
+- `tools/`: scripts (incl. `verify_hashes.py`, run in CI to re-verify every `SHA256SUMS`)
 - `recommendations.md`: settings you can change now, DNS rules, host-TV ACR guides
 - `diagrams/`: interactive diagrams + JSON sources
 - `blocklists/`: optional DNS rules for observed telemetry hosts *(pending)*
+
+Agent sessions: start from [`CLAUDE.md`](CLAUDE.md) for orientation and working rules.
 
 ## Contributing a device
 

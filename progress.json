@@ -1,0 +1,69 @@
+{
+  "schema": "own-the-onn/progress/1",
+  "updated": "2026-11-03",
+  "device": {
+    "name": "onn 4K Plus Streaming",
+    "codenames": ["coffey", "DV6116N", "CS116K4"],
+    "soc": "Amlogic S905X5M (S7D)",
+    "android": "14",
+    "kernel": "5.15.196-android14-11",
+    "security_patch_level": "2026-03-01",
+    "build": "URO4.260304.011.B1",
+    "fcc_ids": ["2AYYS-CS116K4Y", "2AYYS-CS116K4O"]
+  },
+  "grades": "P=inspected-primary R=first-hand-report B=inherited-baseline H=hypothesis-lead U=unresolved",
+  "milestones": [
+    {"track": "telemetry", "goal": "what the box sends by itself", "score": 7, "max": 10,
+     "note": "one device; scenarios D/E/F + overnight pending"},
+    {"track": "root-runtime", "goal": "per-boot kernel root on coffey", "score": 1, "max": 10,
+     "note": "dated candidate CVE; no coffey exploit attempted"},
+    {"track": "boot-policy", "goal": "map the weld; can coffey boot CoreELEC", "score": 2, "max": 10,
+     "note": "public surface mapped; every coffey cell U"}
+  ],
+  "top_level_unmet": [
+    "no runtime root on coffey",
+    "no bootloader unlock",
+    "no alternate-OS boot",
+    "no coffey-specific kernel/boot artifact analyzed"
+  ],
+  "confirmed": [
+    {"id": "C1", "grade": "P", "claim": "no ACR packages; no screen/TV-input capture perms"},
+    {"id": "C2", "grade": "P", "claim": "no background mic use; mic use is ~5s foreground press"},
+    {"id": "C3", "grade": "P", "claim": "phones home idle/screen-off; Netflix logs while asleep"},
+    {"id": "C4", "grade": "P", "claim": "factory test tool system-privileged; retail upload dormant"},
+    {"id": "C5", "grade": "B", "claim": "bootloader welded (ROM/BL2-enforced), AVB locked, verified-boot green"},
+    {"id": "C6", "grade": "P", "claim": "factory-tool userland doors SELinux-boxed (system-UID, not root)"},
+    {"id": "C7", "grade": "P", "claim": "stock CoreELEC recovery writes env via fw_setenv; not read-only"},
+    {"id": "C8", "grade": "P/R", "claim": "CVE-2026-43499 futex-PI fix dated: first GKI tag 2026-08-05, first ASB Nov 2026"},
+    {"id": "C9", "grade": "P/R", "claim": "FCC IDs 2AYYS-CS116K4Y/...K4O (Luxshare); FORESEE 16GB eMMC + S905X5M"}
+  ],
+  "hard_walls": [
+    "welded bootloader (signed ROM/BL2) -> no flash/persistence/custom-ROM",
+    "SELinux confines factory tool (system-UID, not root)",
+    "dm-verity/AVB bricks boot/system/vendor writes on locked device",
+    "env/misc/param unreadable without root -> no backup, experiments stay documented-not-run",
+    "kernel exploit is arm64 from-scratch; public PoCs x86_64 / jarvis2-specific"
+  ],
+  "priority_vectors": [
+    {"rank": 1, "vector": "capture coffey OTA + kernel + DTB + systemcontrol ELF", "state": "pending-device",
+     "next": "OTACaptor -> hash -> payload_dumper; unblocks Phases A-F and settles C8"},
+    {"rank": 2, "vector": "CVE-2026-43499 applicability to coffey kernel", "state": "H",
+     "next": "extract coffey vmlinux; check rtmutex.c / build id vs fix"},
+    {"rank": 3, "vector": "epoll CVEs arm64 root (Bad Epoll / CVE-2026-43074)", "state": "H",
+     "next": "emulator-first arm64 post-exploitation; never on-device"},
+    {"rank": 4, "vector": "UART/serial-console path to env/misc/param wall", "state": "U",
+     "next": "inspect FCC internal-photo exhibits (R2-5), then owner's board"},
+    {"rank": 5, "vector": "darkknight provenance-backed OTA (build-identity comparator)", "state": "U",
+     "next": "capture from darkknight real update flow; match build identity"},
+    {"rank": 6, "vector": "twilight A14 OTA systemcontrol ELF comparator", "state": "U-erofs-unread",
+     "next": "read EROFS (dump.erofs) once 1.14GB OTA is on a capable host"}
+  ],
+  "dead_ends": [
+    "newer public A12-14 CPQControl/systemcontrol source (all 1 branch + 67 tags, AOSP yukawa, ROM-dump set)",
+    "provenance-backed darkknight stock OTA (OS3.0.2.0 is Box 5 MAX MOB1MB-5M, model-code mismatch)",
+    "prior coffey-specific root/CoreELEC/unlock work (bounded across named forums + queries)",
+    "UART pinout/boot-log from public filing+teardown text (image inspection still open)",
+    "booting donor CoreELEC recovery as a shortcut (mutates persistent env)",
+    "runtime root -> custom ROM (requires bootloader unlock; two separate locks)"
+  ]
+}
