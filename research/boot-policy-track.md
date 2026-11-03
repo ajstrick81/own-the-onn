@@ -86,6 +86,14 @@ GSI via DSU** — it is not a locked-device bypass.
 > OTA package captured from darkknight's normal update flow**, with URL, request/response headers, date,
 > SHA-256, and source/target build metadata. Only after **matching build identity** should it be compared
 > offline against coffey, and no darkknight offsets/keys/DTB/images transfer into a coffey conclusion.
+>
+> OTA recon (2026-11-02,
+> [`…/public-lookups-addendum/COFFEY-DARKKNIGHT-OTA-RECON.md`](boot-policy-packet-2026-11-02/public-lookups-addendum/COFFEY-DARKKNIGHT-OTA-RECON.md)):
+> Xiaomi/Google OTA endpoint *families* are documented as leads but **no darkknight endpoint or package is
+> confirmed** (status `U`). Important caveat: the **OS3.0.2.0** report is for a device labelled **Box 5 *MAX*
+> (`MOB1MB-5M`)**, whereas the darkknight comparator here is **Box 5 (`MOB2MB-5P`)** — same codename and
+> `MiTV-AZFU0`, but a product-code mismatch, so OS3.0.2.0 is **not** confirmed for the exact MOB2MB-5P
+> hardware. Do not synthesize a URL from the build string; capture it from the device's real update check.
 
 ## 3a. Next evidence priority (2026-11-02)
 
@@ -127,7 +135,13 @@ size, SHA-256, build/fingerprint, extraction tool+version, relation to the live 
 originals; never silently merge across OTA builds.
 **Acceptance:** `COFFEY-ARTIFACT-MANIFEST.md` + an explicit missing-prerequisite list.
 
-### Phase B — Reconstruct boot dispatch offline  _(depends on A)_
+### Phase B — Reconstruct boot dispatch offline  _(donor scaffold done 2026-11-02; S7D specifics U, coffey half blocked on A)_
+A public stage/signature/rollback **scaffold** exists:
+[`boot-policy-packet-2026-11-02/public-lookups-addendum/COFFEY-BOOT-CHAIN-MODEL.md`](boot-policy-packet-2026-11-02/public-lookups-addendum/COFFEY-BOOT-CHAIN-MODEL.md).
+It names the boot objects (`BL2`, `BL2E`, `BL2X`, `DDRFIP`/`DEVFIP`/FIP, `BL31/32/33`) and keeps **Amlogic
+boot-firmware anti-rollback (BL2 CVN/eFuse) separate from Android AVB rollback indexes**, but **no public S7D
+source states which stage authenticates the next or where the rollback counter lives** — those stay `U` until
+coffey's own bootloader container is extracted. The grep/token work below still needs the coffey artifacts.
 Grep extracted images for: `update`, `switch_bootmode`, `get_rebootmode`, `bootcmd`, `storeboot`;
 `recovery_from_udisk/sdcard/flash`; `aml_autoscript`, `recovery.img`, `autoscr`, `source`;
 `usb_burning`, `*_burningcfg`, `aml_sdc_burn.ini`; `imgread`, `bootm`, `get_avb_mode`, `get_valid_slot`;
@@ -161,7 +175,12 @@ input from writable copies/reseeds.
 **Acceptance:** `COFFEY-ODMEXT-CONSUMERS.md` consumer graph, proven vs possible edges; no assumed path from
 shell-controlled bytes to a privileged parser.
 
-### Phase F — Finish PQ/HIDL caller authorization  _(depends on A)_
+### Phase F — Finish PQ/HIDL caller authorization  _(donor search done 2026-11-02 — no A12–14 source; blocked on A)_
+A search for a newer public `systemcontrol`/`CPQControl` closer to Android 14 found **none** (see
+[`boot-policy-packet-2026-11-02/public-lookups-addendum/COFFEY-PQ-ANCHORS-AD14-DELTA.md`](boot-policy-packet-2026-11-02/public-lookups-addendum/COFFEY-PQ-ANCHORS-AD14-DELTA.md)):
+the only public implementation remains the **Android-Pie** `khadas-vims-pie_64` donor, whose stubbed/permissive
+permission routine says nothing about coffey. So the authorization model genuinely waits on coffey's own
+`systemcontrol` ELF (pin by SHA-256 + GNU Build ID first). The trace steps below are unchanged.
 Reconcile the recorded handler offset against the exact ELF+hash. Trace service registration, Binder/HIDL
 transport access, SELinux service-discovery/call policy, UID/PID checks, wrappers, callee checks, file access.
 Map side effects of `factorySetParamsDefault()` **offline — do not invoke**; establish prerequisites of

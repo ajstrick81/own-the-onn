@@ -24,6 +24,18 @@ firmware blobs; per the repo's no-firmware-redistribution rule they are **not** 
 exact URLs, sizes and SHA-256 are all in `COFFEY-PUBLIC-ARTIFACT-MANIFEST.md`, so anyone can re-fetch and
 re-verify them against `SHA256SUMS`.
 
+## Addendum — public lookups (2026-11-02, `public-lookups-addendum/`)
+Four pre-staging lookups done while awaiting coffey's own artifacts. All four returned **"improves the model,
+establishes nothing about coffey"** — the correct outcome.
+| File | Pre-stages | Result |
+|---|---|---|
+| [`COFFEY-PQ-ANCHORS-AD14-DELTA.md`](public-lookups-addendum/COFFEY-PQ-ANCHORS-AD14-DELTA.md) | Phase F | **No public Android 12–14 `CPQControl`** found; the pie-era donor stays lead-only, coffey authorization `U`. |
+| [`COFFEY-BOOT-CHAIN-MODEL.md`](public-lookups-addendum/COFFEY-BOOT-CHAIN-MODEL.md) | Phase B | Stage/signature/rollback **scaffold** (BL2/BL2E/BL2X/FIP, AVB vs Amlogic ARB kept separate); S7D per-stage verifier map `U`. |
+| [`COFFEY-DARKKNIGHT-OTA-RECON.md`](public-lookups-addendum/COFFEY-DARKKNIGHT-OTA-RECON.md) | darkknight OTA | Xiaomi/Google OTA endpoint *families* as leads; no darkknight endpoint/package confirmed. **OS3.0.2.0 is reported for Box 5 *MAX* (`MOB1MB-5M`), not the Box 5 (`MOB2MB-5P`) darkknight comparator** — product-code mismatch. |
+| [`COFFEY-CE-GENERIC-BARRIER-MATRIX.md`](public-lookups-addendum/COFFEY-CE-GENERIC-BARRIER-MATRIX.md) | §0 barrier | DT-match / external-boot-entry / bootloader-acceptance / decode / secure-media separated; every coffey boot cell `U`. |
+
+`public-lookups-addendum/COFFEY-PUBLIC-LOOKUPS-SHA256SUMS.txt` is their integrity list (all five re-verify).
+
 ## Bottom line
 These resolve **public-artifact / comparator** questions only. **No coffey acceptance, root, parser-input
 control, or authorization gap is established.** The decisive next step is unchanged and device-side: Adam's
