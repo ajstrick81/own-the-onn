@@ -14,6 +14,15 @@
 Origin: external research handoff by Codex (`ONN-COFFEY-CLAUDE-HANDOFF-2026-11-02`, rev 2), reviewed and
 reframed here. Source IDs `S*`/`F*`/`N*` below refer to that handoff's source map (reproduced in §Sources).
 
+> **Progress — 2026-11-02 public-artifact pass (Codex).** First results are committed under
+> [`boot-policy-packet-2026-11-02/`](boot-policy-packet-2026-11-02/) (text reports only; firmware blobs kept
+> out of git, re-fetchable via the hash-pinned manifest). Headline: **Phase C answered** — the stock CoreELEC
+> recovery is *state-changing* (writes the persistent boot env via `fw_setenv`, 11 assignments, no rollback),
+> so it **fails the read-only boundary**; do not boot it on coffey. Public comparators (CoreELEC release +
+> nightly, donor DTBs, upstream S7D, PQ donor source, slimBOX unlock = standard `fastboot flashing unlock`)
+> are pinned. **Still nothing established about coffey itself** — no acceptance, root, parser-input control, or
+> authorization gap; darkknight OTA and coffey's own artifact set remain missing.
+
 ## 0. The question
 
 1. Does coffey expose any authenticated maintenance / recovery path that could load a non-stock image?
@@ -66,6 +75,10 @@ darkknight image strictly as **host-side comparison material**; import no offset
 coffey. The darkknight unlock/backup workflow explicitly **requires an already-unlocked bootloader + rooted
 GSI via DSU** — it is not a locked-device bypass.
 
+> Status (2026-11-02): a **provenance-backed darkknight OTA was not obtained** — N1/N2 don't supply a verified
+> one, and no donor was relabeled as darkknight. The CoreELEC *Xiaomi Box S 3rd Gen* DT is a comparator but is
+> **not** darkknight stock firmware. Acquiring a hash-verified darkknight OTA is still an open Task-2 item.
+
 ## 4. Corrections to keep (do not regress — from handoff §7)
 
 1. Same S905X5M SoC ≠ identical U-Boot policy, keys, or OTP.
@@ -101,15 +114,18 @@ cross-refs into callers + verification routines. Separate OTA-packaged defaults 
 **Table:** Path · Entry condition · Media/source · Handler · Verification · Slot dependence · Persistent side
 effects · Evidence offset · Confidence. **Acceptance:** `COFFEY-BOOT-POLICY-MAP.md`.
 
-### Phase C — Audit the exact CoreELEC recovery image  _(independent of A; needs the image)_
-Obtain one official identified release/nightly; record URL, date, hash, source commits. Inspect on host
-**without booting it or running its scripts.** Determine image format, kernel, initramfs contents, entry
-scripts, env backend, and **all persistent writes** (raw writes, mounts, env migration, partition-metadata
-changes, reboot flags) — trace normal *and* error paths, not just a `fw_setenv` grep.
-**Acceptance:** `COFFEY-CE-RECOVERY-AUDIT.md` — side-effect inventory + verdict on whether it fits the
-read-only boundary. No live boot in this phase.
+### Phase C — Audit the exact CoreELEC recovery image  _(status: DONE — 2026-11-02)_
+Done for CoreELEC `22.0-Piers_rc1` Generic + the Nov-3 nightly. See
+[`boot-policy-packet-2026-11-02/COFFEY-CE-RECOVERY-AUDIT.md`](boot-policy-packet-2026-11-02/COFFEY-CE-RECOVERY-AUDIT.md).
+**Verdict: the stock recovery setup does not fit a read-only boundary** — `init` translates the bundled
+`aml_autoscript` `setenv` lines into individual `fw_setenv` calls (11 assignments incl. `bootfromnand`,
+`upgrade_step`, `bootcmd`) against the internal env backend (`/dev/env`, `fw_env.config`), then reboots with
+no transaction/rollback. Release `init` matches its pinned CoreELEC recipe byte-for-byte after documented
+substitutions; the nightly only fixes a `UPDATE_SYSTEM.md5` source-name mix-up. **Whether coffey accepts or
+can execute this image is entirely unresolved**, and the FAT USB being mounted read-only does *not* stop the
+internal env writes — so it must not be booted on coffey as a substitute for the Phase-A artifact work.
 
-### Phase D — Compare board descriptions without transplanting  _(depends on A)_
+### Phase D — Compare board descriptions without transplanting  _(donor half done 2026-11-02; coffey half blocked on A)_
 Diff coffey vendor DT vs exact-build CoreELEC Xiaomi/Ugoos/C5 refs and upstream S7D [S5]: root compatible/
 model + includes; phys/usable/reserved memory; UART compatible/clocks/IRQs/enabled; PSCI + firmware
 assumptions; USB controller/PHY/role; storage + partition metadata; GPU/video/secure-memory deps.
