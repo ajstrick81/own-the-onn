@@ -35,6 +35,10 @@ establishes nothing about coffey"** — the correct outcome.
 | [`COFFEY-CE-GENERIC-BARRIER-MATRIX.md`](public-lookups-addendum/COFFEY-CE-GENERIC-BARRIER-MATRIX.md) | §0 barrier | DT-match / external-boot-entry / bootloader-acceptance / decode / secure-media separated; every coffey boot cell `U`. |
 
 `public-lookups-addendum/COFFEY-PUBLIC-LOOKUPS-SHA256SUMS.txt` is their integrity list (all five re-verify).
+[`public-lookups-addendum/REVIEWER-NOTES.md`](public-lookups-addendum/REVIEWER-NOTES.md) is a cross-check of
+the five reports (accurate, no coffey overreach) with three follow-ups: an unbounded PQ negative result (→
+re-sweep queued), a jarvis2 citation-URL discrepancy, and a darkknight `MiTV-AZFU0` detail that also signals
+*toward* applicability.
 
 ## Bottom line
 These resolve **public-artifact / comparator** questions only. **No coffey acceptance, root, parser-input
