@@ -1,0 +1,94 @@
+=== coffey base DT subsystem characterization (Phase 3 kickoff) 2026-10-09T03:50:59Z ===
+dts sha256: 197ca22af083e6c4856c2cd8f44f92b9519f4bb60f1db89f6077e18583a1ff42   lines: 4682
+
+## CPU topology
+cpu@ nodes: 4
+  			compatible = "arm,cortex-a55", "arm,armv8";
+  			cpu-idle-states = <0x0a 0x0b>;
+  			operating-points-v2 = <0x0c 0x0d 0x0e 0x0f>;
+  		compatible = "arm,armv8-pmuv3";
+  		compatible = "arm,armv8-timer";
+  		compatible = "arm,cortex-a15-gic", "arm,cortex-a9-gic";
+  		compatible = "operating-points-v2";
+  		operating-points-v2 = <0x08>;
+
+## Priority subsystem nodes present (first-level unit nodes)
+  ethernet@fe368000
+  ethernet_phy@8
+  i2c@66000
+  i2c@66400
+  i2c@66800
+  i2c@66c00
+  i2c@67000
+  interrupt-controller@4080
+  interrupt-controller@fff01000
+  meson_clk_msr@48000
+  mmc@fe08c000
+  pinctrl@4000
+  reset-controller@2000
+  sd@fe08a000
+  sdio@fe088000
+  serial@7a000
+  serial@fe078000
+  serial@fe07c000
+  serial@fe07e000
+  serial@fe080000
+  spi-nand@0
+  spi-nor@0
+  spi@50000
+  spi@fe08d000
+  usbphy20@fe358000
+  usbphy21@fe348000
+  usbphy30@fe358080
+  usbphy31@fe348080
+  watchdog@2100
+
+## amlogic,* compatibles (count) — clocks/resets/irq/pinctrl/peripherals
+        5 "amlogic,meson-uart"
+        5 "amlogic,meson-i2c"
+        4 "amlogic,meson-pwm-tee"
+        3 "amlogic,meson-v8-mmc"
+        3 "amlogic,meson-odd-pwm"
+        3 "amlogic,meson-even-pwm"
+        2 "amlogic, vdin-s7d"
+        2 "amlogic, amlvideo2"
+        2 "amlogic, amlogic-crg-drd-usb3"
+        2 "amlogic, amlogic-crg-drd-usb2"
+        1 "amlogic,watermark"
+        1 "amlogic,unifykey"
+        1 "amlogic,state-led-aocpu"
+        1 "amlogic,spi-nfc"
+        1 "amlogic,sha_dma"
+        1 "amlogic,sha3_dma"
+        1 "amlogic,saradc-common"
+        1 "amlogic,saradc"
+        1 "amlogic,s7d-power-domain"
+        1 "amlogic,s7d-clkc"
+        1 "amlogic,pdd"
+        1 "amlogic,meson-vrtc"
+        1 "amlogic,meson-sc2-wdt"
+        1 "amlogic,meson-sc2-reset"
+        1 "amlogic,meson-s7d-periphs-pinctrl"
+        1 "amlogic,meson-s7d-clk-measure"
+        1 "amlogic,meson-s7-gpio-intc"
+        1 "amlogic,meson-rng"
+        1 "amlogic,meson-nfc-single-ecc-bl2ex"
+        1 "amlogic,meson-axg-dwmac"
+        1 "amlogic,meson-a4-spicc-v2"
+        1 "amlogic,g12a-mdio-mux"
+        1 "amlogic,dmc_monitor-s7d"
+        1 "amlogic,des_dma,tdes_dma"
+        1 "amlogic,ddr-bandwidth-s7d"
+        1 "amlogic,crypto_s4d"
+        1 "amlogic,bc-timer"
+        1 "amlogic,aml_txlx_dma"
+        1 "amlogic,aml_mkl"
+        1 "amlogic,aml_kt"
+
+## memory / reserved-memory
+  321:	secmon {
+  3971:	memory@00000000 {
+  3976:	reserved-memory {
+  3986:		ramoops@0x07400000 {
+  4110:		linux,cma {
+  4115:			linux,cma-default;

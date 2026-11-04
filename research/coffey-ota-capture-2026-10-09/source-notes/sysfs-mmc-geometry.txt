@@ -1,0 +1,1 @@
+/system/bin/sh: cd: /sys/block/mmcblk0: Permission denied

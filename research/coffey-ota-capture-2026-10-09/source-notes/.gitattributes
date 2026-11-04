@@ -1,0 +1,4 @@
+# Preserve original bytes exactly (some captures are CRLF); hashes in SHA256SUMS must match the E: originals.
+* -text
+.gitattributes text eol=lf
+SHA256SUMS text eol=lf

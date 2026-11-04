@@ -6,7 +6,8 @@
     "codenames": ["coffey", "DV6116N", "CS116K4"],
     "soc": "Amlogic S905X5M (S7D)",
     "android": "14",
-    "kernel": "5.15.196-android14-11",
+    "kernel": "5.15.196-android14-11-g3d26c188ef7e-ab14657224",
+    "kernel_build_date": "2026-01-03",
     "security_patch_level": "2026-03-01",
     "build": "URO4.260304.011.B1",
     "fcc_ids": ["2AYYS-CS116K4Y", "2AYYS-CS116K4O"]
@@ -18,13 +19,13 @@
     {"track": "root-runtime", "goal": "per-boot kernel root on coffey", "score": 1, "max": 10,
      "note": "dated candidate CVE; no coffey exploit attempted"},
     {"track": "boot-policy", "goal": "map the weld; can coffey boot CoreELEC", "score": 2, "max": 10,
-     "note": "public surface mapped; every coffey cell U"}
+     "note": "public surface mapped; coffey OTA/kernel/DTB/ELF captured (Phase A done); B/D/E/F not yet filled from them"}
   ],
   "top_level_unmet": [
     "no runtime root on coffey",
     "no bootloader unlock",
     "no alternate-OS boot",
-    "no coffey-specific kernel/boot artifact analyzed"
+    "CVE and systemcontrol analysis on coffey's captured artifacts not yet done"
   ],
   "confirmed": [
     {"id": "C1", "grade": "P", "claim": "no ACR packages; no screen/TV-input capture perms"},
@@ -35,28 +36,33 @@
     {"id": "C6", "grade": "P", "claim": "factory-tool userland doors SELinux-boxed (system-UID, not root)"},
     {"id": "C7", "grade": "P", "claim": "stock CoreELEC recovery writes env via fw_setenv; not read-only"},
     {"id": "C8", "grade": "P/R", "claim": "CVE-2026-43499 futex-PI fix dated: first GKI tag 2026-08-05, first ASB Nov 2026"},
-    {"id": "C9", "grade": "P/R", "claim": "FCC IDs 2AYYS-CS116K4Y/...K4O (Luxshare); FORESEE 16GB eMMC + S905X5M"}
+    {"id": "C9", "grade": "P/R", "claim": "FCC IDs 2AYYS-CS116K4Y/...K4O (Luxshare); FORESEE 16GB eMMC + S905X5M"},
+    {"id": "C10", "grade": "P", "claim": "coffey exact-build OTA captured (zip sha256 ec755bd03500da81b0f509b393fa26451050c9711c689749cec2ffa49395b1a7); metadata matches URO4.260304.011.B1/15051976"},
+    {"id": "C11", "grade": "P", "claim": "kernel GKI 5.15.196-android14-11-g3d26c188ef7e-ab14657224 built 2026-01-03; vendor modules built against a different kernel build"},
+    {"id": "C12", "grade": "P", "claim": "Amlogic vendor driver stack (not mainline); base DT s7d_s905x5m_bm202, PSCI 0.2, 2 GiB usable"},
+    {"id": "C13", "grade": "P/H", "claim": "bootloader = signed Amlogic container S7D-s905x5m-26030511BBST; stage bodies opaque (encrypted vs packed unresolved)"}
   ],
   "hard_walls": [
     "welded bootloader (signed ROM/BL2) -> no flash/persistence/custom-ROM",
     "SELinux confines factory tool (system-UID, not root)",
     "dm-verity/AVB bricks boot/system/vendor writes on locked device",
     "env/misc/param unreadable without root -> no backup, experiments stay documented-not-run",
-    "kernel exploit is arm64 from-scratch; public PoCs x86_64 / jarvis2-specific"
+    "kernel exploit is arm64 from-scratch; public PoCs x86_64 / jarvis2-specific",
+    "BL2/BL33 stage bodies opaque offline -> U-Boot env/bootcmd handling unreadable"
   ],
   "priority_vectors": [
-    {"rank": 1, "vector": "capture coffey OTA + kernel + DTB + systemcontrol ELF", "state": "pending-device",
-     "next": "OTACaptor -> hash -> payload_dumper; unblocks Phases A-F and settles C8"},
-    {"rank": 2, "vector": "CVE-2026-43499 applicability to coffey kernel", "state": "H",
-     "next": "extract coffey vmlinux; check rtmutex.c / build id vs fix"},
+    {"rank": 1, "vector": "capture coffey OTA + kernel + DTB + systemcontrol ELF", "state": "done",
+     "next": "captured 2026-10-09, ingested 2026-11-03 (research/coffey-ota-capture-2026-10-09/); now an input to ranks 2-3 and Phases B/D/E/F"},
+    {"rank": 2, "vector": "CVE-2026-43499 applicability to coffey kernel", "state": "H-strengthened",
+     "next": "GKI ab14657224 built 2026-01-03 predates fix cherry-pick 2026-07-23; confirm at code level (futex-PI/rtmutex), then R3 matrix"},
     {"rank": 3, "vector": "epoll CVEs arm64 root (Bad Epoll / CVE-2026-43074)", "state": "H",
-     "next": "emulator-first arm64 post-exploitation; never on-device"},
+     "next": "check epoll backport against GKI ab14657224 (5.15.196)"},
     {"rank": 4, "vector": "UART/serial-console path to env/misc/param wall", "state": "H-candidate-pads-found",
      "next": "FCC photo review (R2-5) found a 4-pad GND/TX/RX/GND header on exhibit 7952340 p.3; match board rev to owner unit label, then continuity/scope-probe the actual board"},
     {"rank": 5, "vector": "darkknight provenance-backed OTA (build-identity comparator)", "state": "U",
      "next": "capture from darkknight real update flow; match build identity"},
-    {"rank": 6, "vector": "twilight A14 OTA systemcontrol ELF comparator", "state": "U-erofs-unread",
-     "next": "read EROFS (dump.erofs) once 1.14GB OTA is on a capable host"}
+    {"rank": 6, "vector": "twilight A14 OTA systemcontrol ELF comparator", "state": "deprioritized",
+     "next": "coffey's own systemcontrol ELF is in hand; twilight only as a later cross-device comparison"}
   ],
   "dead_ends": [
     "newer public A12-14 CPQControl/systemcontrol source (all 1 branch + 67 tags, AOSP yukawa, ROM-dump set)",

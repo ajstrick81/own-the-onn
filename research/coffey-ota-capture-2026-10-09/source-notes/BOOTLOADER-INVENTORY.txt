@@ -1,0 +1,51 @@
+=== AML-TASK-006 bootloader inventory 2026-10-09T03:48:26Z ===
+payload_dumper bootloader exit=0
+bytes=4100096  sha256=389daa9963440f9f95ccc13fb31dfe18fa53fbe5a36cd740a17783b3f51ad775
+file: data
+
+--- header (first 64 bytes) ---
+  00000000: 404d 4c20 8d66 31ed 0000 0000 8005 0000  @ML .f1.........
+  00000010: 07ff eb67 a6db 2122 f607 1005 dd06 2c60  ...g..!"......,`
+  00000020: 8e7e f66b ba87 5354 da51 badf 5180 6f85  .~.k..ST.Q..Q.o.
+  00000030: 58c2 3800 6d29 4707 cc46 2bcd 0bee c7f4  X.8.m)G..F+.....
+
+--- strings of interest (stage/version markers) ---
+     358a Rwbl2r_
+    4381f ,@AMLBOOT
+    4382c S7D-s905x5m-26030511BBST
+    43850 BL2E
+    43860 BL2X
+
+--- magic/offset scan (component boundary candidates) ---
+=== DONE 2026-10-09T03:48:30Z ===
+
+=== ADDENDUM 2026-10-09 (coordinator refinements #3/#4; parallel boot research) ===
+#3 Marker-offset reconciliation (hex excerpt @0x43810..0x43877):
+  00043810: 236d d43b 05c0 7933 8347 e3f5 0299 1a2c  #m.;..y3.G.....,
+  00043820: 4041 4d4c 424f 4f54 0205 9000 5337 442d  @AMLBOOT....S7D-
+  00043830: 7339 3035 7835 6d2d 3236 3033 3035 3131  s905x5m-26030511
+  00043840: 4242 5354 0000 0000 0040 0400 0000 0000  BBST.....@......
+  00043850: 424c 3245 0040 0400 00d0 0100 0000 0000  BL2E.@..........
+  00043860: 424c 3258 0010 0600 00b0 0100 0000 0000  BL2X............
+  00043870: 4444 5246 00c0 0700                       DDRF....
+  byte[0x4381f]=0x2c (','), byte[0x43820]=0x40 ('@').
+  -> 0x4381f and 0x43820 are NOT two overlapping markers. `strings` greedily
+     included the preceding comma byte (0x2c) from the hash/signature block
+     above. The real Amlogic container magic "@AMLBOOT" begins at 0x43820.
+     ",@AMLBOOT" = spurious-comma + magic; one marker.
+
+Component descriptor table @0x43820 (parsed: 4-char tag, LE u32 offset, LE u64 size):
+  magic  @AMLBOOT @0x43820, then bytes 02 05 90 00
+  build  "S7D-s905x5m-26030511BBST" @0x4382c (SPL 2026-03-05, "BBST" build tag)
+  BL2E   @0x43850  off=0x00044000  size=0x0001d000
+  BL2X   @0x43860  off=0x00061000  size=0x0001b000   (= 0x44000+0x1d000, contiguous)
+  DDRF   @0x43870  off=0x0007c000  size=0x00040000   (= 0x61000+0x1b000, contiguous)
+  -> boundaries are self-consistent (each offset = prev offset+size): a real,
+     documented Amlogic 2nd-stage container layout. Container #1 magic "@ML "
+     ("@AML") sits at file offset 0x0 (header dumped above).
+
+#4 Encryption/compression NOT inferred: BL2E/BL2X/DDRF tags + build string are
+   plaintext; the absence of plaintext "BL31"/"U-Boot"/"bl31" strings is left
+   UNKNOWN (could be later-stage, differently tagged, or packed) — explicitly
+   NOT claimed as proof of encryption or compression.
+=== ADDENDUM DONE ===

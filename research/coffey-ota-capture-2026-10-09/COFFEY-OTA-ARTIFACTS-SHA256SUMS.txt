@@ -1,0 +1,48 @@
+# coffey OTA capture — off-repo artifact ledger (bytes NOT committed; re-fetchable / re-derivable).
+# Paths are relative to the maintainer's local store E:/Morphe/device/coffey-ota/ .
+# Hashed 2026-11-03 on DESKTOP-HPC6KKT; every value that also appears in EXTRACTION-PROVENANCE.txt /
+# BOOTLOADER-INVENTORY.txt / E0006B (2026-10-09) matches it. Identical hashes across the *-audit-images/
+# folders are the same partition re-extracted, not different images.
+# Format: <sha256>  <path>  <bytes> bytes   (tools/verify_hashes.py skips absent files)
+
+ec755bd03500da81b0f509b393fa26451050c9711c689749cec2ffa49395b1a7  coffey-URO4.260304.011.B1.zip  906283326 bytes
+76f21f6350ef905cdf65be5bbde7b91f9b208db889ad2d53c260266bf3420c31  otacert.der  2090 bytes
+ad8b76111e286bfc83ff32c11bc2e8ec99c0783f1fd5c822a236ac201cf6122c  payload.bin  906274586 bytes
+aba108a9c2068f6fc472fafb22d2fd0257e2fffb2b555725719575c396b12252  response-headers.txt  1720 bytes
+e9a02f96ec551e7b337ed0a9f5981dcc2ed1f790d1600f894b6629530a8fdd56  images/boot.img  67108864 bytes
+389daa9963440f9f95ccc13fb31dfe18fa53fbe5a36cd740a17783b3f51ad775  images/bootloader.img  4100096 bytes
+4a9d07e10b9cd5bd83b833b9f0cce3d280a029395368593e4ee0c132ec14a917  images/dtbo.img  2097152 bytes
+3db861f2a7fe5f1c9c3a95ee61c4cb35339dcac665b7d67d072d4d09526c1bd9  images/vendor_boot.img  67108864 bytes
+7f6f41c845f1e3b2b70e808945afb7f8133fdf740a3b95963bd6a4e6a7faa0b1  dlkm/system_dlkm.img  757760 bytes
+42606eff86310d59db696e6fc9559e5ac5c0c064bbd3a8590bc5b74e3c0f8f06  dlkm/vendor_dlkm.img  22065152 bytes
+35f3d682d8eb4a566e18aa3326650ff7dacaefa908e536998ce70fcefdcc64cd  authz-audit-images/product.img  543825920 bytes
+25f04a5d48eab9f6fefd5645e5096288d0be3f1b1f3291ad2edb2d5b5a1f7d2a  authz-audit-images/system.img  473403392 bytes
+00a3019b5b0e426e173abf07662916193cf53ad7a8a423fc2fe89f45d8bc958b  authz-audit-images/system_ext.img  96186368 bytes
+a7a2c9448248e4ea6c423e61a0f4d9c62af007f7f4777acff5df3c89e28d7e44  trust-audit-images/odm.img  507904 bytes
+dbee89346db7caf699af8e646132e563dfeac7af5adaba3d4fd48cd5932be688  trust-audit-images/odm_dlkm.img  348160 bytes
+ca11823c4ed63ed07467523038db7be557c187e92d1790ed5e3fe0fb5705f55e  trust-audit-images/odm_ext.img  16777216 bytes
+a5f35a34ef659c4ecc5015bb64237401a76ec9a1742f5708a8fe12be9dcd98b6  trust-audit-images/oem.img  33554432 bytes
+35f3d682d8eb4a566e18aa3326650ff7dacaefa908e536998ce70fcefdcc64cd  trust-audit-images/product.img  543825920 bytes
+00a3019b5b0e426e173abf07662916193cf53ad7a8a423fc2fe89f45d8bc958b  trust-audit-images/system_ext.img  96186368 bytes
+4fb53c43717c4c703d1667dc79bdd1c113185509891e27d37003f63738f6c960  trust-audit-images/vbmeta.img  12288 bytes
+595f6cbe627ec54bd34927bd49d3f9712aa6d220990282f6d6feacbfbb741f14  trust-audit-images/vbmeta_system.img  4096 bytes
+bc2112c2531acbd375ed67eb31fcbaa7412232fce777e49ba025d2b34d30dc61  init-audit-images/init_boot.img  8388608 bytes
+25f04a5d48eab9f6fefd5645e5096288d0be3f1b1f3291ad2edb2d5b5a1f7d2a  init-audit-images/system.img  473403392 bytes
+78836a535f77cf95a9736057d9c61167a4c230620c3c3fcce539d0ba7d4ab26f  init-audit-images/vendor.img  83812352 bytes
+d3882ec9c5cf512dbca9c02f6591510da6e977fe64824d3c98b7134e83ce0ddd  meta/payload-head.bin  262144 bytes
+6c95acad34ef8daa708719b31a4af736d94c8813c5e3895297967271b2d19cdb  dlkm/INVENTORY/firststage-modules.tsv  7413 bytes
+2f2c74625b5d1e443a5c8d1fcd1ef546bc4fa927981c239fff80e9511b6821a9  dlkm/INVENTORY/modules.tsv  22386 bytes
+d9ef1096d33fe9f431f4d0cb54f5604a57f5f2fd41b2b86e7c9d499b1571dbae  analysis/kernel.img  20749256 bytes
+fa0e41460aee03c8c16ad4e21e94b90587286327f5ed32f35f7597066c279444  analysis/kernel.raw  43559424 bytes
+c9006fcd3e2666afb9975c3e89f1a6174595672b3df10b4830c1da157656d73e  analysis/dtbo/00_kernel  64 bytes
+9eaa3298504e2cbea5b1fbb7de7204a16dc865aba2195acf8162b2c11a757ab1  analysis/dtbo/01_dtbdump_fragment@0.dtb  2097088 bytes
+add87f5f96df4016a39a5df34f428edceaff9a6d172465e55b09e049fe56847e  analysis/dtbo/01_dtbdump_fragment@0.dtb.dts  322 bytes
+92862a921697d861f3a516075f8b452745af727832d8ad00dcf79239cf4389c6  analysis/vbdt/00_kernel  27060224 bytes
+b80ef7c575c69fa10402cfde7f84e1f87ef12eac0561e0b5fa0617d2191af18e  analysis/vbdt/01_dtbdump_s7d_s905x5m_bm202.dtb  40048640 bytes
+197ca22af083e6c4856c2cd8f44f92b9519f4bb60f1db89f6077e18583a1ff42  analysis/vbdt/01_dtbdump_s7d_s905x5m_bm202.dtb.dts  100081 bytes
+# systemcontrol family, unpacked from vendor.img (hashed 2026-11-03)
+aec8998d473579416d768e1e630492208cf61aef0299f5492d41e2e735c8c1a4  init-audit-images/vendor-ex/bin/systemcontrol  350020 bytes
+d08e56370e29cb576fce8faf56f316adb1ad1b518f845dc1520a71778356ee83  init-audit-images/vendor-ex/etc/init/systemcontrol.rc  454 bytes
+3899004fe27fc7a68aeb14c0f89a256aa4d2f84be94174b02157f85f47d160f1  init-audit-images/vendor-ex/lib/libsystemcontrolservice.so  82572 bytes
+e011923eb5bac90ef2e362f6fe53901881d93315c67e4a3be3996aa83e218da3  init-audit-images/vendor-ex/lib/vendor.amlogic.hardware.systemcontrol@1.0.so  680440 bytes
+df156fc004b080b4a7449393760ca25f6cafdbca3365300cbdbb14ae719c9095  init-audit-images/vendor-ex/lib/vendor.amlogic.hardware.systemcontrol@1.1.so  397440 bytes

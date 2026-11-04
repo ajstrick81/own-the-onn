@@ -1,0 +1,25 @@
+=== AML-E0002 extraction 2026-10-09T03:39:17Z ===
+source zip sha256: ec755bd03500da81b0f509b393fa26451050c9711c689749cec2ffa49395b1a7
+[unzip payload.bin] 2026-10-09T03:39:40Z
+payload.bin bytes=906274586  sha256=ad8b76111e286bfc83ff32c11bc2e8ec99c0783f1fd5c822a236ac201cf6122c
+[payload_dumper --partitions boot,vendor_boot,dtbo] 2026-10-09T03:40:52Z
+payload_dumper exit=0
+--- extracted images (size + sha256) ---
+  boot.img  bytes=67108864  sha256=e9a02f96ec551e7b337ed0a9f5981dcc2ed1f790d1600f894b6629530a8fdd56  file=Android bootimg, kernel
+  vendor_boot.img  bytes=67108864  sha256=3db861f2a7fe5f1c9c3a95ee61c4cb35339dcac665b7d67d072d4d09526c1bd9  file=data
+  dtbo.img  bytes=2097152  sha256=4a9d07e10b9cd5bd83b833b9f0cce3d280a029395368593e4ee0c132ec14a917  file=data
+--- OTA otacert (inspection only) ---
+  Could not find certificate from /mnt/e/Morphe/device/coffey-ota/otacert.der
+  4057F1B057740000:error:1608010C:STORE routines:ossl_store_handle_load_result:unsupported:../crypto/store/store_result.c:160:provider=default
+  4057F1B057740000:error:1E08010C:DECODER routines:OSSL_DECODER_from_bio:unsupported:../crypto/encode_decode/decoder_lib.c:104:No supported data to decode.  Input type: DER, Input structure: Certificate
+  4057F1B057740000:error:1608010C:STORE routines:ossl_store_handle_load_result:unsupported:../crypto/store/store_result.c:160:provider=default
+  4057F1B057740000:error:1608010C:STORE routines:ossl_store_handle_load_result:unsupported:../crypto/store/store_result.c:160:provider=default
+  4057F1B057740000:error:1E08010C:DECODER routines:OSSL_DECODER_from_bio:unsupported:../crypto/encode_decode/decoder_lib.c:104:No supported data to decode.  Input type: DER, Input structure: Certificate
+  4057F1B057740000:error:1608010C:STORE routines:ossl_store_handle_load_result:unsupported:../crypto/store/store_result.c:160:provider=default
+  4057F1B057740000:error:1608010C:STORE routines:ossl_store_handle_load_result:unsupported:../crypto/store/store_result.c:160:provider=default
+  4057F1B057740000:error:1E08010C:DECODER routines:OSSL_DECODER_from_bio:unsupported:../crypto/encode_decode/decoder_lib.c:104:No supported data to decode.  Input type: DER, Input structure: Certificate
+  4057F1B057740000:error:1608010C:STORE routines:ossl_store_handle_load_result:unsupported:../crypto/store/store_result.c:160:provider=default
+  4057F1B057740000:error:1608010C:STORE routines:ossl_store_handle_load_result:unsupported:../crypto/store/store_result.c:160:provider=default
+  4057F1B057740000:error:1E08010C:DECODER routines:OSSL_DECODER_from_bio:unsupported:../crypto/encode_decode/decoder_lib.c:104:No supported data to decode.  Input type: DER, Input structure: Certificate
+  4057F1B057740000:error:1608010C:STORE routines:ossl_store_handle_load_result:unsupported:../crypto/store/store_result.c:160:provider=default
+=== extraction DONE 2026-10-09T03:40:58Z ===

@@ -3,9 +3,9 @@
 > **Status: scaffold / agenda, not a result.** This file frames the "can coffey boot an alternate OS
 > (CoreELEC / custom ROM), and what does the bootloader actually verify" question and holds the plan to
 > answer it. **No boot bypass, bootloader unlock, AVB bypass, or working CoreELEC port is established.** The
-> decisive evidence — coffey's own bootloader/firmware artifact set plus an exact CoreELEC recovery image,
-> inspected offline — has **not** been obtained yet. Sections below are placeholders to fill once those
-> artifacts are in hand.
+> decisive evidence is coffey's own bootloader/firmware artifact set plus an exact CoreELEC recovery image,
+> inspected offline. Both are now in hand: the CoreELEC audit (Phase C) and coffey's OTA capture (Phase A,
+> 2026-11-03). The remaining phases are being filled from them.
 >
 > This track is the companion to [`root-study.md`](root-study.md): that file concludes flashing a custom ROM
 > requires breaking the welded bootloader (section A + the runtime-root-vs-unlock table). This file is the
@@ -128,6 +128,15 @@ conclusions.
 > Remaining public item: the queued **twilight EROFS** read (Phase F comparator). Everything else waits on the
 > coffey OTA/ELF/DTB capture.
 
+> **Progress — coffey's own artifacts (captured 2026-10-09, ingested 2026-11-03):**
+> [`coffey-ota-capture-2026-10-09/`](coffey-ota-capture-2026-10-09/). The exact-build OTA
+> (`URO4.260304.011.B1`, ZIP SHA-256 `ec755bd0…b1a7`) is captured and matches the expected fingerprint field by
+> field. The kernel (GKI `5.15.196-android14-11-g3d26c188ef7e-ab14657224`), base DT `s7d_s905x5m_bm202`, module
+> inventories, bootloader container, and the **`systemcontrol` ELF** are extracted and hash-pinned off-repo.
+> Bootloader: signed `@ML`/`@AMLBOOT` container (build `S7D-s905x5m-26030511BBST`); every stage body after the
+> headers is **opaque** (encrypted or packed; transform/key unresolved), so BL33 can't be grepped offline.
+> Phase A is done; B/D/E/F can now use coffey's own data (see each phase).
+
 ## 4. Corrections to keep (do not regress — from handoff §7)
 
 1. Same S905X5M SoC ≠ identical U-Boot policy, keys, or OTP.
@@ -146,7 +155,11 @@ conclusions.
 Each phase is **host-side, read-only** with respect to the device. These are offline artifact-analysis tasks;
 the search tokens below are **tokens to grep in extracted files, not commands to run on the device.**
 
-### Phase A — Ground & preserve existing evidence  _(status: BLOCKED — no artifacts in-repo)_
+### Phase A — Ground & preserve existing evidence  _(status: DONE — 2026-11-03, see [`coffey-ota-capture-2026-10-09/`](coffey-ota-capture-2026-10-09/))_
+Manifest = [`COFFEY-OTA-CAPTURE.md`](coffey-ota-capture-2026-10-09/COFFEY-OTA-CAPTURE.md) +
+[`COFFEY-OTA-ARTIFACTS-SHA256SUMS.txt`](coffey-ota-capture-2026-10-09/COFFEY-OTA-ARTIFACTS-SHA256SUMS.txt).
+Still missing: VINTF manifests and SELinux artifacts not yet pulled out of the extracted images; AVB/`vbmeta`
+and the OTA signature not verified.
 Locate the latest collection report, matching OTA, bootloader container, DTB/DTBO, boot/vendor_boot, AVB
 reports, `systemcontrol` ELF+libs, init files, VINTF manifests, SELinux artifacts. Record for each: path,
 size, SHA-256, build/fingerprint, extraction tool+version, relation to the live collection. Preserve
@@ -159,7 +172,11 @@ A public stage/signature/rollback **scaffold** exists:
 It names the boot objects (`BL2`, `BL2E`, `BL2X`, `DDRFIP`/`DEVFIP`/FIP, `BL31/32/33`) and keeps **Amlogic
 boot-firmware anti-rollback (BL2 CVN/eFuse) separate from Android AVB rollback indexes**, but **no public S7D
 source states which stage authenticates the next or where the rollback counter lives** — those stay `U` until
-coffey's own bootloader container is extracted. The grep/token work below still needs the coffey artifacts.
+coffey's own bootloader container is extracted. **Update 2026-11-03:** it is extracted
+([`…/COFFEY-OTA-FINDINGS.md`](coffey-ota-capture-2026-10-09/COFFEY-OTA-FINDINGS.md) O7–O9). BL2E/BL2X are
+named in a plaintext `@AMLBOOT` table but their bodies, and the later stages, are opaque, so the token grep
+below can't run on BL2/BL33. Tokens may still turn up in plaintext places (`vendor_boot` ramdisk, env defaults
+in the OTA).
 Grep extracted images for: `update`, `switch_bootmode`, `get_rebootmode`, `bootcmd`, `storeboot`;
 `recovery_from_udisk/sdcard/flash`; `aml_autoscript`, `recovery.img`, `autoscr`, `source`;
 `usb_burning`, `*_burningcfg`, `aml_sdc_burn.ini`; `imgread`, `bootm`, `get_avb_mode`, `get_valid_slot`;
@@ -180,7 +197,7 @@ substitutions; the nightly only fixes a `UPDATE_SYSTEM.md5` source-name mix-up. 
 can execute this image is entirely unresolved**, and the FAT USB being mounted read-only does *not* stop the
 internal env writes — so it must not be booted on coffey as a substitute for the Phase-A artifact work.
 
-### Phase D — Compare board descriptions without transplanting  _(donor half done 2026-11-02; coffey half blocked on A)_
+### Phase D — Compare board descriptions without transplanting  _(donor half done 2026-11-02; coffey half unblocked 2026-11-03 — coffey base DT `s7d_s905x5m_bm202` in hand, lineage/arch/driver maps in `coffey-ota-capture-2026-10-09/source-notes/E0003–E0006C`)_
 Diff coffey vendor DT vs exact-build CoreELEC Xiaomi/Ugoos/C5 refs and upstream S7D [S5]: root compatible/
 model + includes; phys/usable/reserved memory; UART compatible/clocks/IRQs/enabled; PSCI + firmware
 assumptions; USB controller/PHY/role; storage + partition metadata; GPU/video/secure-memory deps.
@@ -193,7 +210,7 @@ input from writable copies/reseeds.
 **Acceptance:** `COFFEY-ODMEXT-CONSUMERS.md` consumer graph, proven vs possible edges; no assumed path from
 shell-controlled bytes to a privileged parser.
 
-### Phase F — Finish PQ/HIDL caller authorization  _(donor search done + bounded 2026-11-02/03; blocked on A)_
+### Phase F — Finish PQ/HIDL caller authorization  _(donor search done + bounded 2026-11-02/03; unblocked 2026-11-03 — coffey's own `vendor/bin/systemcontrol` (350,020 B, `aec8998d…`) + HIDL `systemcontrol@1.0/1.1` libs are extracted; not yet analyzed. The twilight comparator below is no longer needed for this phase)_
 A search for a newer public `systemcontrol`/`CPQControl` closer to Android 14 found **none**, and the negative
 is now **bounded** (v2 re-sweep,
 [`…/COFFEY-PQ-ANCHORS-AD14-DELTA-v2.md`](boot-policy-packet-2026-11-02/public-lookups-addendum/COFFEY-PQ-ANCHORS-AD14-DELTA-v2.md)):

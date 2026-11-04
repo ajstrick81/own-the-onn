@@ -33,8 +33,9 @@ for the next owner-researcher. It is **not** an attack kit:
    `findings/`, `method/`, `tools/`.
 2. **Root & boot-policy research** — the bootloader "weld", the runtime-root ceiling, and whether `coffey`
    could boot an alternate OS. **Honest state: no root, no bootloader unlock, no alternate-OS boot, and no
-   bypass has been achieved or published** — the work maps *what enforces the lock* and which questions a
-   future artifact capture would settle. See [`research/`](research/) and the
+   bypass has been achieved or published** — the work maps *what enforces the lock*, now using coffey's own
+   captured OTA ([`research/coffey-ota-capture-2026-10-09/`](research/coffey-ota-capture-2026-10-09/)). See
+   [`research/`](research/) and the
    [`boot-policy-track.md`](research/boot-policy-track.md) agenda.
 
 The dashboard [`STATUS.md`](STATUS.md) carries the live picture: confirmed findings, the hard walls, ranked

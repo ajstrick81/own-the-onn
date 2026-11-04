@@ -1,0 +1,10 @@
+ota-property-files=payload_metadata.bin:4147:40090,payload.bin:4147:906274586,payload_properties.txt:906278785:154,apex_info.pb:2170:929,care_map.pb:3140:966,metadata:63:656,metadata.pb:781:1347                      
+ota-required-cache=0
+ota-streaming-property-files=payload.bin:4147:906274586,payload_properties.txt:906278785:154,apex_info.pb:2170:929,care_map.pb:3140:966,metadata:63:656,metadata.pb:781:1347                        
+ota-type=AB
+post-build=onn/coffey/coffey:14/URO4.260304.011.B1/15051976:user/release-keys
+post-build-incremental=15051976
+post-sdk-level=34
+post-security-patch-level=2026-03-01
+post-timestamp=1773927697
+pre-device=coffey

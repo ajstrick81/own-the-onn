@@ -3,10 +3,11 @@
 > Single front page for where the study stands. Evidence-weighted and deliberately candid: a documented
 > enforcement boundary is a result, and un-met goals are stated plainly. Grades use **P** inspected primary ·
 > **R** first-hand report · **B** inherited baseline · **H** hypothesis/lead · **U** unresolved. Updated
-> 2026-11-03. Machine-readable mirror: [`progress.json`](progress.json).
+> 2026-11-03 (coffey OTA capture ingested). Machine-readable mirror: [`progress.json`](progress.json).
 
 Device: **onn 4K Plus Streaming** (`coffey` / `DV6116N` / `CS116K4`), Amlogic **S905X5M** (S7D), Android 14,
-kernel `5.15.196-android14-11`, SPL `2026-03-01`, build `URO4.260304.011.B1`.
+kernel `5.15.196-android14-11-g3d26c188ef7e-ab14657224` (GKI, built 2026-01-03), SPL `2026-03-01`, build
+`URO4.260304.011.B1`.
 
 ## Milestone meter (subjective, evidence-weighted)
 
@@ -14,10 +15,11 @@ kernel `5.15.196-android14-11`, SPL `2026-03-01`, build `URO4.260304.011.B1`.
 |---|---|---|
 | Telemetry audit | What the box sends by itself | **7/10** — one device, scenarios D/E/F + overnight pending |
 | Root (runtime) | Per-boot kernel root on coffey | **1/10** — a dated candidate CVE, no coffey exploit attempted |
-| Boot-policy / alternate-OS | Map the weld; can coffey boot CoreELEC | **2/10** — public surface mapped, every coffey cell U |
+| Boot-policy / alternate-OS | Map the weld; can coffey boot CoreELEC | **2/10** — public surface mapped; coffey's own OTA/kernel/DTB/ELF now captured (Phase A done), Phases B/D/E/F not yet filled from them |
 
-**Top-level unmet:** no root, no bootloader unlock, no alternate-OS boot, and no coffey-specific kernel/boot
-artifact has been analyzed. Nothing here demonstrates a bypass.
+**Top-level unmet:** no root, no bootloader unlock, and no alternate-OS boot. coffey's own OTA is captured and
+its DT, modules, and bootloader container are mapped, but the CVE and `systemcontrol` analyses on it haven't
+been done. Nothing here demonstrates a bypass.
 
 ## Confirmed (P / R / B)
 
@@ -32,6 +34,10 @@ artifact has been analyzed. Nothing here demonstrates a bypass.
 | C7 | Stock CoreELEC recovery is **state-changing** (writes env via `fw_setenv`, no rollback) — fails a read-only boundary | P | `research/boot-policy-packet-2026-11-02/.../COFFEY-CE-RECOVERY-AUDIT.md` |
 | C8 | CVE-2026-43499 futex-PI fix dated: first GKI tag 2026-08-05, first ASB Nov 2026 | P/R | `research/boot-policy-packet-round2-2026-11-03/COFFEY-R2-1-CVE-TIMELINE.md` |
 | C9 | FCC IDs `2AYYS-CS116K4Y`/`…K4O` (Luxshare); FORESEE 16 GB eMMC + S905X5M | P/R | `research/boot-policy-packet-round2-2026-11-03/COFFEY-R2-2-FCC-HARDWARE-ACCESS.md` |
+| C10 | coffey's exact-build OTA captured (ZIP SHA-256 `ec755bd0…b1a7`); metadata matches `onn/coffey/coffey:14/URO4.260304.011.B1/15051976` field by field | P | `research/coffey-ota-capture-2026-10-09/COFFEY-OTA-CAPTURE.md` |
+| C11 | coffey kernel = GKI `5.15.196-android14-11-g3d26c188ef7e-ab14657224`, built 2026-01-03; vendor modules built against a different kernel build | P | `research/coffey-ota-capture-2026-10-09/COFFEY-OTA-FINDINGS.md` O2–O3 |
+| C12 | coffey runs the Amlogic **vendor** driver stack (DT compatibles match CoreELEC `common_drivers`, not mainline); base DT `s7d_s905x5m_bm202`, PSCI 0.2, 2 GiB usable | P | `…/COFFEY-OTA-FINDINGS.md` O4–O6 |
+| C13 | Bootloader = signed Amlogic container (build `S7D-s905x5m-26030511BBST`); every stage body after the headers is opaque | P (layout) / H (encrypted vs. packed) | `…/COFFEY-OTA-FINDINGS.md` O7–O9 |
 
 ## Hard walls (what blocks us)
 
@@ -42,17 +48,18 @@ artifact has been analyzed. Nothing here demonstrates a bypass.
 | dm-verity / AVB | Any `boot`/`system`/`vendor` write bricks at next boot on a locked device |
 | `env`/`misc`/`param` unreadable w/o root | Can't back them up → bootloader/env experiments stay documented-not-run |
 | Kernel exploit is arm64 from-scratch | Public PoCs (epoll CVEs, GhostLock) are x86_64 / jarvis2-specific; triggers port, post-ex doesn't |
+| BL2/BL33 opaque offline | Stage bodies after the signed headers show uniform byte statistics and no markers, so U-Boot's env/`bootcmd` handling can't be read offline (C13) |
 
 ## Ranked priority vectors (active leads)
 
 | Rank | Vector | State | Next discriminating step |
 |---|---|---|---|
-| 1 | **Capture coffey's own OTA + kernel + DTB + `systemcontrol` ELF** | pending (device-side) | OTACaptor → hash → `payload_dumper`; unblocks all Phases A–F + settles C8 |
-| 2 | CVE-2026-43499 applicability + the ranked post-March CVE check-list | H (patch-level) | extract coffey OTA/`vmlinux`; check against the R3 matrix (`adbd` CVE-2026-0073 wireless-ADB config first, then framework/Wi-Fi/futex rows) |
-| 3 | Two epoll CVEs (Bad Epoll / CVE-2026-43074) arm64 root | H — **version-match downgraded** by R3 sweep | confirm coffey GKI fork backported the epoll code before treating as applicable; then emulator-first arm64 post-ex |
+| 1 | ~~Capture coffey's own OTA + kernel + DTB + `systemcontrol` ELF~~ | **DONE** (captured 2026-10-09, ingested 2026-11-03) | now an input to #2/#3 and Phases B/D/E/F — `research/coffey-ota-capture-2026-10-09/` |
+| 2 | CVE-2026-43499 applicability + the ranked post-March CVE check-list | H — **strengthened**: coffey's GKI build (2026-01-03) predates the fix's cherry-pick (2026-07-23) | code-level check of futex-PI/`rtmutex` in GKI `ab14657224`; then the R3 matrix (`adbd` CVE-2026-0073 wireless-ADB config first, then framework/Wi-Fi/futex rows) |
+| 3 | Two epoll CVEs (Bad Epoll / CVE-2026-43074) arm64 root | H — **version-match downgraded** by R3 sweep | check whether the epoll code was backported, against the now-known GKI build `ab14657224` (5.15.196) |
 | 4 | **UART / serial-console path to the env/misc/param wall** | **H — candidate pads found** | match board rev to owner's retail unit label, then continuity/scope-probe the actual board |
 | 5 | darkknight provenance-backed OTA (build-identity comparator) | U | capture from darkknight's real update flow, match build identity |
-| 6 | twilight (Box S 3rd Gen) A14 OTA — `systemcontrol` ELF comparator | U (EROFS unread) | read EROFS (`dump.erofs`) once the 1.14 GB OTA is on a capable host |
+| 6 | twilight (Box S 3rd Gen) A14 OTA — `systemcontrol` ELF comparator | **deprioritized** — coffey's own `systemcontrol` ELF is now in hand | only useful as a cross-device comparison after coffey's ELF is analyzed |
 
 ## Dead ends / closed vectors (bounded negatives — do not re-run)
 

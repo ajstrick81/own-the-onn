@@ -1,0 +1,35 @@
+=== AML-E0002 analysis 2026-10-09T03:42:02Z ===
+
+### P1 DT — dtbo.img (OVERLAYS) ###
+dtbo: 1 DT blob(s). Root-level model/compatible (OVERLAY — not authoritative for board id):
+  /mnt/e/Morphe/device/coffey-ota/analysis/dtbo/01_dtbdump_fragment@0.dtb.dts: 				compatible = "amlogic, dummy-battery";
+  /mnt/e/Morphe/device/coffey-ota/analysis/dtbo/01_dtbdump_fragment@0.dtb.dts: 				compatible = "amlogic, dummy-charger";
+
+### P1 DT — vendor_boot.img (BASE DT) ###
+vendor_boot: 1 DT blob(s) carved. Root model/compatible/amlogic-dt-id/board-rev:
+  [/mnt/e/Morphe/device/coffey-ota/analysis/vbdt/01_dtbdump_s7d_s905x5m_bm202.dtb.dts]
+    4:	amlogic-dt-id = "s7d_s905x5m_bm202";
+    5:	compatible = "s7d_s905x5m_bm202";
+    32:		compatible = "arm,malit60x", "arm,malit6xx", "arm,mali-midgard";
+    174:			compatible = "arm,cortex-a55", "arm,armv8";
+    186:			compatible = "arm,cortex-a55", "arm,armv8";
+    196:			compatible = "arm,cortex-a55", "arm,armv8";
+    206:			compatible = "arm,cortex-a55", "arm,armv8";
+    218:				compatible = "arm,idle-state";
+
+### P2 kernel — boot.img ###
+  header_version=4 kernel_size=20749256 first4=02214c18
+  kernel first4=02214c18 (1f8b=gzip, 04224d18=lz4)
+  not gzip; first4= 02214c18
+
+### P2 compare with device kernel config ###
+  device config CONFIG_ARM64: CONFIG_ARM64=y
+
+### Signature — otacert (PEM) inspection ###
+  subject=C=US, ST=California, L=Mountain View, O=Google Inc., OU=Android, CN=Android
+  issuer=C=US, ST=California, L=Mountain View, O=Google Inc., OU=Android, CN=Android
+  notBefore=Oct 20 18:12:45 2022 GMT
+  notAfter=Oct 20 18:12:45 2052 GMT
+  sha256 Fingerprint=E5:F0:C8:C2:94:19:B5:C0:5B:5E:6A:09:27:92:A1:14:9A:C5:E9:68:C5:CA:E1:3D:2C:03:CA:99:12:9D:4E:E7
+  (NOTE: this is the package's OWN embedded cert — self-referential; not an independent trust anchor.)
+=== analysis DONE 2026-10-09T03:42:06Z ===

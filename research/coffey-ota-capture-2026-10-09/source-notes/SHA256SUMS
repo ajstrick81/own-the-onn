@@ -1,0 +1,50 @@
+# Verbatim copies of the maintainer's 2026-10-08..10 coffey OTA notes. Each hash equals the original's on E:.
+# copy-name <- original path (relative to E:/Morphe/device/coffey-ota/)
+#   ACQUISITION-PROVENANCE.txt <- ACQUISITION-PROVENANCE.txt
+#   EXTRACTION-PROVENANCE.txt <- EXTRACTION-PROVENANCE.txt
+#   payload_properties.txt <- meta/payload_properties.txt
+#   META-INF-com-android-metadata.txt <- meta/META-INF/com/android/metadata
+#   ANALYSIS.txt <- analysis/ANALYSIS.txt
+#   BOOTLOADER-INVENTORY.txt <- analysis/BOOTLOADER-INVENTORY.txt
+#   by-name.txt <- analysis/by-name.txt
+#   DT-CHARACTERIZE.txt <- analysis/DT-CHARACTERIZE.txt
+#   E0003-LINEAGE-MATRIX.md <- analysis/E0003-LINEAGE-MATRIX.md
+#   E0005-ARCH-MAP.md <- analysis/E0005-ARCH-MAP.md
+#   E0006-DRIVER-MAP.md <- analysis/E0006-DRIVER-MAP.md
+#   E0006-PROBE-DIAGRAMS.md <- analysis/E0006-PROBE-DIAGRAMS.md
+#   E0006B-MODULE-INVENTORY.md <- analysis/E0006B-MODULE-INVENTORY.md
+#   E0006C-FIRSTSTAGE-INVENTORY.md <- analysis/E0006C-FIRSTSTAGE-INVENTORY.md
+#   kernel-parse.txt <- analysis/kernel-parse.txt
+#   lpdump-coffey-slot_b.txt <- analysis/lpdump-coffey-slot_b.txt
+#   PHASE5-BL33-ENCRYPTION-FINDING.md <- analysis/PHASE5-BL33-ENCRYPTION-FINDING.md
+#   PHASE5-BOOT-CONTAINER.md <- analysis/PHASE5-BOOT-CONTAINER.md
+#   proc-partitions.txt <- analysis/proc-partitions.txt
+#   sysfs-mmc-geometry.txt <- analysis/sysfs-mmc-geometry.txt
+#   firststage-modules.load <- dlkm/INVENTORY/firststage-modules.load
+#   system-modules.load <- dlkm/INVENTORY/system-modules.load
+#   vendor-modules.load <- dlkm/INVENTORY/vendor-modules.load
+#   vendorboot-ko-names.txt <- dlkm/INVENTORY/vendorboot-ko-names.txt
+a88b2eadcac300fc908e4e9be46e6d28d93940f980130f75595a5f52c95a7efa  ACQUISITION-PROVENANCE.txt
+9523d8e7906e85e466c03acccf280e721e2defb70bfc09f41285305fa3ae85c1  EXTRACTION-PROVENANCE.txt
+7469e19ecb2d27690ba0c8daa3337cdd67e6bdbf3b7ce97fac559ac36b1bb897  payload_properties.txt
+17779af6ad8c514dd2126f3d7c8d0ecf999e6a87f7ebda7dffac4820d812e236  META-INF-com-android-metadata.txt
+77460d27656ca2d6154777b83b0ddf63552af64d01d355b81761538557d20e5c  ANALYSIS.txt
+b744791cb9930abbaf588a25f0c9595239d9c01ec0f4519bb76bda392aecd589  BOOTLOADER-INVENTORY.txt
+577ad7140f9bb3e2873d2501ec3bdf04182ce07933db95be1c5a8af4b3439245  by-name.txt
+1a4405569e560c5eaad06d0e58760fc0a747749eb23d0708bc2bc6e708e881c8  DT-CHARACTERIZE.txt
+ef8d4b8df2e3cf06c2566b2ba0f244cd05c2fa1a195bd844bcbcbda36531297b  E0003-LINEAGE-MATRIX.md
+79e11e55b3400291007cdf834fd295a74ca13c3cbb83b1399f0ce1ebabd1c965  E0005-ARCH-MAP.md
+4fc34c065d54e1f2c4d326406a1c38c263982d2f0cc768858e93d3b705b67ba1  E0006-DRIVER-MAP.md
+c72aa9d623629d0735ea9882473433c498e7a8be23e36ab4ab3fe46095c5b0ab  E0006-PROBE-DIAGRAMS.md
+2a5330086a04326f0d0515ee66f3fa2f0488d24d21b1497edfb9b2d3e397795c  E0006B-MODULE-INVENTORY.md
+ba06259ee9b658cb025878a096acbabc355e6b0ef63246ab9cd02234321363d3  E0006C-FIRSTSTAGE-INVENTORY.md
+7b91c5c641cf4d66db811fcfc3c65c077e7002e780912a8547a4003cc1e49570  kernel-parse.txt
+d0d9a0e9a39be8ac1f29b855074b60c92c48717279a9d6036a720160b7d99b83  lpdump-coffey-slot_b.txt
+7fd2f52a081b0a11492af4ba7a691deaf9189da8e6797d2c0b7de7f288af7dc4  PHASE5-BL33-ENCRYPTION-FINDING.md
+2773d491f67198ff430c2b04d0d4a1094231db64270c7ad3edaef96448524416  PHASE5-BOOT-CONTAINER.md
+8ca49808b3626c5b5ee345a83f68408c981e66b72863c5761d42e1d8b596a8e8  proc-partitions.txt
+410fdf634af5820c134a5db69eb145a1955691d59b6822a1efa3f7d1deb88325  sysfs-mmc-geometry.txt
+ca8bfb4cc94f502305c19bc8f28e6e52a08ee5ac037fa94a69d953559d8f25d7  firststage-modules.load
+0ebf7a123decd98d4f44bad77ed95867aedad99ee90198e82f8120f4cc72e0a4  system-modules.load
+d60086c26fa646f7747d6f114035dd5e6ffacec5dba0f2e7361b15dd6a1046dc  vendor-modules.load
+5067fa51a3e477f823e964d33a8e68af335bc82918a9f9d67c76dd97d6c04a84  vendorboot-ko-names.txt

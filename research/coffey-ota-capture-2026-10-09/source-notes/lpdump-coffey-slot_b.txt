@@ -1,0 +1,180 @@
+Slot 1:
+Metadata version: 10.2
+Metadata size: 2112 bytes
+Metadata max size: 65536 bytes
+Metadata slot count: 3
+Header flags: virtual_ab_device
+Partition table:
+------------------------
+  Name: system_b
+  Group: amlogic_dynamic_partitions_b
+  Attributes: readonly,updated
+  Extents:
+    0 .. 921511 linear super 2048
+    921512 .. 921591 linear super 923568
+    921592 .. 924575 linear super 1094744
+    924576 .. 924615 linear super 2152864
+------------------------
+  Name: vendor_b
+  Group: amlogic_dynamic_partitions_b
+  Attributes: readonly,updated
+  Extents:
+    0 .. 163695 linear super 923648
+------------------------
+  Name: product_b
+  Group: amlogic_dynamic_partitions_b
+  Attributes: readonly,updated
+  Extents:
+    0 .. 1055135 linear super 1097728
+    1055136 .. 1055167 linear super 2164392
+    1055168 .. 1062159 linear super 1087344
+------------------------
+  Name: odm_b
+  Group: amlogic_dynamic_partitions_b
+  Attributes: readonly,updated
+  Extents:
+    0 .. 983 linear super 2240512
+    984 .. 991 linear super 923560
+------------------------
+  Name: system_ext_b
+  Group: amlogic_dynamic_partitions_b
+  Attributes: readonly,updated
+  Extents:
+    0 .. 114519 linear super 2242560
+    114520 .. 117207 linear super 2155696
+    117208 .. 147167 linear super 2210552
+    147168 .. 148231 linear super 2241496
+    148232 .. 148399 linear super 2357080
+    148400 .. 150367 linear super 2404432
+    150368 .. 150959 linear super 2407856
+    150960 .. 158023 linear super 2409128
+    158024 .. 158407 linear super 1094360
+    158408 .. 161199 linear super 2152904
+    161200 .. 167207 linear super 2158384
+    167208 .. 187863 linear super 2164424
+------------------------
+  Name: vendor_dlkm_b
+  Group: amlogic_dynamic_partitions_b
+  Attributes: readonly,updated
+  Extents:
+    0 .. 43095 linear super 2357248
+------------------------
+  Name: system_dlkm_b
+  Group: amlogic_dynamic_partitions_b
+  Attributes: readonly,updated
+  Extents:
+    0 .. 1455 linear super 2406400
+    1456 .. 1479 linear super 1094336
+------------------------
+  Name: odm_dlkm_b
+  Group: amlogic_dynamic_partitions_b
+  Attributes: readonly,updated
+  Extents:
+    0 .. 679 linear super 2408448
+------------------------
+  Name: system_b-cow
+  Group: cow
+  Attributes: none
+  Extents:
+    0 .. 378071 linear super 2416200
+------------------------
+  Name: vendor_b-cow
+  Group: cow
+  Attributes: none
+  Extents:
+    0 .. 98927 linear super 2794272
+------------------------
+  Name: product_b-cow
+  Group: cow
+  Attributes: none
+  Extents:
+    0 .. 837991 linear super 2893200
+------------------------
+  Name: odm_b-cow
+  Group: cow
+  Attributes: none
+  Extents:
+    0 .. 8999 linear super 3731192
+------------------------
+  Name: system_ext_b-cow
+  Group: cow
+  Attributes: none
+  Extents:
+    0 .. 150375 linear super 3740192
+------------------------
+  Name: vendor_dlkm_b-cow
+  Group: cow
+  Attributes: none
+  Extents:
+    0 .. 46239 linear super 3890568
+------------------------
+  Name: system_dlkm_b-cow
+  Group: cow
+  Attributes: none
+  Extents:
+    0 .. 9391 linear super 3936808
+------------------------
+  Name: odm_dlkm_b-cow
+  Group: cow
+  Attributes: none
+  Extents:
+    0 .. 8359 linear super 3946200
+------------------------
+Super partition layout:
+------------------------
+super: 2048 .. 923560: system_b (921512 sectors)
+super: 923560 .. 923568: odm_b (8 sectors)
+super: 923568 .. 923648: system_b (80 sectors)
+super: 923648 .. 1087344: vendor_b (163696 sectors)
+super: 1087344 .. 1094336: product_b (6992 sectors)
+super: 1094336 .. 1094360: system_dlkm_b (24 sectors)
+super: 1094360 .. 1094744: system_ext_b (384 sectors)
+super: 1094744 .. 1097728: system_b (2984 sectors)
+super: 1097728 .. 2152864: product_b (1055136 sectors)
+super: 2152864 .. 2152904: system_b (40 sectors)
+super: 2152904 .. 2155696: system_ext_b (2792 sectors)
+super: 2155696 .. 2158384: system_ext_b (2688 sectors)
+super: 2158384 .. 2164392: system_ext_b (6008 sectors)
+super: 2164392 .. 2164424: product_b (32 sectors)
+super: 2164424 .. 2185080: system_ext_b (20656 sectors)
+super: 2210552 .. 2240512: system_ext_b (29960 sectors)
+super: 2240512 .. 2241496: odm_b (984 sectors)
+super: 2241496 .. 2242560: system_ext_b (1064 sectors)
+super: 2242560 .. 2357080: system_ext_b (114520 sectors)
+super: 2357080 .. 2357248: system_ext_b (168 sectors)
+super: 2357248 .. 2400344: vendor_dlkm_b (43096 sectors)
+super: 2404432 .. 2406400: system_ext_b (1968 sectors)
+super: 2406400 .. 2407856: system_dlkm_b (1456 sectors)
+super: 2407856 .. 2408448: system_ext_b (592 sectors)
+super: 2408448 .. 2409128: odm_dlkm_b (680 sectors)
+super: 2409128 .. 2416192: system_ext_b (7064 sectors)
+super: 2416200 .. 2794272: system_b-cow (378072 sectors)
+super: 2794272 .. 2893200: vendor_b-cow (98928 sectors)
+super: 2893200 .. 3731192: product_b-cow (837992 sectors)
+super: 3731192 .. 3740192: odm_b-cow (9000 sectors)
+super: 3740192 .. 3890568: system_ext_b-cow (150376 sectors)
+super: 3890568 .. 3936808: vendor_dlkm_b-cow (46240 sectors)
+super: 3936808 .. 3946200: system_dlkm_b-cow (9392 sectors)
+super: 3946200 .. 3954560: odm_dlkm_b-cow (8360 sectors)
+------------------------
+Block device table:
+------------------------
+  Partition name: super
+  First sector: 2048
+  Size: 3355443200 bytes
+  Flags: none
+------------------------
+Group table:
+------------------------
+  Name: default
+  Maximum size: 0 bytes
+  Flags: none
+------------------------
+  Name: amlogic_dynamic_partitions_b
+  Maximum size: 3344957440 bytes
+  Flags: none
+------------------------
+  Name: cow
+  Maximum size: 0 bytes
+  Flags: none
+------------------------
