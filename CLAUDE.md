@@ -43,6 +43,8 @@ trustworthy — apply it to every lookup.
 - `research/boot-policy-packet-round2-2026-11-03/` — CVE timeline, FCC/hardware, community sweep, OTA prestage
 - `research/coffey-ota-capture-2026-10-09/` — **coffey's own OTA capture**: acquisition + identity, graded
   findings O1–O13, off-repo artifact ledger, byte-identical `source-notes/`
+- `research/coffey-cve-applicability-r4-2026-11-03/` — R3 matrix re-run against coffey's own kernel source
+  (`3d26c188ef7e`) and OTA images
 - `research/codex-task-list*.md` — task blocks handed to the second agent ("Chat")
 - `STATUS.md` / `progress.json` — the dashboard (confirmed / hard walls / priority vectors / dead ends)
 - `probes/README.md` — **design doc (not yet built)** for a probe→capture→ledger harness; build the minimal
@@ -51,8 +53,8 @@ trustworthy — apply it to every lookup.
 ## Three tracks, one line each
 
 - **Telemetry:** mostly done for coffey; scenarios D/E/F + overnight pending.
-- **Runtime root:** per-boot only, kernel-memory-safety is the sole live lane; GhostLock/CVE-2026-43499 is a
-  *dated candidate* for coffey (SPL 2026-03 predates the fix) — confirm against coffey's own kernel. Runtime
+- **Runtime root:** per-boot only, kernel-memory-safety is the sole live lane. Against coffey's own kernel
+  (R4): GhostLock/CVE-2026-43499 affected code **present** (`P`); the epoll pair **not applicable**. Runtime
   root ≠ custom ROM (needs bootloader unlock).
 - **Boot-policy:** public surface mapped and bounded; coffey artifacts captured (Phase A done); B/D/E/F next.
 
@@ -62,8 +64,8 @@ coffey's own OTA, kernel, DTB, and `systemcontrol` ELF were captured on the main
 and ingested on 2026-11-03: [`research/coffey-ota-capture-2026-10-09/`](research/coffey-ota-capture-2026-10-09/).
 Build verified: `onn/coffey/coffey:14/URO4.260304.011.B1/15051976` (SPL 2026-03-01); kernel GKI
 `5.15.196-android14-11-g3d26c188ef7e-ab14657224`. The bytes live off-repo (maintainer's `E:\Morphe\device\coffey-ota\`)
-and are pinned in that packet's ledger. Next uses: CVE applicability against this exact kernel, then
-`systemcontrol` and boot-policy Phases B/D/E/F.
+and are pinned in that packet's ledger. CVE applicability against this exact kernel is done (R4); next uses
+are `systemcontrol` and boot-policy Phases B/D/E/F.
 
 ## Working conventions
 

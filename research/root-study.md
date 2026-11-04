@@ -83,6 +83,14 @@ exact kernel (built early 2026, missing several bulletins) surfaced two confirme
 > closed). Resolve by diffing coffey's extracted kernel history for the epoll functions, not by the version
 > string alone.
 
+> **Resolved (2026-11-03, R4 —
+> [`coffey-cve-applicability-r4-2026-11-03/`](coffey-cve-applicability-r4-2026-11-03/INDEX.md)): neither epoll
+> CVE applies to coffey's shipped kernel (`P`).** coffey runs GKI `ab14657224` = `kernel/common` commit
+> `3d26c188ef7e` (branch point of `android14-5.15-2026-01`, 5.15.196). Its `fs/eventpoll.c` lacks the refcount
+> refactor that introduced both bugs on 5.15 (stable `f2451def…`, 5.15.209). The `android14-5.15` branch tip
+> (5.15.216) has it, which is the likely source of the "present" claim above. Keep watching: a newer coffey
+> OTA on a later GKI release would change this.
+
 **Honest blockers.** The public exploits are **x86_64** and built on **libxdk** (Google kernelCTF's
 exploitation library), whose post-exploitation primitives (KASLR leak, cross-cache, ROP) are x86-only. The
 *trigger* is generic and portable; the *post-exploitation* is from-scratch **arm64** work. The CVE-2026-43074
@@ -108,6 +116,10 @@ A public write-up (see Credits: Acheron) documents a per-boot kernel root on the
   inference)**, a third candidate n-day alongside the epoll pair. Not a vulnerable-code proof: an OEM could
   backport ahead of the ASB, and SPL does not prove the `vmlinux` contents — confirm against coffey's own
   extracted kernel (`rtmutex.c` control flow / build ID) before calling it affected.
+  **Resolved (2026-11-03, R4): affected code present in coffey's kernel (`P`).** coffey's `rtmutex.c` at
+  `3d26c188ef7e` is blob `be1042f31…`, exactly the pre-image of the published fix (`74b647b4` / GKI
+  `8d140868`): `remove_waiter()` still uses `current` instead of `waiter->task`. This is an applicability
+  result only; reachability under coffey's SELinux/seccomp policy and exploitability were not assessed.
 - **Why it does not drop in:** the exploit is **build-, offset-, and RAM-specific**. The Pro has a different
   SoC and ~3 GB RAM (vs coffey's S905X5M); the published binary is built for the Pro's kernel hash and would
   need rebuilding from the family sources with new offsets, plus re-derived spray/reclaim geometry for
@@ -175,10 +187,11 @@ the next owner-researcher; we do not reproduce or host the exploit.
 
 - The **bootloader is genuinely welded** (bootloader-enforced, not a flippable software flag).
 - The **userland factory-tool doors are real but SELinux-boxed** (system-UID, not root).
-- The **live path to root is a kernel memory-safety bug**; two confirmed-applicable epoll CVEs exist (plus a
-  third candidate, the GhostLock futex-PI CVE-2026-43499, demonstrated on the sibling 4K Pro — see D-bis), but
-  turning them into a working **arm64** root on this device is substantial, un-finished exploit-development
-  — and will be done in the emulator first. Nothing here has been run against a device to gain root.
+- The **live path to root is a kernel memory-safety bug**. Against coffey's own kernel (R4, 2026-11-03) the
+  GhostLock futex-PI bug CVE-2026-43499 is **present** (`P`), as is the lower-impact futex-keying bug
+  CVE-2026-99169. The two epoll CVEs are **not** present in this build. Turning them into a working **arm64**
+  root on this device is substantial, un-finished exploit-development — and will be done in the emulator
+  first. Nothing here has been run against a device to gain root.
 - This is a **learning project on owned hardware**, published so the next owner-researcher starts further
   along. We do not publish firmware, vendor code, or working exploits.
 
