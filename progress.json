@@ -41,7 +41,8 @@
     {"id": "C11", "grade": "P", "claim": "kernel GKI 5.15.196-android14-11-g3d26c188ef7e-ab14657224 built 2026-01-03; vendor modules built against a different kernel build"},
     {"id": "C12", "grade": "P", "claim": "Amlogic vendor driver stack (not mainline); base DT s7d_s905x5m_bm202, PSCI 0.2, 2 GiB usable"},
     {"id": "C13", "grade": "P/H", "claim": "bootloader = signed Amlogic container S7D-s905x5m-26030511BBST; stage bodies opaque (encrypted vs packed unresolved)"},
-    {"id": "C14", "grade": "P", "claim": "kernel source = kernel/common 3d26c188ef7e (android14-5.15-2026-01 branch point); CVE-2026-43499 + CVE-2026-99169 affected code present; Bad Epoll, CVE-2026-43074, -23259, -99221 not applicable"}
+    {"id": "C14", "grade": "P", "claim": "kernel source = kernel/common 3d26c188ef7e (android14-5.15-2026-01 branch point); CVE-2026-43499 + CVE-2026-99169 affected code present; Bad Epoll, CVE-2026-43074, -23259, -99221 not applicable"},
+    {"id": "C15", "grade": "P/U", "claim": "root systemcontrol HIDL service (setBootEnv, writeSysfs, key/property writes) reachable at SELinux layer by untrusted_app/untrusted_app_32 (not shell/adbd); no caller-identity API imported; own policy cannot write bootloader/boot/vbmeta/super/misc/param; end-to-end untested"}
   ],
   "hard_walls": [
     "welded bootloader (signed ROM/BL2) -> no flash/persistence/custom-ROM",
@@ -63,7 +64,9 @@
     {"rank": 5, "vector": "darkknight provenance-backed OTA (build-identity comparator)", "state": "U",
      "next": "capture from darkknight real update flow; match build identity"},
     {"rank": 6, "vector": "twilight A14 OTA systemcontrol ELF comparator", "state": "deprioritized",
-     "next": "coffey's own systemcontrol ELF is in hand; twilight only as a later cross-device comparison"}
+     "next": "coffey's own systemcontrol ELF analyzed (C15); twilight only as a cross-device comparison"},
+    {"rank": 7, "vector": "systemcontrol app-reachability (C15)", "state": "P-policy-U-end-to-end",
+     "next": "disclosure decision first; any device confirmation is a separate maintainer-approved proposal (track section 6), never a write method"}
   ],
   "dead_ends": [
     "newer public A12-14 CPQControl/systemcontrol source (all 1 branch + 67 tags, AOSP yukawa, ROM-dump set)",

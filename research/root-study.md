@@ -38,7 +38,10 @@ the researcher's own repo) — never an aggregator summary.
 The OEM-unlock state is an Amlogic **U-Boot environment variable** (`lock`, an 8-field bitfield), read and
 written through the vendor **SystemControl** service's `get/setBootEnv`, stored on the `env` partition. A
 system-context caller can reach that write path, and the env writer applies **no protected-variable
-filter**. *However*, Amlogic's production/secure boot either ignores the env unlock bits (non-DEV board
+filter**. *(Update 2026-11-03, from coffey's own policy and binary —
+[`coffey-systemcontrol-authz-2026-11-03/`](coffey-systemcontrol-authz-2026-11-03/INDEX.md): the shipped SELinux
+policy also lets third-party `untrusted_app` domains reach the service, `shell`/adbd cannot; the writer checks
+only the `ubootenv.var.` key prefix; no protected-key list is visible in its strings.)* *However*, Amlogic's production/secure boot either ignores the env unlock bits (non-DEV board
 variants) or enforces a **"force locked"** consistency check that halts boot if the lock vars are tampered.
 **Conclusion:** the weld is enforced in the signed bootloader, not merely in a software flag — so a naive
 env flip is at best a no-op and at worst a soft-brick. Documented, **not attempted on-device.**

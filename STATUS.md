@@ -3,7 +3,7 @@
 > Single front page for where the study stands. Evidence-weighted and deliberately candid: a documented
 > enforcement boundary is a result, and un-met goals are stated plainly. Grades use **P** inspected primary ·
 > **R** first-hand report · **B** inherited baseline · **H** hypothesis/lead · **U** unresolved. Updated
-> 2026-11-03 (coffey OTA capture ingested; CVE applicability R4). Machine-readable mirror: [`progress.json`](progress.json).
+> 2026-11-03 (coffey OTA capture ingested; CVE applicability R4; systemcontrol authorization). Machine-readable mirror: [`progress.json`](progress.json).
 
 Device: **onn 4K Plus Streaming** (`coffey` / `DV6116N` / `CS116K4`), Amlogic **S905X5M** (S7D), Android 14,
 kernel `5.15.196-android14-11-g3d26c188ef7e-ab14657224` (GKI, built 2026-01-03), SPL `2026-03-01`, build
@@ -39,6 +39,7 @@ been done. Nothing here demonstrates a bypass.
 | C12 | coffey runs the Amlogic **vendor** driver stack (DT compatibles match CoreELEC `common_drivers`, not mainline); base DT `s7d_s905x5m_bm202`, PSCI 0.2, 2 GiB usable | P | `…/COFFEY-OTA-FINDINGS.md` O4–O6 |
 | C13 | Bootloader = signed Amlogic container (build `S7D-s905x5m-26030511BBST`); every stage body after the headers is opaque | P (layout) / H (encrypted vs. packed) | `…/COFFEY-OTA-FINDINGS.md` O7–O9 |
 | C14 | coffey kernel source = `kernel/common` `3d26c188ef7e` (branch point of `android14-5.15-2026-01`). **CVE-2026-43499 (GhostLock) and CVE-2026-99169 affected code present**; Bad Epoll, CVE-2026-43074, -23259, -99221 **not applicable** | P | `research/coffey-cve-applicability-r4-2026-11-03/` |
+| C15 | Root `systemcontrol` HIDL service (`setBootEnv`, `writeSysfs`, key/property writes among ~300 methods) is **reachable at the SELinux layer by third-party apps** (`untrusted_app`, `untrusted_app_32`), not by `shell`/adbd; no caller-identity API imported (in-process check absent: H); its own policy can't write bootloader/boot/vbmeta/super/misc/param partitions | P (policy, imports) / U (end-to-end) | `research/coffey-systemcontrol-authz-2026-11-03/` |
 
 ## Hard walls (what blocks us)
 
@@ -60,7 +61,8 @@ been done. Nothing here demonstrates a bypass.
 | 3 | ~~Two epoll CVEs (Bad Epoll / CVE-2026-43074) arm64 root~~ | **closed — not applicable to coffey's build** (R4) | see dead ends; re-check only if coffey takes an OTA to a newer GKI release |
 | 4 | **UART / serial-console path to the env/misc/param wall** | **H — candidate pads found** | match board rev to owner's retail unit label, then continuity/scope-probe the actual board |
 | 5 | darkknight provenance-backed OTA (build-identity comparator) | U | capture from darkknight's real update flow, match build identity |
-| 6 | twilight (Box S 3rd Gen) A14 OTA — `systemcontrol` ELF comparator | **deprioritized** — coffey's own `systemcontrol` ELF is now in hand | only useful as a cross-device comparison after coffey's ELF is analyzed |
+| 6 | twilight (Box S 3rd Gen) A14 OTA — `systemcontrol` ELF comparator | **deprioritized** — coffey's own ELF analyzed (C15) | only useful as a cross-device comparison (does the same policy ship elsewhere?) |
+| 7 | **`systemcontrol` app-reachability (C15)** | P policy / U end-to-end | **disclosure decision first**; any device-side confirmation is a separate, maintainer-approved proposal under track §6, and never a write method |
 
 ## Dead ends / closed vectors (bounded negatives — do not re-run)
 

@@ -210,7 +210,16 @@ input from writable copies/reseeds.
 **Acceptance:** `COFFEY-ODMEXT-CONSUMERS.md` consumer graph, proven vs possible edges; no assumed path from
 shell-controlled bytes to a privileged parser.
 
-### Phase F — Finish PQ/HIDL caller authorization  _(donor search done + bounded 2026-11-02/03; unblocked 2026-11-03 — coffey's own `vendor/bin/systemcontrol` (350,020 B, `aec8998d…`) + HIDL `systemcontrol@1.0/1.1` libs are extracted; not yet analyzed. The twilight comparator below is no longer needed for this phase)_
+### Phase F — Finish PQ/HIDL caller authorization  _(status: DONE offline — 2026-11-03, [`coffey-systemcontrol-authz-2026-11-03/COFFEY-PQ-AUTHORIZATION.md`](coffey-systemcontrol-authz-2026-11-03/COFFEY-PQ-AUTHORIZATION.md); end-to-end app reachability `U`, device-gated)_
+> **Result (P unless noted):** `systemcontrol` runs as root and registers HIDL `ISystemControl` @1.0/@1.1
+> (290/306 methods, incl. `setBootEnv`, `writeSysfs`, `writeUnifyKey`, `setProperty`). coffey's loaded policy
+> (CIL stamps match `odm` `precompiled_sepolicy`) lets **`untrusted_app` / `untrusted_app_32` find and call
+> it**, via explicit vendor rules. `shell`/adbd can't. The binary imports no caller-identity API (no in-process
+> check evident, `H`); the env writer checks only the `ubootenv.var.` prefix. The service's own policy denies
+> writes to bootloader/boot/vbmeta/super/misc/param/frp/factory and gives it no `CAP_SYS_ADMIN` or mount.
+> Inherited offset `0x80cd8` is outside this ELF. Disclosure is advisable before publishing.
+
+_Original agenda, kept for reference:_
 A search for a newer public `systemcontrol`/`CPQControl` closer to Android 14 found **none**, and the negative
 is now **bounded** (v2 re-sweep,
 [`…/COFFEY-PQ-ANCHORS-AD14-DELTA-v2.md`](boot-policy-packet-2026-11-02/public-lookups-addendum/COFFEY-PQ-ANCHORS-AD14-DELTA-v2.md)):

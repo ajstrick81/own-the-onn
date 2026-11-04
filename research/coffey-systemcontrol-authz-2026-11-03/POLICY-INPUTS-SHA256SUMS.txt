@@ -1,0 +1,11 @@
+# SELinux policy inputs used for COFFEY-PQ-AUTHORIZATION.md (NOT committed; vendor/AOSP policy text).
+# Source: coffey OTA URO4.260304.011.B1 partitions, unpacked read-only. Paths are partition-relative.
+# odm precompiled_sepolicy stamps equal the plat/system_ext/product *_and_mapping.sha256 values, so these
+# CIL files are the policy the device loads.
+4ef1914e10f9c8751da8560c1ae83ba410d54191898493f8a5a985b5bdd9003b  system/etc/selinux/plat_sepolicy.cil
+cd235de61572c5ac780f62ce34daf1b14906d31655246f8679159721a4c2fd00  system/etc/selinux/mapping/34.0.cil
+c6488bcd2adf11c66268ba4173327f26b830ef926529a557d5babfb1a7ddaeb4  system_ext/etc/selinux/system_ext_sepolicy.cil
+39bccdb6d45a23fec2c0f57ec832285456d246f7e1f61a24f4d7609b8a97cb7e  system_ext/etc/selinux/mapping/34.0.cil
+26b4acc6eed83345dedc31bff8500eb85f8c696a71a49f5ebb1c75a6618f8125  product/etc/selinux/product_sepolicy.cil
+bbe4d7c70d83982cc82deffd01d55b975ea0b568b3bfac5817f1ba3f2f47864a  vendor/etc/selinux/vendor_sepolicy.cil
+535dc363051fdea3e0baf39261868895160ec11741f50802a7b8e426a7afd57f  odm/etc/selinux/precompiled_sepolicy
