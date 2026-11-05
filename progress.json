@@ -14,8 +14,8 @@
   },
   "grades": "P=inspected-primary R=first-hand-report B=inherited-baseline H=hypothesis-lead U=unresolved",
   "milestones": [
-    {"track": "telemetry", "goal": "what the box sends by itself", "score": 7, "max": 10,
-     "note": "one device; scenarios D/E/F + overnight pending"},
+    {"track": "telemetry", "goal": "what the box sends by itself", "score": 8, "max": 10,
+     "note": "A/Z/C/Z2/D/F summarized via probe (PF-5, PF-6); E voice, B screensaver, LAN-side scan still to capture"},
     {"track": "root-runtime", "goal": "per-boot kernel root on coffey", "score": 1, "max": 10,
      "note": "GhostLock affected code confirmed in coffey kernel (P); no coffey exploit attempted"},
     {"track": "boot-policy", "goal": "map the weld; can coffey boot CoreELEC", "score": 2, "max": 10,

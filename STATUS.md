@@ -14,7 +14,7 @@ kernel `5.15.196-android14-11-g3d26c188ef7e-ab14657224` (GKI, built 2026-01-03),
 
 | Track | Goal | Score |
 |---|---|---|
-| Telemetry audit | What the box sends by itself | **7/10** — one device, scenarios D/E/F + overnight pending |
+| Telemetry audit | What the box sends by itself | **8/10** — A/Z/C/Z2/D/F summarized via probe (PF-5, PF-6); E (voice), B (screensaver) and the LAN-side scan still to capture |
 | Root (runtime) | Per-boot kernel root on coffey | **1/10** — GhostLock affected code confirmed in coffey's kernel (P); no coffey exploit attempted |
 | Boot-policy / alternate-OS | Map the weld; can coffey boot CoreELEC | **2/10** — all six phases done to the offline ceiling (A, B to plaintext, C, D, E, F); the weld itself is untouched and BL33's decisions stay U |
 

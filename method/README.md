@@ -25,9 +25,18 @@ with apktool/jadx. Search for `AudioRecord`, `MediaProjection`, `TvInputManager`
    Import the printed client config into the official WireGuard app on the onn and switch it on.
 2. The addon marks **every** TLS/QUIC handshake `ignore_connection`, so traffic passes through byte-for-byte. It logs
    only DNS questions, TLS SNI and destinations. Apps behave as if the tunnel weren't there.
-3. Record scenario windows in `markers.txt` (`<start_epoch> <end_epoch|now> <label>`).
-   `tools/sleep_watch.sh` closes the open window automatically when the onn goes to sleep.
-4. Summarize with `python tools/summarize.py [label…]`.
+3. Record scenario windows in `markers.txt` (`<start_epoch> <end_epoch|now> <label>`) with
+   `python tools/mark.py <capture-dir> start <label>` / `stop`. For overnight runs,
+   `python tools/sleep_watch.py <capture-dir>` keeps the PC awake (Windows) and opens the asleep window when the onn
+   sleeps; stop it with Ctrl+C. (It replaces `tools/sleep_watch.sh`; adb path and serial come from
+   `probes/local-inputs.json`.)
+4. Right after a window, run the read-only device probe `python -I tools/run_probe.py telemetry/device-context`
+   (wake state, uptime, recent microphone app-ops; needed for E). After an F reboot, save the boot log outside the
+   repo (`adb logcat -d -b all > F_boot_logcat.txt`) and run `collection/factorytool-boot logcat=<that file>`.
+5. Commit summaries through the probe, not by hand:
+   `python -I tools/run_probe.py telemetry/window-summary capture=<study.jsonl> markers=<markers.txt>`.
+   It masks per-device hostname tokens and drops IPs. `tools/summarize.py` remains for quick local looks.
+   Run `python tools/privacy_scan.py` before every commit.
 
 Why WireGuard rather than PCAPdroid: it's already used on the device, nothing extra needs installing, and Android
 routes system-UID traffic through it too. Limitation (shared with PCAPdroid): it doesn't see LAN-local traffic such as

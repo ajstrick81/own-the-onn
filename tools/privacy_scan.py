@@ -6,12 +6,14 @@ Pass your own SSID, device serial and so on as extra literals to check for them 
 import pathlib, re, subprocess, sys
 
 PATTERNS = {
-    "MAC address": r"\b[0-9A-Fa-f]{2}([:-])[0-9A-Fa-f]{2}(\1[0-9A-Fa-f]{2}){4}\b",
+    # exactly six hex pairs: not part of a longer colon-hex chain such as a certificate fingerprint
+    "MAC address": r"(?<![0-9A-Fa-f][:-])\b[0-9A-Fa-f]{2}([:-])[0-9A-Fa-f]{2}(\1[0-9A-Fa-f]{2}){4}\b(?![:-][0-9A-Fa-f])",
     "global IPv6": r"\b2[0-9a-f]{3}:[0-9a-f]{1,4}:[0-9a-f]{1,4}:[0-9a-f]{1,4}:",
     "private IPv4": r"\b(192\.168|10\.\d{1,3}|172\.(1[6-9]|2\d|3[01]))\.\d{1,3}\.\d{1,3}\b",
     "SSID/BSSID field": r"\b(B?SSID)[\"']?\s*[:=]\s*\"?[^\s\",<]+",
     "android_id/adid value": r"\b(android_id|advertising_id|adid)\s*[=:]\s*[0-9a-f-]{8,}",
-    "email": r"[\w.+-]+@[\w-]+\.[\w.]+",
+    # domain must start with a letter: skips HIDL versions (foo@1.0.so) and DT node names (fragment@0.dtb)
+    "email": r"[\w.+-]+@[A-Za-z][\w-]*\.[A-Za-z][\w.-]*",
 }
 ALLOW = [r"example\.com", r"noreply@", r"10\.0\.0\.(1|53)\b"]  # documented tunnel addresses
 

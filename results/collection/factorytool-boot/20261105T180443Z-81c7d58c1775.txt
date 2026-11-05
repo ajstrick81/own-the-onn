@@ -1,0 +1,57 @@
+# probe: collection/factorytool-boot @ 299c766bb7e4bf8717975fa8388ae20cc6ddae951ad1d6c85b9ac9acb32ae0d2
+# class: host
+# inputs:
+#   logcat (file): sha256=25d334bad286cab3cac840ae46df15dd7da8b6138b3494cc628bdda82e45503d size=1878200
+# tools: python 3.13.7; os Windows
+# run: 2026-11-05T18:04:43Z
+# body-sha256: 81c7d58c1775b1ff3c2f71edb8827d23c63237ea5feea16721220276aed0dcb7
+# ---
+{
+ "boot_markers": {
+  "boot_completed": 23,
+  "zygote_start": 15
+ },
+ "factorytool_prop_lines": [],
+ "grade": "P",
+ "lines_total": 15085,
+ "pattern_counts": {
+  "factory_tester_apk": 0,
+  "factorytool_prop": 0,
+  "hwinfo_package": 10,
+  "mes_upload": 0,
+  "otg_device_env": 3,
+  "other_gretzky": 11,
+  "start_temp_service": 1
+ },
+ "probe": "collection/factorytool-boot",
+ "process_or_service_starts": [
+  "09-26 12:16:11.376 I/ActivityManager(  666): Start proc 1914:com.gretzky.hwinfo/1000 for broadcast {com.gretzky.hwinfo/com.gretzky.hwinfo.FactoryBootReceiver}"
+ ],
+ "sample_lines": [
+  "09-26 12:15:48.035 I/        (    0): [0 T0     ..] Kernel command line: console=ttynull stack_depot_disable=on cgroup_disable=pressure kasan.page_alloc.sample=10 kasan.stacktrace=off bootconfig ioremap_guard kvm-arm.mode=protected init=/init loop.max_part=4 loglevel=1 console=ttyS0,921600 no_console_suspend earlycon=aml_uart,0xfe07a000 scramble_reg=0xfe02e030 cma_first_wm_low=on otg_device=1 cpufreq.default_governor=performance logo=osd0,loaded,0x1f800000 vout=2160p60hz,enable connector0_type=HDMI-A-A hdmitx=,420,10bit hdmimode=none hdmichecksum=0x2ac30000 dolby_vision_on=3 hdr_priority=268435456 config_csc_en= hdr_force_mode= dolby_status=1 frac_rate_policy=1 cvbsmode=dummy_l osd_reverse=0 video_reverse=0 jtag=disable kvm-arm.mode=none board=coffey init_on_alloc=0 mac=<mac> reboot_mode=normal",
+  "09-26 12:15:48.035 I/        (    0): [0 T0     ..] Unknown kernel command line parameters \"scramble_reg=0xfe02e030 cma_first_wm_low=on otg_device=1 logo=osd0,loaded,0x1f800000 vout=2160p60hz,enable connector0_type=HDMI-A-A hdmitx=,420,10bit hdmimode=none hdmichecksum=0x2ac30000 dolby_vision_on=3 hdr_priority=268435456 config_csc_en= hdr_force_mode= dolby_status=1 frac_rate_policy=1 cvbsmode=dummy_l osd_reverse=0 video_reverse=0 jtag=disable board=coffey mac=<mac> reboot_mode=normal\", will be passed to user space.",
+  "09-26 12:15:48.225 D/        (    0): [0 T1     ..]     otg_device=1",
+  "09-26 12:16:02.919 D/SystemServerTimingAsync(  666): InitThreadPoolExec:Update app-ops uidState in case package com.gretzky.GlobalKey changed",
+  "09-26 12:16:02.919 D/SystemServerTimingAsync(  666): InitThreadPoolExec:Update app-ops uidState in case package com.gretzky.hwinfo changed",
+  "09-26 12:16:02.923 D/SystemServerTimingAsync(  666): InitThreadPoolExec:Update app-ops uidState in case package com.gretzky.GlobalKey changed",
+  "09-26 12:16:02.924 D/SystemServerTimingAsync(  666): InitThreadPoolExec:Update app-ops uidState in case package com.gretzky.hwinfo changed",
+  "09-26 12:16:04.325 V/StorageManagerService(  666): Package com.gretzky.GlobalKey does not have legacy storage",
+  "09-26 12:16:04.348 V/StorageManagerService(  666): Package com.gretzky.hwinfo does not have legacy storage",
+  "09-26 12:16:11.375 I/am_proc_start(  666): [0,1914,1000,com.gretzky.hwinfo,broadcast,{com.gretzky.hwinfo/com.gretzky.hwinfo.FactoryBootReceiver}]",
+  "09-26 12:16:11.376 I/ActivityManager(  666): Start proc 1914:com.gretzky.hwinfo/1000 for broadcast {com.gretzky.hwinfo/com.gretzky.hwinfo.FactoryBootReceiver}",
+  "09-26 12:16:11.506 I/am_proc_bound(  666): [0,1914,com.gretzky.hwinfo]",
+  "09-26 12:16:15.629 W/ContextImpl( 1914): Calling a method in the system process without a qualified user: android.app.ContextImpl.startService:1899 android.content.ContextWrapper.startService:825 android.content.ContextWrapper.startService:825 com.gretzky.hwinfo.FactoryBootReceiver.b:28 com.gretzky.hwinfo.FactoryBootReceiver.onReceive:79",
+  "09-26 12:16:27.871 I/am_proc_start(  666): [0,3154,1000,com.gretzky.GlobalKey,broadcast,{com.gretzky.GlobalKey/com.gretzky.GlobalKey.BootComplete}]",
+  "09-26 12:16:27.871 I/ActivityManager(  666): Start proc 3154:com.gretzky.GlobalKey/1000 for broadcast {com.gretzky.GlobalKey/com.gretzky.GlobalKey.BootComplete}",
+  "09-26 12:16:27.924 I/am_proc_bound(  666): [0,3154,com.gretzky.GlobalKey]",
+  "09-26 12:16:34.620 I/ActivityManager(  666): Waited long enough for: ServiceRecord{4f95252 u0 com.gretzky.hwinfo/.StartTempService}",
+  "09-26 12:16:40.131 I/am_pss  (  666): [1914,1000,com.gretzky.hwinfo,4547584,2224128,1596416,47472640,0,10,4]",
+  "09-26 12:16:48.447 I/am_pss  (  666): [3154,1000,com.gretzky.GlobalKey,3632128,114688,2950144,41631744,0,19,4]",
+  "09-26 12:17:00.554 I/am_pss  (  666): [1914,1000,com.gretzky.hwinfo,3956736,372736,2970624,44699648,0,10,4]",
+  "09-26 12:17:02.723 D/ActivityManager(  666): freezing 3154 com.gretzky.GlobalKey",
+  "09-26 12:17:02.723 I/am_freeze(  666): [3154,com.gretzky.GlobalKey]",
+  "09-26 12:17:02.769 I/am_compact(  666): [3154,com.gretzky.GlobalKey,ANON,40824,26180,14132,25052,-1352,0,-1352,1352,32,SOME,0,999,19,173780,0]",
+  "09-26 12:17:12.622 I/am_pss  (  666): [3154,1000,com.gretzky.GlobalKey,3662848,8192,3130368,40267776,0,19,4]"
+ ],
+ "sample_truncated": false
+}

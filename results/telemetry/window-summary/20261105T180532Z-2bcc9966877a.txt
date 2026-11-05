@@ -1,0 +1,1421 @@
+# probe: telemetry/window-summary @ ba3539bb71df6eddadbc5a8a95f0a7cfda059f0337ad1cd51f84a10cef2a44fc
+# class: host
+# inputs:
+#   capture (file): sha256=cf3ee167b67b1ab58bb6a0635d53b7fe95481036e8ab3497a1e523dc6e449573 size=985134
+#   markers (file): sha256=5bbea5191341e3d850f14a94ad6551373f33b028833961b31ab330bff47fb7cf size=820
+# tools: python 3.13.7; os Windows
+# run: 2026-11-05T18:05:32Z
+# body-sha256: 2bcc9966877aa6c806cd31d53fe55e3af5ade178ae958bcdceda0fe385d8190c
+# ---
+{
+ "grade": "P",
+ "probe": "telemetry/window-summary",
+ "records_total": 6801,
+ "windows": [
+  {
+   "connections": 24,
+   "connections_per_h": 72,
+   "direct_dns": [],
+   "end_inferred": false,
+   "http_plaintext": [
+    {
+     "count": 20,
+     "host_method": "connectivitycheck.gstatic.com HEAD"
+    }
+   ],
+   "label": "A-awake idle-home (20 min, then sleep timeout)",
+   "minutes": 20.0,
+   "non_443_ports": [
+    {
+     "count": 1,
+     "port": "5228"
+    }
+   ],
+   "records": 106,
+   "scenario": "A-awake",
+   "top_hosts": [
+    {
+     "count": 20,
+     "host": "connectivitycheck.gstatic.com"
+    },
+    {
+     "count": 6,
+     "host": "play.googleapis.com"
+    },
+    {
+     "count": 4,
+     "host": "android.googleapis.com"
+    },
+    {
+     "count": 4,
+     "host": "embeddedassistant.googleapis.com"
+    },
+    {
+     "count": 3,
+     "host": "androidtvlauncherxfe-pa.googleapis.com"
+    },
+    {
+     "count": 3,
+     "host": "mobile-collector.newrelic.com"
+    },
+    {
+     "count": 3,
+     "host": "www.youtube.com"
+    },
+    {
+     "count": 2,
+     "host": "census-app.scorecardresearch.com"
+    },
+    {
+     "count": 2,
+     "host": "download.wireguard.com"
+    },
+    {
+     "count": 2,
+     "host": "firebaselogging-pa.googleapis.com"
+    },
+    {
+     "count": 2,
+     "host": "firebaselogging.googleapis.com"
+    },
+    {
+     "count": 2,
+     "host": "gql.twitch.tv"
+    },
+    {
+     "count": 2,
+     "host": "mtalk.google.com"
+    },
+    {
+     "count": 2,
+     "host": "o278969.ingest.sentry.io"
+    },
+    {
+     "count": 2,
+     "host": "science-output.s3.amazonaws.com"
+    },
+    {
+     "count": 2,
+     "host": "spade.twitch.tv"
+    },
+    {
+     "count": 2,
+     "host": "watch-cdn.product.api.espn.com"
+    }
+   ],
+   "unique_dns_names": 16,
+   "unique_endpoints": 33
+  },
+  {
+   "connections": 96,
+   "connections_per_h": 173,
+   "direct_dns": [
+    {
+     "count": 2,
+     "to": "8.8.8.8:53"
+    }
+   ],
+   "end_inferred": false,
+   "http_plaintext": [
+    {
+     "count": 33,
+     "host_method": "connectivitycheck.gstatic.com HEAD"
+    }
+   ],
+   "label": "Z-asleep screen-off (33 min, network up)",
+   "minutes": 33.3,
+   "non_443_ports": [
+    {
+     "count": 2,
+     "port": "53"
+    },
+    {
+     "count": 2,
+     "port": "123"
+    },
+    {
+     "count": 2,
+     "port": "5228"
+    },
+    {
+     "count": 2,
+     "port": "8882"
+    }
+   ],
+   "records": 338,
+   "scenario": "Z-asleep",
+   "top_hosts": [
+    {
+     "count": 39,
+     "host": "connectivitycheck.gstatic.com"
+    },
+    {
+     "count": 11,
+     "host": "embeddedassistant.googleapis.com"
+    },
+    {
+     "count": 10,
+     "host": "play.googleapis.com"
+    },
+    {
+     "count": 9,
+     "host": "logs.netflix.com"
+    },
+    {
+     "count": 8,
+     "host": "mobile-collector.newrelic.com"
+    },
+    {
+     "count": 7,
+     "host": "occ-0-7091-92.1.nflxso.net"
+    },
+    {
+     "count": 6,
+     "host": "api-global.netflix.com"
+    },
+    {
+     "count": 6,
+     "host": "play-lh.googleusercontent.com"
+    },
+    {
+     "count": 5,
+     "host": "graph.facebook.com"
+    },
+    {
+     "count": 5,
+     "host": "nrdp26.logs.netflix.com"
+    },
+    {
+     "count": 4,
+     "host": "clients3.google.com"
+    },
+    {
+     "count": 4,
+     "host": "filters.adtidy.org"
+    },
+    {
+     "count": 4,
+     "host": "nrdp26.push.prod.netflix.com"
+    },
+    {
+     "count": 4,
+     "host": "o278969.ingest.sentry.io"
+    },
+    {
+     "count": 4,
+     "host": "prod-lt-playstoregatewayadapter-pa.googleapis.com"
+    },
+    {
+     "count": 4,
+     "host": "sb.adtidy.org"
+    },
+    {
+     "count": 4,
+     "host": "science-output.s3.amazonaws.com"
+    },
+    {
+     "count": 4,
+     "host": "watch-cdn.product.api.espn.com"
+    },
+    {
+     "count": 4,
+     "host": "www.youtube.com"
+    },
+    {
+     "count": 3,
+     "host": "mtalk.google.com"
+    },
+    {
+     "count": 3,
+     "host": "nc-mqtt.nordvpn.com"
+    },
+    {
+     "count": 3,
+     "host": "nrdp26.prod.ftl.netflix.com"
+    },
+    {
+     "count": 2,
+     "host": "analytics-ingestion-v3.main-production-custom.production.k8s.tubi.io"
+    },
+    {
+     "count": 2,
+     "host": "android.googleapis.com"
+    },
+    {
+     "count": 2,
+     "host": "applytics.napps-1.com"
+    },
+    {
+     "count": 2,
+     "host": "applytics.napps-3.com"
+    },
+    {
+     "count": 2,
+     "host": "census-app.scorecardresearch.com"
+    },
+    {
+     "count": 2,
+     "host": "clients4.google.com"
+    },
+    {
+     "count": 2,
+     "host": "downloads.napps-1.com"
+    },
+    {
+     "count": 2,
+     "host": "firebaseremoteconfig.googleapis.com"
+    },
+    {
+     "count": 2,
+     "host": "firebaseremoteconfigrealtime.googleapis.com"
+    },
+    {
+     "count": 1,
+     "host": "android.clients.google.com"
+    },
+    {
+     "count": 1,
+     "host": "i.ytimg.com"
+    },
+    {
+     "count": 1,
+     "host": "napps-1.com"
+    },
+    {
+     "count": 1,
+     "host": "play-fe.googleapis.com"
+    },
+    {
+     "count": 1,
+     "host": "playstoregatewayadapter-pa.googleapis.com"
+    },
+    {
+     "count": 1,
+     "host": "pool.ntp.org"
+    },
+    {
+     "count": 1,
+     "host": "time.android.com"
+    }
+   ],
+   "unique_dns_names": 38,
+   "unique_endpoints": 81
+  },
+  {
+   "connections": 980,
+   "connections_per_h": 673,
+   "direct_dns": [
+    {
+     "count": 1,
+     "to": "1.1.1.1:53"
+    },
+    {
+     "count": 203,
+     "to": "8.8.4.4:53"
+    },
+    {
+     "count": 230,
+     "to": "8.8.8.8:53"
+    },
+    {
+     "count": 40,
+     "to": "<other>:53"
+    }
+   ],
+   "end_inferred": false,
+   "http_plaintext": [
+    {
+     "count": 87,
+     "host_method": "connectivitycheck.gstatic.com HEAD"
+    }
+   ],
+   "label": "C-play primevideo-foreground (87 min, show + post-play)",
+   "minutes": 87.4,
+   "non_443_ports": [
+    {
+     "count": 474,
+     "port": "53"
+    },
+    {
+     "count": 2,
+     "port": "80"
+    },
+    {
+     "count": 1,
+     "port": "123"
+    },
+    {
+     "count": 6,
+     "port": "5228"
+    }
+   ],
+   "records": 2861,
+   "scenario": "C-play",
+   "top_hosts": [
+    {
+     "count": 203,
+     "host": "ab8mt4dd97et.na.api.amazonvideo.com"
+    },
+    {
+     "count": 170,
+     "host": "toqs.api.amazonvideo.com"
+    },
+    {
+     "count": 156,
+     "host": "global.telemetry.insights.video.a2z.com"
+    },
+    {
+     "count": 142,
+     "host": "<id>.us-east-1.prod.service.minerva.devices.a2z.com"
+    },
+    {
+     "count": 89,
+     "host": "connectivitycheck.gstatic.com"
+    },
+    {
+     "count": 84,
+     "host": "images-na.ssl-images-amazon.com"
+    },
+    {
+     "count": 79,
+     "host": "unagi-na.amazon.com"
+    },
+    {
+     "count": 46,
+     "host": "<id>.ta.pop-vod-dash.main.amazon.pv-cdn.net"
+    },
+    {
+     "count": 26,
+     "host": "m.media-amazon.com"
+    },
+    {
+     "count": 20,
+     "host": "a172vod-dash-pv-ta-amazon.akamaized.net"
+    },
+    {
+     "count": 15,
+     "host": "cf-timedtext.aux.pv-cdn.net"
+    },
+    {
+     "count": 12,
+     "host": "mtalk.google.com"
+    },
+    {
+     "count": 11,
+     "host": "clients3.google.com"
+    },
+    {
+     "count": 11,
+     "host": "prod.us-east-1.sonar.prime-video.amazon.dev"
+    },
+    {
+     "count": 11,
+     "host": "public-alb.us-east-1.prod.regolith.prime-video.amazon.dev"
+    },
+    {
+     "count": 10,
+     "host": "mobile-collector.newrelic.com"
+    },
+    {
+     "count": 10,
+     "host": "ters-sgai1.us-east-1.aiv-delivery.net"
+    },
+    {
+     "count": 9,
+     "host": "api.amazon.com"
+    },
+    {
+     "count": 9,
+     "host": "gql.twitch.tv"
+    },
+    {
+     "count": 9,
+     "host": "watch-cdn.product.api.espn.com"
+    },
+    {
+     "count": 9,
+     "host": "www.youtube.com"
+    },
+    {
+     "count": 8,
+     "host": "cf-trickplay.aux.pv-cdn.net"
+    },
+    {
+     "count": 8,
+     "host": "o278969.ingest.sentry.io"
+    },
+    {
+     "count": 8,
+     "host": "science-output.s3.amazonaws.com"
+    },
+    {
+     "count": 7,
+     "host": "android.googleapis.com"
+    },
+    {
+     "count": 6,
+     "host": "p7kg.api.amazonvideo.com"
+    },
+    {
+     "count": 6,
+     "host": "play.googleapis.com"
+    },
+    {
+     "count": 5,
+     "host": "<id>.cloudfront.net"
+    },
+    {
+     "count": 5,
+     "host": "ab8mt4dd97et.api.amazonvideo.com"
+    },
+    {
+     "count": 5,
+     "host": "graph.facebook.com"
+    },
+    {
+     "count": 4,
+     "host": "app-measurement.com"
+    },
+    {
+     "count": 4,
+     "host": "cdn.surface-x-orch.prime-video.amazon.dev"
+    },
+    {
+     "count": 4,
+     "host": "clients4.google.com"
+    },
+    {
+     "count": 4,
+     "host": "download.wireguard.com"
+    },
+    {
+     "count": 4,
+     "host": "threeplr-ab5w7agdemte.api.amazonvideo.com"
+    },
+    {
+     "count": 3,
+     "host": "cloudfront.xp-assets.aiv-cdn.net"
+    },
+    {
+     "count": 3,
+     "host": "embeddedassistant.googleapis.com"
+    },
+    {
+     "count": 3,
+     "host": "ipv6.unagi-na.amazon.com"
+    },
+    {
+     "count": 2,
+     "host": "<id>-pa.googleapis.com"
+    },
+    {
+     "count": 2,
+     "host": "firebaselogging.googleapis.com"
+    }
+   ],
+   "unique_dns_names": 46,
+   "unique_endpoints": 278
+  },
+  {
+   "connections": 0,
+   "connections_per_h": 0,
+   "direct_dns": [],
+   "end_inferred": false,
+   "http_plaintext": [],
+   "label": "Z2-INVALID pc-asleep overnight",
+   "minutes": 490.0,
+   "non_443_ports": [],
+   "records": 0,
+   "scenario": "Z2-INVALID",
+   "top_hosts": [],
+   "unique_dns_names": 0,
+   "unique_endpoints": 0
+  },
+  {
+   "connections": 105,
+   "connections_per_h": 27,
+   "direct_dns": [
+    {
+     "count": 2,
+     "to": "8.8.4.4:53"
+    },
+    {
+     "count": 4,
+     "to": "8.8.8.8:53"
+    },
+    {
+     "count": 21,
+     "to": "<other>:53"
+    },
+    {
+     "count": 1,
+     "to": "<other>:853"
+    }
+   ],
+   "end_inferred": true,
+   "http_plaintext": [
+    {
+     "count": 2,
+     "host_method": "connectivitycheck.gstatic.com HEAD"
+    }
+   ],
+   "label": "Z2-asleep-overnight",
+   "minutes": 230.7,
+   "non_443_ports": [
+    {
+     "count": 27,
+     "port": "53"
+    },
+    {
+     "count": 1,
+     "port": "80"
+    },
+    {
+     "count": 1,
+     "port": "123"
+    },
+    {
+     "count": 1,
+     "port": "853"
+    },
+    {
+     "count": 1,
+     "port": "5228"
+    },
+    {
+     "count": 2,
+     "port": "8882"
+    }
+   ],
+   "records": 375,
+   "scenario": "Z2-asleep-overnight",
+   "top_hosts": [
+    {
+     "count": 27,
+     "host": "images-na.ssl-images-amazon.com"
+    },
+    {
+     "count": 14,
+     "host": "<id>.us-east-1.prod.service.minerva.devices.a2z.com"
+    },
+    {
+     "count": 12,
+     "host": "unagi-na.amazon.com"
+    },
+    {
+     "count": 9,
+     "host": "<id>.vod-dash.main.amazon.pv-cdn.net"
+    },
+    {
+     "count": 9,
+     "host": "ab8mt4dd97et.na.api.amazonvideo.com"
+    },
+    {
+     "count": 8,
+     "host": "<id>.ta.pop-vod-dash.main.amazon.pv-cdn.net"
+    },
+    {
+     "count": 7,
+     "host": "ab8mt4dd97et.api.amazonvideo.com"
+    },
+    {
+     "count": 6,
+     "host": "cf-timedtext.aux.pv-cdn.net"
+    },
+    {
+     "count": 6,
+     "host": "prod.us-east-1.sonar.prime-video.amazon.dev"
+    },
+    {
+     "count": 5,
+     "host": "<id>.cloudfront.net"
+    },
+    {
+     "count": 5,
+     "host": "api.amazon.com"
+    },
+    {
+     "count": 5,
+     "host": "global.telemetry.insights.video.a2z.com"
+    },
+    {
+     "count": 4,
+     "host": "android.googleapis.com"
+    },
+    {
+     "count": 4,
+     "host": "androidtvlauncherxfe-pa.googleapis.com"
+    },
+    {
+     "count": 4,
+     "host": "downloads.napps-1.com"
+    },
+    {
+     "count": 4,
+     "host": "m.media-amazon.com"
+    },
+    {
+     "count": 4,
+     "host": "toqs.api.amazonvideo.com"
+    },
+    {
+     "count": 3,
+     "host": "<id>-ats.iot.us-east-1.amazonaws.com"
+    },
+    {
+     "count": 3,
+     "host": "cf-trickplay.aux.pv-cdn.net"
+    },
+    {
+     "count": 3,
+     "host": "clients3.google.com"
+    },
+    {
+     "count": 3,
+     "host": "cloudfront.xp-assets.aiv-cdn.net"
+    },
+    {
+     "count": 3,
+     "host": "connectivitycheck.gstatic.com"
+    },
+    {
+     "count": 3,
+     "host": "filters.adtidy.org"
+    },
+    {
+     "count": 3,
+     "host": "ipv6.unagi-na.amazon.com"
+    },
+    {
+     "count": 3,
+     "host": "mtalk.google.com"
+    },
+    {
+     "count": 3,
+     "host": "nc-mqtt.nordvpn.com"
+    },
+    {
+     "count": 2,
+     "host": "applytics.napps-3.com"
+    },
+    {
+     "count": 2,
+     "host": "firebaselogging.googleapis.com"
+    },
+    {
+     "count": 2,
+     "host": "firebaseremoteconfigrealtime.googleapis.com"
+    },
+    {
+     "count": 2,
+     "host": "napps-1.com"
+    },
+    {
+     "count": 2,
+     "host": "play.googleapis.com"
+    },
+    {
+     "count": 2,
+     "host": "threeplr-ab5w7agdemte.api.amazonvideo.com"
+    },
+    {
+     "count": 1,
+     "host": "embeddedassistant.googleapis.com"
+    },
+    {
+     "count": 1,
+     "host": "pool.ntp.org"
+    }
+   ],
+   "unique_dns_names": 33,
+   "unique_endpoints": 70
+  },
+  {
+   "connections": 32,
+   "connections_per_h": 436,
+   "direct_dns": [
+    {
+     "count": 8,
+     "to": "8.8.4.4:53"
+    },
+    {
+     "count": 10,
+     "to": "8.8.8.8:53"
+    },
+    {
+     "count": 1,
+     "to": "<other>:53"
+    }
+   ],
+   "end_inferred": false,
+   "http_plaintext": [
+    {
+     "count": 4,
+     "host_method": "connectivitycheck.gstatic.com HEAD"
+    }
+   ],
+   "label": "D0-prime-short (4.4 min; ended by accidental TV-off)",
+   "minutes": 4.4,
+   "non_443_ports": [
+    {
+     "count": 19,
+     "port": "53"
+    }
+   ],
+   "records": 112,
+   "scenario": "D0-prime-short",
+   "top_hosts": [
+    {
+     "count": 12,
+     "host": "ab8mt4dd97et.na.api.amazonvideo.com"
+    },
+    {
+     "count": 8,
+     "host": "unagi-na.amazon.com"
+    },
+    {
+     "count": 7,
+     "host": "toqs.api.amazonvideo.com"
+    },
+    {
+     "count": 6,
+     "host": "global.telemetry.insights.video.a2z.com"
+    },
+    {
+     "count": 4,
+     "host": "connectivitycheck.gstatic.com"
+    },
+    {
+     "count": 4,
+     "host": "embeddedassistant.googleapis.com"
+    },
+    {
+     "count": 2,
+     "host": "<id>.us-east-1.prod.service.minerva.devices.a2z.com"
+    },
+    {
+     "count": 2,
+     "host": "o278969.ingest.sentry.io"
+    },
+    {
+     "count": 2,
+     "host": "science-output.s3.amazonaws.com"
+    },
+    {
+     "count": 2,
+     "host": "spade.twitch.tv"
+    },
+    {
+     "count": 2,
+     "host": "threeplr-ab5w7agdemte.api.amazonvideo.com"
+    }
+   ],
+   "unique_dns_names": 10,
+   "unique_endpoints": 24
+  },
+  {
+   "connections": 119,
+   "connections_per_h": 476,
+   "direct_dns": [
+    {
+     "count": 20,
+     "to": "<other>:53"
+    }
+   ],
+   "end_inferred": false,
+   "http_plaintext": [
+    {
+     "count": 15,
+     "host_method": "connectivitycheck.gstatic.com HEAD"
+    }
+   ],
+   "label": "D-play disneyplus (stock-telemetry app, 15 min)",
+   "minutes": 15.0,
+   "non_443_ports": [
+    {
+     "count": 20,
+     "port": "53"
+    }
+   ],
+   "records": 348,
+   "scenario": "D-play",
+   "top_hosts": [
+    {
+     "count": 57,
+     "host": "varnish14-c20-ord1-dss-vod-dssc-shield.tr.na.prod.dssedge.com"
+    },
+    {
+     "count": 25,
+     "host": "star-randsrv.bsg.brave.com"
+    },
+    {
+     "count": 21,
+     "host": "collector.bsg.brave.com"
+    },
+    {
+     "count": 15,
+     "host": "connectivitycheck.gstatic.com"
+    },
+    {
+     "count": 7,
+     "host": "go-updater.brave.com"
+    },
+    {
+     "count": 7,
+     "host": "vod-dsc-na-central-1-ord1-dss.media.dssott.com"
+    },
+    {
+     "count": 5,
+     "host": "componentupdater.brave.com"
+    },
+    {
+     "count": 5,
+     "host": "embeddedassistant.googleapis.com"
+    },
+    {
+     "count": 5,
+     "host": "redirector.brave.com"
+    },
+    {
+     "count": 2,
+     "host": "<id>-pa.googleapis.com"
+    },
+    {
+     "count": 2,
+     "host": "androidtv.prod.cloud.netflix.com"
+    },
+    {
+     "count": 2,
+     "host": "browser-intake-datadoghq.com"
+    },
+    {
+     "count": 2,
+     "host": "clients3.google.com"
+    },
+    {
+     "count": 2,
+     "host": "download.wireguard.com"
+    },
+    {
+     "count": 2,
+     "host": "gql.twitch.tv"
+    },
+    {
+     "count": 2,
+     "host": "o278969.ingest.sentry.io"
+    },
+    {
+     "count": 2,
+     "host": "play.googleapis.com"
+    },
+    {
+     "count": 2,
+     "host": "science-output.s3.amazonaws.com"
+    },
+    {
+     "count": 2,
+     "host": "spade.twitch.tv"
+    },
+    {
+     "count": 2,
+     "host": "www.youtube.com"
+    },
+    {
+     "count": 1,
+     "host": "disney.playback.edge.bamgrid.com"
+    }
+   ],
+   "unique_dns_names": 17,
+   "unique_endpoints": 52
+  },
+  {
+   "connections": 14,
+   "connections_per_h": 168,
+   "direct_dns": [
+    {
+     "count": 6,
+     "to": "<other>:53"
+    }
+   ],
+   "end_inferred": false,
+   "http_plaintext": [
+    {
+     "count": 5,
+     "host_method": "connectivitycheck.gstatic.com HEAD"
+    }
+   ],
+   "label": "E-voice (press 12:06:12; Assistant punted: LauncherX privacy/kids mode; capture never started)",
+   "minutes": 5.0,
+   "non_443_ports": [
+    {
+     "count": 6,
+     "port": "53"
+    }
+   ],
+   "records": 59,
+   "scenario": "E-voice",
+   "top_hosts": [
+    {
+     "count": 8,
+     "host": "star-randsrv.bsg.brave.com"
+    },
+    {
+     "count": 5,
+     "host": "connectivitycheck.gstatic.com"
+    },
+    {
+     "count": 4,
+     "host": "go-updater.brave.com"
+    },
+    {
+     "count": 3,
+     "host": "collector.bsg.brave.com"
+    },
+    {
+     "count": 3,
+     "host": "componentupdater.brave.com"
+    },
+    {
+     "count": 3,
+     "host": "play.googleapis.com"
+    },
+    {
+     "count": 2,
+     "host": "embeddedassistant.googleapis.com"
+    },
+    {
+     "count": 1,
+     "host": "<id>-pa.googleapis.com"
+    }
+   ],
+   "unique_dns_names": 6,
+   "unique_endpoints": 14
+  },
+  {
+   "connections": 49,
+   "connections_per_h": 1795,
+   "direct_dns": [
+    {
+     "count": 1,
+     "to": "<other>:853"
+    }
+   ],
+   "end_inferred": false,
+   "http_plaintext": [
+    {
+     "count": 1,
+     "host_method": "connectivitycheck.gstatic.com HEAD"
+    }
+   ],
+   "label": "F0-boot-partial (AdGuard VPN took the slot at 12:13:45)",
+   "minutes": 1.6,
+   "non_443_ports": [
+    {
+     "count": 2,
+     "port": "80"
+    },
+    {
+     "count": 1,
+     "port": "123"
+    },
+    {
+     "count": 1,
+     "port": "853"
+    },
+    {
+     "count": 1,
+     "port": "5228"
+    }
+   ],
+   "records": 211,
+   "scenario": "F0-boot-partial",
+   "top_hosts": [
+    {
+     "count": 7,
+     "host": "filters.adtidy.org"
+    },
+    {
+     "count": 5,
+     "host": "play.googleapis.com"
+    },
+    {
+     "count": 5,
+     "host": "uts-api.itunes.apple.com"
+    },
+    {
+     "count": 4,
+     "host": "android.apis.google.com"
+    },
+    {
+     "count": 4,
+     "host": "connectivitycheck.gstatic.com"
+    },
+    {
+     "count": 4,
+     "host": "graph.facebook.com"
+    },
+    {
+     "count": 4,
+     "host": "mobile-collector.newrelic.com"
+    },
+    {
+     "count": 3,
+     "host": "<id>-pa.googleapis.com"
+    },
+    {
+     "count": 3,
+     "host": "androidtv.prod.cloud.netflix.com"
+    },
+    {
+     "count": 3,
+     "host": "clients3.google.com"
+    },
+    {
+     "count": 3,
+     "host": "local.adguard.org"
+    },
+    {
+     "count": 3,
+     "host": "mobile-api.adguard.org"
+    },
+    {
+     "count": 3,
+     "host": "mtalk.google.com"
+    },
+    {
+     "count": 3,
+     "host": "spade.twitch.tv"
+    },
+    {
+     "count": 3,
+     "host": "watch-cdn.product.api.espn.com"
+    },
+    {
+     "count": 3,
+     "host": "www.googleapis.com"
+    },
+    {
+     "count": 2,
+     "host": "<id>.us-east-1.prod.service.minerva.devices.a2z.com"
+    },
+    {
+     "count": 2,
+     "host": "ab8mt4dd97et.api.amazonvideo.com"
+    },
+    {
+     "count": 2,
+     "host": "api.amazon.com"
+    },
+    {
+     "count": 2,
+     "host": "api.onesignal.com"
+    },
+    {
+     "count": 2,
+     "host": "assets.adobedtm.com"
+    },
+    {
+     "count": 2,
+     "host": "atbatappconfig.mlb.com"
+    },
+    {
+     "count": 2,
+     "host": "clients4.google.com"
+    },
+    {
+     "count": 2,
+     "host": "crashlyticsreports-pa.googleapis.com"
+    },
+    {
+     "count": 2,
+     "host": "dpm.demdex.net"
+    },
+    {
+     "count": 2,
+     "host": "embeddedassistant.googleapis.com"
+    },
+    {
+     "count": 2,
+     "host": "family.adguard-dns.com"
+    },
+    {
+     "count": 2,
+     "host": "firebase-settings.crashlytics.com"
+    },
+    {
+     "count": 2,
+     "host": "firebaseinstallations.googleapis.com"
+    },
+    {
+     "count": 2,
+     "host": "o278969.ingest.sentry.io"
+    },
+    {
+     "count": 2,
+     "host": "paywall.mlbstatic.com"
+    },
+    {
+     "count": 2,
+     "host": "sb.adtidy.org"
+    },
+    {
+     "count": 2,
+     "host": "storage.mobile.mlbinfra.com"
+    },
+    {
+     "count": 2,
+     "host": "threeplr-ab5w7agdemte.api.amazonvideo.com"
+    },
+    {
+     "count": 1,
+     "host": "0.pool.ntp.org"
+    },
+    {
+     "count": 1,
+     "host": "android.clients.google.com"
+    },
+    {
+     "count": 1,
+     "host": "i.ytimg.com"
+    },
+    {
+     "count": 1,
+     "host": "play-fe.googleapis.com"
+    },
+    {
+     "count": 1,
+     "host": "play-lh.googleusercontent.com"
+    },
+    {
+     "count": 1,
+     "host": "playstoregatewayadapter-pa.googleapis.com"
+    }
+   ],
+   "unique_dns_names": 41,
+   "unique_endpoints": 64
+  },
+  {
+   "connections": 210,
+   "connections_per_h": 840,
+   "direct_dns": [
+    {
+     "count": 8,
+     "to": "8.8.8.8:53"
+    },
+    {
+     "count": 1,
+     "to": "<other>:853"
+    }
+   ],
+   "end_inferred": false,
+   "http_plaintext": [
+    {
+     "count": 15,
+     "host_method": "connectivitycheck.gstatic.com HEAD"
+    },
+    {
+     "count": 4,
+     "host_method": "nrdp26.appboot.netflix.com POST"
+    }
+   ],
+   "label": "F-boot (reboot #2 12:15:42; boot_completed 12:16:25; tunnel 12:16:36; <=~30s uncaptured)",
+   "minutes": 15.0,
+   "non_443_ports": [
+    {
+     "count": 8,
+     "port": "53"
+    },
+    {
+     "count": 4,
+     "port": "80"
+    },
+    {
+     "count": 4,
+     "port": "123"
+    },
+    {
+     "count": 1,
+     "port": "853"
+    },
+    {
+     "count": 1,
+     "port": "1900"
+    },
+    {
+     "count": 1,
+     "port": "5228"
+    },
+    {
+     "count": 1,
+     "port": "8882"
+    }
+   ],
+   "records": 619,
+   "scenario": "F-boot",
+   "top_hosts": [
+    {
+     "count": 25,
+     "host": "nrdp26.logs.netflix.com"
+    },
+    {
+     "count": 25,
+     "host": "nrdp26.prod.ftl.netflix.com"
+    },
+    {
+     "count": 20,
+     "host": "images.pluto.tv"
+    },
+    {
+     "count": 16,
+     "host": "connectivitycheck.gstatic.com"
+    },
+    {
+     "count": 16,
+     "host": "logs.netflix.com"
+    },
+    {
+     "count": 8,
+     "host": "nrdp26.appboot.netflix.com"
+    },
+    {
+     "count": 8,
+     "host": "play.googleapis.com"
+    },
+    {
+     "count": 8,
+     "host": "www.googleapis.com"
+    },
+    {
+     "count": 7,
+     "host": "embeddedassistant.googleapis.com"
+    },
+    {
+     "count": 6,
+     "host": "clients3.google.com"
+    },
+    {
+     "count": 6,
+     "host": "nrdp26.push.prod.netflix.com"
+    },
+    {
+     "count": 6,
+     "host": "preapp.prod.partner.netflix.net"
+    },
+    {
+     "count": 5,
+     "host": "occ-0-7091-92.1.nflxso.net"
+    },
+    {
+     "count": 4,
+     "host": "android.googleapis.com"
+    },
+    {
+     "count": 4,
+     "host": "androidtvlauncherxfe-pa.googleapis.com"
+    },
+    {
+     "count": 4,
+     "host": "api-global.netflix.com"
+    },
+    {
+     "count": 4,
+     "host": "census-app.scorecardresearch.com"
+    },
+    {
+     "count": 4,
+     "host": "footprints-pa.googleapis.com"
+    },
+    {
+     "count": 4,
+     "host": "graph.facebook.com"
+    },
+    {
+     "count": 4,
+     "host": "mobile-collector.newrelic.com"
+    },
+    {
+     "count": 4,
+     "host": "play-fe.googleapis.com"
+    },
+    {
+     "count": 4,
+     "host": "service-channels.clusters.pluto.tv"
+    },
+    {
+     "count": 4,
+     "host": "uts-api.itunes.apple.com"
+    },
+    {
+     "count": 3,
+     "host": "<id>-pa.googleapis.com"
+    },
+    {
+     "count": 3,
+     "host": "android.apis.google.com"
+    },
+    {
+     "count": 3,
+     "host": "androidtv.prod.cloud.netflix.com"
+    },
+    {
+     "count": 3,
+     "host": "api.amazon.com"
+    },
+    {
+     "count": 3,
+     "host": "applytics.napps-3.com"
+    },
+    {
+     "count": 3,
+     "host": "assets.adobedtm.com"
+    },
+    {
+     "count": 3,
+     "host": "clients4.google.com"
+    },
+    {
+     "count": 3,
+     "host": "crashlyticsreports-pa.googleapis.com"
+    },
+    {
+     "count": 3,
+     "host": "downloads.napps-1.com"
+    },
+    {
+     "count": 3,
+     "host": "dpm.demdex.net"
+    },
+    {
+     "count": 3,
+     "host": "firebaselogging-pa.googleapis.com"
+    },
+    {
+     "count": 3,
+     "host": "firebaseremoteconfigrealtime.googleapis.com"
+    },
+    {
+     "count": 3,
+     "host": "googleads.g.doubleclick.net"
+    },
+    {
+     "count": 3,
+     "host": "mtalk.google.com"
+    },
+    {
+     "count": 3,
+     "host": "napps-1.com"
+    },
+    {
+     "count": 3,
+     "host": "nc-mqtt.nordvpn.com"
+    },
+    {
+     "count": 3,
+     "host": "secure.netflix.com"
+    }
+   ],
+   "unique_dns_names": 62,
+   "unique_endpoints": 132
+  }
+ ]
+}

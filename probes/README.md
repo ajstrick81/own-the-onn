@@ -3,7 +3,10 @@
 > **Status: minimal harness built 2026-11-05** (the trigger in §8, the first coffey artifact capture, was met).
 > What exists: `tools/run_probe.py`, `tools/verify_offline.py` (also run in CI), shared helpers in `lib/`, and
 > four seed probes: `kernel/cve-2026-43499-rtmutex`, `boot-policy/dispatch-tokens`, `pq-hidl/systemcontrol-auth`
-> (host) and `collection/device-baseline` (device). Three host captures are in `../results/`, indexed in
+> (host) and `collection/device-baseline` (device). Telemetry probes added the same day:
+> `telemetry/window-summary` and `collection/factorytool-boot` (host, over raw logs kept outside the repo; both
+> mask or redact identifiers) and `telemetry/device-context` (device, read-only). Capture helpers: `tools/mark.py`,
+> `tools/sleep_watch.py`. Three host captures are in `../results/`, indexed in
 > [`../results/INDEX.md`](../results/INDEX.md); all three reproduce byte-for-byte on rerun. Not built (not
 > needed yet): `run_probe_batch.py`, and per-probe determinism checks in CI (CI can't hold the firmware inputs).
 >
