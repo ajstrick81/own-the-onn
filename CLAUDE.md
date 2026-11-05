@@ -51,6 +51,9 @@ trustworthy — apply it to every lookup.
   pinned source (coffey = bm202 + 19 onn edits); supersedes the 11-02 coffey column
 - `research/coffey-odmext-consumers-2026-11-04/` — Phase E: `odm_ext` contents, consumers, writers (only
   firmware partition outside verified boot)
+- `research/coffey-device-checks-2026-11-04/` — owner unit confirmed on the analyzed build, locked + green;
+  no newer coffey OTA in the public catalog; a public coffey GhostLock repo noted (R)
+- `disclosure/` — **git-ignored** unsent disclosure drafts; never commit or publish
 - `research/coffey-boot-dispatch-2026-11-04/` — Phase B: boot-policy map from plaintext ramdisks, steering HALs
   and policy (env + `/misc`; OEM-unlock-allowed = `ubootenv.var.lock`; BL33 logic U)
 - `research/codex-task-list*.md` — task blocks handed to the second agent ("Chat")

@@ -3,7 +3,8 @@
 > Single front page for where the study stands. Evidence-weighted and deliberately candid: a documented
 > enforcement boundary is a result, and un-met goals are stated plainly. Grades use **P** inspected primary ·
 > **R** first-hand report · **B** inherited baseline · **H** hypothesis/lead · **U** unresolved. Updated
-> 2026-11-04 (coffey OTA capture ingested; CVE applicability R4; systemcontrol authorization; DT comparison v2). Machine-readable mirror: [`progress.json`](progress.json).
+> 2026-11-04 (coffey OTA capture ingested; CVE applicability R4; systemcontrol authorization; DT comparison v2;
+> boot-policy phases B/E; device checks). Machine-readable mirror: [`progress.json`](progress.json).
 
 Device: **onn 4K Plus Streaming** (`coffey` / `DV6116N` / `CS116K4`), Amlogic **S905X5M** (S7D), Android 14,
 kernel `5.15.196-android14-11-g3d26c188ef7e-ab14657224` (GKI, built 2026-01-03), SPL `2026-03-01`, build
@@ -29,7 +30,7 @@ analyzed (kernel CVEs, DT, `systemcontrol`, `odm_ext`), but the bootloader that 
 | C2 | No background mic use; every mic use is a ~5 s foreground press | P | `findings/coffey-2026-09.md` |
 | C3 | Phones home while idle/screen-off (mostly Google + installed apps); Netflix logs while asleep | P | `findings/coffey-2026-09.md` |
 | C4 | Preinstalled factory test tool runs system-privileged; retail upload flow dormant | P | `findings/coffey-2026-09.md` |
-| C5 | Bootloader welded — OEM-unlock disabled, AVB locked, verified-boot green (bootloader-enforced) | B | `research/root-study.md` §A |
+| C5 | Bootloader welded — OEM-unlock disabled, AVB locked, verified-boot green (bootloader-enforced). Owner's unit reports `ro.boot.flash.locked=1`, `verifiedbootstate=green` (2026-11-04) | P (lock state, device-reported) / B (that it can't be flipped) | `research/root-study.md` §A; `research/coffey-device-checks-2026-11-04/` |
 | C6 | Factory-tool userland doors are real but SELinux-boxed (system-UID, not root) | P | `research/root-study.md` §B/C |
 | C7 | Stock CoreELEC recovery is **state-changing** (writes env via `fw_setenv`, no rollback) — fails a read-only boundary | P | `research/boot-policy-packet-2026-11-02/.../COFFEY-CE-RECOVERY-AUDIT.md` |
 | C8 | CVE-2026-43499 futex-PI fix dated: first GKI tag 2026-08-05, first ASB Nov 2026 | P/R | `research/boot-policy-packet-round2-2026-11-03/COFFEY-R2-1-CVE-TIMELINE.md` |
@@ -52,7 +53,7 @@ analyzed (kernel CVEs, DT, `systemcontrol`, `odm_ext`), but the bootloader that 
 | SELinux on factory tool | System-UID writes confined to a tiny domain; not root |
 | dm-verity / AVB | Any `boot`/`system`/`vendor` write bricks at next boot on a locked device |
 | `env`/`misc`/`param` unreadable w/o root | Can't back them up → bootloader/env experiments stay documented-not-run |
-| Kernel exploit is arm64 from-scratch | Public GhostLock work is build/offset/RAM-specific to the sibling `jarvis2`; the epoll PoCs (x86_64) don't apply to coffey's build at all (C14) |
+| Kernel exploit is arm64 from-scratch | ~~Public GhostLock work is jarvis2-specific~~ — **superseded 2026-11-04:** a public repo claims a coffey-specific GhostLock port for `URO4.260304.011.B1` (R, not opened). The epoll PoCs don't apply to coffey's build (C14). Per-boot root still leaves the bootloader lock intact (C5) |
 | BL2/BL33 opaque offline | Stage bodies after the signed headers show uniform byte statistics and no markers, so U-Boot's env/`bootcmd` handling can't be read offline (C13) |
 
 ## Ranked priority vectors (active leads)
@@ -60,7 +61,7 @@ analyzed (kernel CVEs, DT, `systemcontrol`, `odm_ext`), but the bootloader that 
 | Rank | Vector | State | Next discriminating step |
 |---|---|---|---|
 | 1 | ~~Capture coffey's own OTA + kernel + DTB + `systemcontrol` ELF~~ | **DONE** (captured 2026-10-09, ingested 2026-11-03) | now an input to #2/#3 and Phases B/D/E/F — `research/coffey-ota-capture-2026-10-09/` |
-| 2 | CVE-2026-43499 applicability + the ranked post-March CVE check-list | **P — affected code present** (R4); remaining H rows: `adbd`/ART (Mainline-updatable), framework, `wpa_supplicant` patch state | device-side: read the unit's `com.android.adbd`/`com.android.art` versions + wireless-debugging state; offline: framework patch comparison, unpack `odm`/`oem` |
+| 2 | CVE-2026-43499 applicability + the ranked post-March CVE check-list | **P — affected code present** (R4); remaining H rows: framework, `wpa_supplicant` patch state. **Unit confirmed (2026-11-04):** on the analyzed build; `adbd`/ART still the shipped `340090000` modules | offline: framework patch comparison, unpack `odm`/`oem`; device: wireless-debugging state |
 | 3 | ~~Two epoll CVEs (Bad Epoll / CVE-2026-43074) arm64 root~~ | **closed — not applicable to coffey's build** (R4) | see dead ends; re-check only if coffey takes an OTA to a newer GKI release |
 | 4 | **UART / serial-console path to the env/misc/param wall** | **H — candidate pads found** | match board rev to owner's retail unit label, then continuity/scope-probe the actual board |
 | 5 | darkknight provenance-backed OTA (build-identity comparator) | U | capture from darkknight's real update flow, match build identity |
@@ -73,7 +74,7 @@ analyzed (kernel CVEs, DT, `systemcontrol`, `odm_ext`), but the bootloader that 
 |---|---|---|
 | Newer public Android 12–14 `CPQControl`/`systemcontrol` source | all 1 branch + 67 tags of Amlogic frameworks repo (2016–2020), AOSP yukawa a12/13/14/main + BayLibre pkg, enumerated ROM-dump set | `…/COFFEY-PQ-ANCHORS-AD14-DELTA-v2.md` |
 | Provenance-backed **darkknight** stock OTA | not found publicly; Xiaomi guide is docs not firmware; OS3.0.2.0 is a Box 5 *MAX* (`MOB1MB-5M`) report, model-code mismatch vs `MOB2MB-5P` | `…/COFFEY-DARKKNIGHT-OTA-RECON.md` |
-| Prior coffey-specific root/CoreELEC/unlock work | bounded negative across CoreELEC Discourse/4PDA/XDA/freaktab/Reddit/GitHub + listed queries; only user-space ADB debloat exists | `…/COFFEY-R2-3-COMMUNITY-SWEEP.md` |
+| ~~Prior coffey-specific root/CoreELEC/unlock work~~ | **reopened 2026-11-04:** the 11-03 bounded negative held for its search set, but a public coffey GhostLock root repo (`chaitan3/ghostlock-coffey`, R, not opened) now exists. Still no public coffey CoreELEC/unlock work found | `…/COFFEY-R2-3-COMMUNITY-SWEEP.md`; `research/coffey-device-checks-2026-11-04/` |
 | ~~UART pinout from public docs~~ | **reopened → lead found:** FCC photo review (R2-5) found a candidate 4-pad `GND/TX/RX/GND` header; now priority vector #4, no longer a dead end | `…/COFFEY-R2-5-FCC-PHOTO-REVIEW.md` |
 | Booting donor CoreELEC recovery as a shortcut | disqualified — it mutates persistent env (C7) | `…/COFFEY-CE-RECOVERY-AUDIT.md` |
 | Runtime root → custom ROM | impossible without bootloader unlock (two separate locks) | `research/root-study.md` §D-bis |
