@@ -20,3 +20,5 @@ jobs:
           python-version: "3.12"
       - name: Verify SHA256SUMS ledgers
         run: python3 -I tools/verify_hashes.py .
+      - name: Verify probe captures (results/ ledger, body hashes, probe staleness)
+        run: python3 -I tools/verify_offline.py .

@@ -58,8 +58,10 @@ trustworthy — apply it to every lookup.
   and policy (env + `/misc`; OEM-unlock-allowed = `ubootenv.var.lock`; BL33 logic U)
 - `research/codex-task-list*.md` — task blocks handed to the second agent ("Chat")
 - `STATUS.md` / `progress.json` — the dashboard (confirmed / hard walls / priority vectors / dead ends)
-- `probes/README.md` — **design doc (not yet built)** for a probe→capture→ledger harness; build the minimal
-  version only once the first coffey artifact is captured
+- `probes/` + `results/` — **minimal probe harness (built 2026-11-05)**: `tools/run_probe.py` runs a probe
+  against hash-fingerprinted inputs (paths in git-ignored `probes/local-inputs.json`) and writes append-only
+  captures; `tools/verify_offline.py` (CI) checks them, `--rerun` re-runs host probes locally.
+  `results/INDEX.md` maps findings PF-1..PF-4 to captures. New probes stay read-only and applicability-level
 
 ## Three tracks, one line each
 

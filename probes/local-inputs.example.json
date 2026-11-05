@@ -1,0 +1,23 @@
+{
+ "_comment": "Copy to probes/local-inputs.json (git-ignored) and point each role at your local copy. Firmware stays out of git; captures record only roles and hashes.",
+ "kernel_src": "<path to AOSP kernel/common clone>@3d26c188ef7e",
+ "kernel_image": "<decompressed kernel Image from coffey boot.img>",
+ "bootloader": "<bootloader.img from the OTA payload>",
+ "vendor_boot": "<vendor_boot.img>",
+ "init_boot": "<init_boot.img>",
+ "systemcontrol": "<vendor/bin/systemcontrol>",
+ "systemcontrol_rc": "<vendor/etc/init/systemcontrol.rc>",
+ "vendor_lib": "<vendor/lib directory>",
+ "plat_cil": "<system/etc/selinux/plat_sepolicy.cil>",
+ "plat_mapping": "<system/etc/selinux/mapping/34.0.cil>",
+ "plat_stamp": "<system/etc/selinux/plat_sepolicy_and_mapping.sha256>",
+ "sysext_cil": "<system_ext/etc/selinux/system_ext_sepolicy.cil>",
+ "sysext_mapping": "<system_ext/etc/selinux/mapping/34.0.cil>",
+ "sysext_stamp": "<system_ext/etc/selinux/system_ext_sepolicy_and_mapping.sha256>",
+ "product_cil": "<product/etc/selinux/product_sepolicy.cil>",
+ "product_stamp": "<product/etc/selinux/product_sepolicy_and_mapping.sha256>",
+ "vendor_cil": "<vendor/etc/selinux/vendor_sepolicy.cil>",
+ "odm_selinux": "<odm/etc/selinux directory>",
+ "adb": "<path to adb>",
+ "serial": "<adb serial, e.g. host:5555>"
+}

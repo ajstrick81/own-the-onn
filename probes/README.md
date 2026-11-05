@@ -1,9 +1,21 @@
-# Probe harness — design doc (NOT YET IMPLEMENTED)
+# Probe harness
 
-> **Status: design only.** No probes or runner exist yet. This spec is deliberately written *before* the first
-> coffey artifact capture so the shape can be reviewed; it will be built — minimally, seeded with real probes —
-> once there is an artifact to run against. Building an empty harness first would be scaffolding with nothing to
-> grade. See `STATUS.md` priority vector #1 (the capture that unblocks this).
+> **Status: minimal harness built 2026-11-05** (the trigger in §8, the first coffey artifact capture, was met).
+> What exists: `tools/run_probe.py`, `tools/verify_offline.py` (also run in CI), shared helpers in `lib/`, and
+> four seed probes: `kernel/cve-2026-43499-rtmutex`, `boot-policy/dispatch-tokens`, `pq-hidl/systemcontrol-auth`
+> (host) and `collection/device-baseline` (device). Three host captures are in `../results/`, indexed in
+> [`../results/INDEX.md`](../results/INDEX.md); all three reproduce byte-for-byte on rerun. Not built (not
+> needed yet): `run_probe_batch.py`, and per-probe determinism checks in CI (CI can't hold the firmware inputs).
+>
+> **Quick start**
+> 1. Copy `local-inputs.example.json` to `local-inputs.json` (git-ignored) and point each role at your local files.
+> 2. `python -I tools/run_probe.py <probe-id>` writes `results/<probe-id>/<UTC>-<hash>.txt` and appends the
+>    results ledger.
+> 3. `python -I tools/verify_offline.py . --rerun` verifies everything and re-runs host probes whose inputs match.
+>
+> The rest of this file is the original design, kept as the spec. Differences from it: probe inputs are declared
+> as `role:type` (`file`, `dir`, `git`, `adb`; `?` = optional) in the header's `inputs:` line, and seed #4 became
+> `collection/device-baseline` (properties, Mainline versions, SELinux mode, `systemcontrol` label).
 
 Adapted from the probe→capture→ledger discipline of the PS5-14.10-Research repo, scaled down to this study. The
 goal: make every analysis step **deterministic, re-runnable, and bound to its evidence**, so a finding cites a

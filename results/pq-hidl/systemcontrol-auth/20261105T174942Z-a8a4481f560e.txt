@@ -1,0 +1,218 @@
+# probe: pq-hidl/systemcontrol-auth @ 692f8e26a92601a82397a3efba0dfb5ec1bd88ee4f7b9f74dc1e67c870f2cb40
+# class: host
+# inputs:
+#   systemcontrol (file): sha256=aec8998d473579416d768e1e630492208cf61aef0299f5492d41e2e735c8c1a4 size=350020
+#   systemcontrol_rc (file): sha256=d08e56370e29cb576fce8faf56f316adb1ad1b518f845dc1520a71778356ee83 size=454
+#   vendor_lib (dir): manifest-sha256=bfb378d84f75e99cebb07977bc8cb74a7918e7c3bb1f00589d5d0f6e3d985204 files=332 unreadable-skipped=0
+#   plat_cil (file): sha256=4ef1914e10f9c8751da8560c1ae83ba410d54191898493f8a5a985b5bdd9003b size=2135171
+#   plat_mapping (file): sha256=cd235de61572c5ac780f62ce34daf1b14906d31655246f8679159721a4c2fd00 size=209898
+#   sysext_cil (file): sha256=c6488bcd2adf11c66268ba4173327f26b830ef926529a557d5babfb1a7ddaeb4 size=28590
+#   sysext_mapping (file): sha256=39bccdb6d45a23fec2c0f57ec832285456d246f7e1f61a24f4d7609b8a97cb7e size=424
+#   product_cil (file): sha256=26b4acc6eed83345dedc31bff8500eb85f8c696a71a49f5ebb1c75a6618f8125 size=24797
+#   vendor_cil (file): sha256=bbe4d7c70d83982cc82deffd01d55b975ea0b568b3bfac5817f1ba3f2f47864a size=404778
+#   plat_stamp (file): sha256=42c86786ea6ef425b62e52f93e2a85f2ed4e504da580cab2e88facdbf47645ad size=65
+#   sysext_stamp (file): sha256=08d4f254182f3cde43c723802f7f8921e66a5188ff30fe4f7de564448f3f40ea size=65
+#   product_stamp (file): sha256=bc48b1332a919c3634e67d02e34b60687329c5bd2c0c7710b10ec36e1a9a1a0f size=65
+#   odm_selinux (dir): manifest-sha256=5ada89b8406cc2fd9b531057d8ffcaec81c6b6b9d4a6a4de68789ec69f75ed18 files=4 unreadable-skipped=0
+# tools: python 3.13.7; os Windows
+# run: 2026-11-05T17:49:42Z
+# body-sha256: a8a4481f560e5613e63f544f87147c37ef094310879c69271d58c6acf7ea8d09
+# ---
+{
+ "any_caller_identity_import": false,
+ "binaries_checked": 9,
+ "caller_identity_imports": {
+  "libfbc.so": {
+   "caller_identity_imports": [],
+   "sha256": "e57b7e3f40e7f4a487f7ba4da4c457b78b62d5b6bf5c10a160dc5b2f050ba36b"
+  },
+  "libmeson_display_adapter_remote.so": {
+   "caller_identity_imports": [],
+   "sha256": "cf8b8176b68a5389240babe31b4cb17c9bc37acb3553449a77196f361417a430"
+  },
+  "libpqcontrol.so": {
+   "caller_identity_imports": [],
+   "sha256": "4849d6185763a5e750b2439972d8b3b1c6ae7ed6c1948f82d17064383e1cc1fa"
+  },
+  "libprovision.so": {
+   "caller_identity_imports": [],
+   "sha256": "a24682b22233f7024f86435624e73269f7111b5e36b79fe1c376ac55b3e4cf9b"
+  },
+  "libvideotunnel.so": {
+   "caller_identity_imports": [],
+   "sha256": "7a4f4ac9faf4eee1486127086d059a4c28b100e436931a6e049221b660dc2d3d"
+  },
+  "systemcontrol": {
+   "caller_identity_imports": [],
+   "sha256": "aec8998d473579416d768e1e630492208cf61aef0299f5492d41e2e735c8c1a4"
+  },
+  "vendor.amlogic.hardware.droidvold@1.0.so": {
+   "caller_identity_imports": [],
+   "sha256": "9c9e90d4f46b5fc67218a9000905fa9f6beed7438e2f68fed90ecfec0aada9d7"
+  },
+  "vendor.amlogic.hardware.systemcontrol@1.0.so": {
+   "caller_identity_imports": [],
+   "sha256": "e011923eb5bac90ef2e362f6fe53901881d93315c67e4a3be3996aa83e218da3"
+  },
+  "vendor.amlogic.hardware.systemcontrol@1.1.so": {
+   "caller_identity_imports": [],
+   "sha256": "df156fc004b080b4a7449393760ca25f6cafdbca3365300cbdbb14ae719c9095"
+  }
+ },
+ "callers": {
+  "binder_call_system_control": [
+   "bootanim",
+   "bootvideo",
+   "droidaudio",
+   "dtvkitserver",
+   "hal_bootctl_default",
+   "hal_camera_default",
+   "hal_graphics_composer_default",
+   "hal_hidlimw",
+   "hal_oemlock_default",
+   "hal_power_default",
+   "hal_tv_tuner_default",
+   "hwservicemanager",
+   "mediacodec",
+   "mediaserver",
+   "platform_app",
+   "priv_app",
+   "system_app",
+   "tvserver",
+   "untrusted_app",
+   "untrusted_app_29",
+   "untrusted_app_32"
+  ],
+  "find_systemcontrol_hwservice": [
+   "bootanim",
+   "droidaudio",
+   "dtvkitserver",
+   "hal_bootctl_default",
+   "hal_camera_default",
+   "hal_graphics_composer_default",
+   "hal_hidlimw",
+   "hal_oemlock_default",
+   "hal_power_default",
+   "hal_tv_tuner_default",
+   "mediacodec",
+   "mediaserver",
+   "platform_app",
+   "priv_app",
+   "system_app",
+   "system_control",
+   "tvserver",
+   "untrusted_app",
+   "untrusted_app_32"
+  ]
+ },
+ "grade": {
+  "no_in_process_check": "H",
+  "policy_reachability": "P"
+ },
+ "granting_rules_untrusted": {
+  "untrusted_app": {
+   "call": [
+    "allow untrusted_app_34_0 system_control"
+   ],
+   "find": [
+    "allow untrusted_app_34_0 systemcontrol_hwservice"
+   ]
+  },
+  "untrusted_app_32": {
+   "call": [
+    "allow untrusted_app_32_34_0 system_control"
+   ],
+   "find": [
+    "allow untrusted_app_32_34_0 systemcontrol_hwservice"
+   ]
+  }
+ },
+ "policy_is_loaded": true,
+ "policy_stamps": {
+  "plat_stamp": {
+   "match": true,
+   "odm_precompiled": "1037b57430a2c84eb050572baf95b558fe265a8b68e6b0adf05d932488c53cb1",
+   "partition": "1037b57430a2c84eb050572baf95b558fe265a8b68e6b0adf05d932488c53cb1"
+  },
+  "product_stamp": {
+   "match": true,
+   "odm_precompiled": "69ccccafde88d94211eeddc7c6e56fd44bd2a1317652e598261349c5396e07e3",
+   "partition": "69ccccafde88d94211eeddc7c6e56fd44bd2a1317652e598261349c5396e07e3"
+  },
+  "sysext_stamp": {
+   "match": true,
+   "odm_precompiled": "84d84a9e1c2e30e84afa28360a2275a9a22ff4778554fe96d9ed8e1a3554a1dc",
+   "partition": "84d84a9e1c2e30e84afa28360a2275a9a22ff4778554fe96d9ed8e1a3554a1dc"
+  }
+ },
+ "probe": "pq-hidl/systemcontrol-auth",
+ "probe_domains": {
+  "adbd": {
+   "call": false,
+   "find": false
+  },
+  "isolated_app": {
+   "call": false,
+   "find": false
+  },
+  "platform_app": {
+   "call": true,
+   "find": true
+  },
+  "priv_app": {
+   "call": true,
+   "find": true
+  },
+  "shell": {
+   "call": false,
+   "find": false
+  },
+  "system_app": {
+   "call": true,
+   "find": true
+  },
+  "system_server": {
+   "call": false,
+   "find": false
+  },
+  "untrusted_app": {
+   "call": true,
+   "find": true
+  },
+  "untrusted_app_25": {
+   "call": false,
+   "find": false
+  },
+  "untrusted_app_27": {
+   "call": false,
+   "find": false
+  },
+  "untrusted_app_29": {
+   "call": true,
+   "find": false
+  },
+  "untrusted_app_30": {
+   "call": false,
+   "find": false
+  },
+  "untrusted_app_32": {
+   "call": true,
+   "find": true
+  }
+ },
+ "registered_interfaces": [
+  "vendor.amlogic.hardware.systemcontrol@1.0::ISystemControl default",
+  "vendor.amlogic.hardware.systemcontrol@1.1::ISystemControl default"
+ ],
+ "runs_as": "root",
+ "systemcontrol": {
+  "build_id": "c980ec27b1cd3ab6fa576214e48d46df",
+  "class": "ELF32",
+  "sha256": "aec8998d473579416d768e1e630492208cf61aef0299f5492d41e2e735c8c1a4"
+ },
+ "ubootenv_prefix_check": true,
+ "untrusted_app_reachable": [
+  "untrusted_app",
+  "untrusted_app_32"
+ ]
+}

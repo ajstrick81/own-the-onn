@@ -1,0 +1,154 @@
+# probe: boot-policy/dispatch-tokens @ a3ad84c1c343f529d9bba2106ff2e047e0d87b69317948ccc8ad0a7af848c2bc
+# class: host
+# inputs:
+#   bootloader (file): sha256=389daa9963440f9f95ccc13fb31dfe18fa53fbe5a36cd740a17783b3f51ad775 size=4100096
+#   vendor_boot (file): sha256=3db861f2a7fe5f1c9c3a95ee61c4cb35339dcac665b7d67d072d4d09526c1bd9 size=67108864
+#   init_boot (file): sha256=bc2112c2531acbd375ed67eb31fcbaa7412232fce777e49ba025d2b34d30dc61 size=8388608
+# tools: python 3.13.7; os Windows
+# run: 2026-11-05T17:49:18Z
+# body-sha256: 0b3a28d0297a8c9e2067002eb9131303e77d4568e137f099dd40731f50987f5f
+# ---
+{
+ "bootloader_hits": 0,
+ "grade": "P",
+ "probe": "boot-policy/dispatch-tokens",
+ "reading": "bootloader.img plaintext has no dispatch tokens; U-Boot decisions stay U",
+ "sources": {
+  "bootloader.img": {
+   "files_scanned": 1,
+   "hits": {}
+  },
+  "init_boot:ramdisk": {
+   "files_scanned": 4,
+   "hits": {
+    "verifiedbootstate": [
+     "init"
+    ]
+   },
+   "ramdisk_sha256": "f47cf1ebfd0ed6cea9d89c16aee44b9ea7b9df7b503e46309843729618d30349",
+   "ramdisk_type": 0
+  },
+  "vendor_boot:frag0": {
+   "files_scanned": 77,
+   "hits": {
+    "reboot_mode": [
+     "lib/modules/aml_drm.ko",
+     "lib/modules/amlogic-debug-iotrace.ko"
+    ],
+    "saveenv": [
+     "lib/modules/amlogic-memory-debug.ko"
+    ]
+   },
+   "ramdisk_sha256": "4886ef173b2565f750e855301023b58610548c159de8fd9d278a80bf02bb43c5",
+   "ramdisk_type": 1
+  },
+  "vendor_boot:recovery": {
+   "files_scanned": 231,
+   "hits": {
+    "boot-recovery": [
+     "system/bin/fastbootd",
+     "system/bin/init",
+     "system/lib/libbootloader_message.so"
+    ],
+    "bootcmd": [
+     "system/bin/hw/android.hardware.boot-service_recovery",
+     "system/bin/systemcontrol_static",
+     "system/lib/librecovery_ui_ext.so"
+    ],
+    "bootloader_message": [
+     "system/bin/fastbootd",
+     "system/bin/init",
+     "system/bin/recovery",
+     "system/bin/update_engine_sideload",
+     "system/lib/libbootloader_message.so"
+    ],
+    "bootm": [
+     "plat_property_contexts",
+     "system/bin/init",
+     "system/bin/update_engine_sideload"
+    ],
+    "factory_update_param": [
+     "system/lib/librecovery_ui_ext.so"
+    ],
+    "otacerts": [
+     "system/bin/recovery",
+     "system/bin/update_engine_sideload"
+    ],
+    "setbootenv": [
+     "system/bin/hw/android.hardware.boot-service_recovery",
+     "system/lib/librecovery_ui_ext.so",
+     "system/lib/libsystemcontrolservice.so",
+     "system/lib/vendor.amlogic.hardware.systemcontrol@1.0.so",
+     "system/lib/vendor.amlogic.hardware.systemcontrol@1.1.so"
+    ],
+    "sideload": [
+     "system/bin/adbd",
+     "system/bin/init",
+     "system/bin/minadbd",
+     "system/bin/recovery",
+     "system/bin/update_engine_sideload",
+     "system/etc/init/hw/init.rc",
+     "system/lib/libfusesideload.so"
+    ],
+    "ubootenv.var.": [
+     "system/bin/hw/android.hardware.boot-service_recovery",
+     "system/bin/systemcontrol_static",
+     "system/lib/librecovery_ui_ext.so"
+    ],
+    "verifiedbootstate": [
+     "plat_property_contexts",
+     "system/bin/adbd",
+     "system/bin/fastbootd",
+     "system/bin/init",
+     "system/bin/recovery",
+     "system/bin/update_engine_sideload",
+     "system/lib/libfs_mgr.so"
+    ]
+   },
+   "ramdisk_sha256": "6d27f9f99af1ab26b3318ccc65a92bd01d5b01ad03b06332baf73f148ea07cef",
+   "ramdisk_type": 2
+  }
+ },
+ "tokens": [
+  "switch_bootmode",
+  "get_rebootmode",
+  "reboot_mode",
+  "bootcmd",
+  "storeboot",
+  "recovery_from_udisk",
+  "recovery_from_sdcard",
+  "recovery_from_flash",
+  "aml_autoscript",
+  "autoscr",
+  "usb_burning",
+  "burningcfg",
+  "aml_sdc_burn",
+  "imgread",
+  "bootm",
+  "get_avb_mode",
+  "avb_mode",
+  "get_valid_slot",
+  "saveenv",
+  "fw_setenv",
+  "fw_printenv",
+  "setbootenv",
+  "ubootenv.var.",
+  "bootloader_message",
+  "upgrade_step",
+  "bootfromnand",
+  "factory_update_param",
+  "boot-recovery",
+  "sideload",
+  "ubootenv.var.lock",
+  "flashing unlock",
+  "verifiedbootstate",
+  "otacerts"
+ ],
+ "vendor_boot_bootconfig": [
+  "androidboot.boot_devices=soc/fe08c000.mmc",
+  "androidboot.dtbo_idx=0",
+  "androidboot.dynamic_partitions=true",
+  "use_uvm=1"
+ ],
+ "vendor_boot_cmdline": "bootconfig bootconfig"
+}

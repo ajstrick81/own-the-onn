@@ -18,5 +18,8 @@ __pycache__/
 # Unsent security-disclosure drafts: never commit
 disclosure/
 
+# Machine-specific probe input paths (template: probes/local-inputs.example.json)
+probes/local-inputs.json
+
 # archify visual-check evidence (regenerable)
 diagrams/*.visual-check.*
