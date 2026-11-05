@@ -19,7 +19,7 @@
     {"track": "root-runtime", "goal": "per-boot kernel root on coffey", "score": 1, "max": 10,
      "note": "GhostLock affected code confirmed in coffey kernel (P); no coffey exploit attempted"},
     {"track": "boot-policy", "goal": "map the weld; can coffey boot CoreELEC", "score": 2, "max": 10,
-     "note": "coffey artifacts captured (A), DT compared (D), odm_ext consumers mapped (E), systemcontrol authorization mapped (F); B open, weld untouched"}
+     "note": "all six phases done to the offline ceiling (A, B to plaintext, C, D, E, F); weld untouched, BL33 decisions U"}
   ],
   "top_level_unmet": [
     "no runtime root on coffey",
@@ -44,7 +44,8 @@
     {"id": "C14", "grade": "P", "claim": "kernel source = kernel/common 3d26c188ef7e (android14-5.15-2026-01 branch point); CVE-2026-43499 + CVE-2026-99169 affected code present; Bad Epoll, CVE-2026-43074, -23259, -99221 not applicable"},
     {"id": "C15", "grade": "P/U", "claim": "root systemcontrol HIDL service (setBootEnv, writeSysfs, key/property writes) reachable at SELinux layer by untrusted_app/untrusted_app_32 (not shell/adbd); no caller-identity API imported; own policy cannot write bootloader/boot/vbmeta/super/misc/param; end-to-end untested"},
     {"id": "C16", "grade": "P", "claim": "shipped DT = Amlogic bm202 reference + 19 onn edits; CoreELEC generic 2g matches memory/secmon/PSCI/console UART/eMMC but enables absent hardware, different GPU binding, ~284 MiB more media memory (candidate, not coffey-ready)"},
-    {"id": "C17", "grade": "P", "claim": "odm_ext is the only firmware partition outside verified boot (no fstab avb, not in vbmeta); PQ db/INI parsed by root systemcontrol with CRC/version checks only; only init/update_engine/fsck/e2fs may write it"}
+    {"id": "C17", "grade": "P", "claim": "odm_ext is the only firmware partition outside verified boot (no fstab avb, not in vbmeta); PQ db/INI parsed by root systemcontrol with CRC/version checks only; only init/update_engine/fsck/e2fs may write it"},
+    {"id": "C18", "grade": "P/U", "claim": "Android boot steering via U-Boot env + /misc; boot-control and OEM-lock HALs are systemcontrol clients; OEM-unlock-allowed = env ubootenv.var.lock, reachable by shell (OEM-lock HAL) and apps (C15); /misc writable only by system boot/update components; fastbootd lock-gated; bootloader.img has no plaintext dispatch logic; BL33 behaviour U"}
   ],
   "hard_walls": [
     "welded bootloader (signed ROM/BL2) -> no flash/persistence/custom-ROM",

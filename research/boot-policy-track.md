@@ -166,7 +166,17 @@ size, SHA-256, build/fingerprint, extraction tool+version, relation to the live 
 originals; never silently merge across OTA builds.
 **Acceptance:** `COFFEY-ARTIFACT-MANIFEST.md` + an explicit missing-prerequisite list.
 
-### Phase B — Reconstruct boot dispatch offline  _(donor scaffold done 2026-11-02; S7D specifics U, coffey half blocked on A)_
+### Phase B — Reconstruct boot dispatch offline  _(status: DONE to the plaintext ceiling — 2026-11-04, [`coffey-boot-dispatch-2026-11-04/COFFEY-BOOT-POLICY-MAP.md`](coffey-boot-dispatch-2026-11-04/COFFEY-BOOT-POLICY-MAP.md); BL33 logic U)_
+> **Result:** `bootloader.img` has no plaintext dispatch logic (zero hits for every token below), so U-Boot's
+> decisions stay `U`. On the Android side (P): boot is steered via the U-Boot env as well as `/misc`; both the
+> boot-control and OEM-lock HALs are `systemcontrol` clients; the OEM-unlock-allowed state is env
+> `ubootenv.var.lock`. `/misc` is writable only by system boot/update components, and `fastbootd` is
+> lock-gated on `ro.boot.verifiedbootstate`. `shell` may call the OEM-lock HAL (which exposes a set option)
+> and apps may reach `systemcontrol` (C15), so both reach the `lock` variable; whether BL33 honors it is C5.
+> Recovery: sideload/SD/USB updates checked against `otacerts.zip`; wipes incl. `param`; an Amlogic
+> `factory_update_param.aml` from removable media whose authentication isn't visible (H).
+
+_Original agenda, kept for reference:_
 A public stage/signature/rollback **scaffold** exists:
 [`boot-policy-packet-2026-11-02/public-lookups-addendum/COFFEY-BOOT-CHAIN-MODEL.md`](boot-policy-packet-2026-11-02/public-lookups-addendum/COFFEY-BOOT-CHAIN-MODEL.md).
 It names the boot objects (`BL2`, `BL2E`, `BL2X`, `DDRFIP`/`DEVFIP`/FIP, `BL31/32/33`) and keeps **Amlogic

@@ -1,0 +1,19 @@
+# Boot-dispatch inputs for COFFEY-BOOT-POLICY-MAP.md (NOT committed; vendor/AOSP binaries and ramdisks).
+# Source: OTA URO4.260304.011.B1. Ramdisks cut from vendor_boot.img (3db861f2...) / init_boot.img (bc2112c2...) by
+# scripts/bootimg_split.py; files below "recovery/" are from the vendor_boot recovery fragment (scripts/rd_extract.py).
+
+4886ef173b2565f750e855301023b58610548c159de8fd9d278a80bf02bb43c5  vendor_boot/ramdisk0-boot.lz4  11873854 bytes
+6d27f9f99af1ab26b3318ccc65a92bd01d5b01ad03b06332baf73f148ea07cef  vendor_boot/ramdisk1-recovery.lz4  15180601 bytes
+f47cf1ebfd0ed6cea9d89c16aee44b9ea7b9df7b503e46309843729618d30349  init_boot/ramdisk.lz4  1846109 bytes
+f00298bd52b06740ed46ba04e81bd8aa8d12bbb2e29d22c059c630a76667242c  recovery/system/bin/recovery  1610160 bytes
+9efd3fda339f5043b763ef0d5ec9ba45168a4f85265b993508b15cdeb54c4364  recovery/system/lib/librecovery_ui_ext.so  551968 bytes
+156a64a7f73ecba0f780ca31ac5ddbc6ccce3ceab0fb969fa2a24891b5ae9d34  recovery/system/bin/fastbootd  1161328 bytes
+dd08c4667c9dd541877746fad24444fb4f00634b1da12e9dca66a39177599a1e  recovery/system/bin/systemcontrol_static  150992 bytes
+ba1e092016174a3bfd79c420af7c107c7bae28f4a6051f5a7ce8b6406211d288  recovery/system/bin/hw/android.hardware.boot-service_recovery  103760 bytes
+70cfc266091cbe00eed79ae2d00892876214fe9f9d5e9aa8f7630d689279fa7e  recovery/system/bin/hw/android.hardware.fastboot-service.amlogic_recovery  87548 bytes
+b153417b605e30ad105a3786ba4d3151262e28c61b76aaefdf285cdc7a5d691c  recovery/system/etc/security/otacerts.zip  2284 bytes
+38ce7ad4d57092c275a6cf7acd2fc317db1c3276ed105c7622900e3d66ce41b2  recovery/prop.default  23517 bytes
+4fc1aa07617985184663607cf58e635db6d0c5c8a9c11145201382eaab3c5a35  recovery/system/etc/init/hw/init.rc  6572 bytes
+baef574471f35af4129de8f670d2b9527a9a9b6d323cc7779731d4037e2a66b6  vendor/bin/hw/android.hardware.boot-service  97316 bytes
+c5bfeff571004ef06bcc055bed15710d13525cf2d91a3d9be05426c2a2f1816b  vendor/bin/hw/android.hardware.oemlock-service.droidlogic  15728 bytes
+8ec713308e66f158c9ca31e5922076fb73d4dab0b12212bc19296d9359e7f134  vendor/etc/fstab.amlogic  4842 bytes

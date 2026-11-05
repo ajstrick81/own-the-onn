@@ -15,7 +15,7 @@ kernel `5.15.196-android14-11-g3d26c188ef7e-ab14657224` (GKI, built 2026-01-03),
 |---|---|---|
 | Telemetry audit | What the box sends by itself | **7/10** — one device, scenarios D/E/F + overnight pending |
 | Root (runtime) | Per-boot kernel root on coffey | **1/10** — GhostLock affected code confirmed in coffey's kernel (P); no coffey exploit attempted |
-| Boot-policy / alternate-OS | Map the weld; can coffey boot CoreELEC | **2/10** — coffey's own artifacts captured (A), DT compared (D), `odm_ext` consumers mapped (E), `systemcontrol` authorization mapped (F); B open, the weld itself untouched |
+| Boot-policy / alternate-OS | Map the weld; can coffey boot CoreELEC | **2/10** — all six phases done to the offline ceiling (A, B to plaintext, C, D, E, F); the weld itself is untouched and BL33's decisions stay U |
 
 **Top-level unmet:** no root, no bootloader unlock, and no alternate-OS boot. coffey's own OTA is captured and
 analyzed (kernel CVEs, DT, `systemcontrol`, `odm_ext`), but the bootloader that enforces the lock stays opaque
@@ -42,6 +42,7 @@ analyzed (kernel CVEs, DT, `systemcontrol`, `odm_ext`), but the bootloader that 
 | C15 | Root `systemcontrol` HIDL service (`setBootEnv`, `writeSysfs`, key/property writes among ~300 methods) is **reachable at the SELinux layer by third-party apps** (`untrusted_app`, `untrusted_app_32`), not by `shell`/adbd; no caller-identity API imported (in-process check absent: H); its own policy can't write bootloader/boot/vbmeta/super/misc/param partitions | P (policy, imports) / U (end-to-end) | `research/coffey-systemcontrol-authz-2026-11-03/` |
 | C16 | coffey's shipped device tree = Amlogic `bm202` reference board + 19 onn edits; CoreELEC generic 2g matches on memory/secmon/PSCI/console UART/eMMC but enables absent hardware, binds a different GPU driver, reserves ~284 MiB more media memory (candidate, not coffey-ready) | P | `research/coffey-dtb-comparison-2026-11-04/` |
 | C17 | `odm_ext` is the only firmware partition outside verified boot (no fstab `avb`, not in vbmeta); its PQ database/INI are parsed by root `systemcontrol` with CRC/version checks only; only `init`/`update_engine`/`fsck`/`e2fs` may write it (no app/shell path found) | P | `research/coffey-odmext-consumers-2026-11-04/` |
+| C18 | Android-side boot steering goes through the U-Boot env as well as `/misc`; boot-control and OEM-lock HALs are `systemcontrol` clients; OEM-unlock-allowed = env `ubootenv.var.lock`, reachable by `shell` (OEM-lock HAL) and apps (via C15); `/misc` writable only by system boot/update components; `fastbootd` lock-gated; `bootloader.img` has no plaintext dispatch logic | P (inputs, policy) / U (what BL33 does) | `research/coffey-boot-dispatch-2026-11-04/` |
 
 ## Hard walls (what blocks us)
 
