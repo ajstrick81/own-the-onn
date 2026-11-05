@@ -15,11 +15,11 @@ kernel `5.15.196-android14-11-g3d26c188ef7e-ab14657224` (GKI, built 2026-01-03),
 |---|---|---|
 | Telemetry audit | What the box sends by itself | **7/10** — one device, scenarios D/E/F + overnight pending |
 | Root (runtime) | Per-boot kernel root on coffey | **1/10** — GhostLock affected code confirmed in coffey's kernel (P); no coffey exploit attempted |
-| Boot-policy / alternate-OS | Map the weld; can coffey boot CoreELEC | **2/10** — coffey's own artifacts captured (A), DT compared (D), `systemcontrol` authorization mapped (F); B/E open, the weld itself untouched |
+| Boot-policy / alternate-OS | Map the weld; can coffey boot CoreELEC | **2/10** — coffey's own artifacts captured (A), DT compared (D), `odm_ext` consumers mapped (E), `systemcontrol` authorization mapped (F); B open, the weld itself untouched |
 
 **Top-level unmet:** no root, no bootloader unlock, and no alternate-OS boot. coffey's own OTA is captured and
-its DT, modules, and bootloader container are mapped, but the CVE and `systemcontrol` analyses on it haven't
-been done. Nothing here demonstrates a bypass.
+analyzed (kernel CVEs, DT, `systemcontrol`, `odm_ext`), but the bootloader that enforces the lock stays opaque
+(C13). Nothing here demonstrates a bypass.
 
 ## Confirmed (P / R / B)
 
@@ -41,6 +41,7 @@ been done. Nothing here demonstrates a bypass.
 | C14 | coffey kernel source = `kernel/common` `3d26c188ef7e` (branch point of `android14-5.15-2026-01`). **CVE-2026-43499 (GhostLock) and CVE-2026-99169 affected code present**; Bad Epoll, CVE-2026-43074, -23259, -99221 **not applicable** | P | `research/coffey-cve-applicability-r4-2026-11-03/` |
 | C15 | Root `systemcontrol` HIDL service (`setBootEnv`, `writeSysfs`, key/property writes among ~300 methods) is **reachable at the SELinux layer by third-party apps** (`untrusted_app`, `untrusted_app_32`), not by `shell`/adbd; no caller-identity API imported (in-process check absent: H); its own policy can't write bootloader/boot/vbmeta/super/misc/param partitions | P (policy, imports) / U (end-to-end) | `research/coffey-systemcontrol-authz-2026-11-03/` |
 | C16 | coffey's shipped device tree = Amlogic `bm202` reference board + 19 onn edits; CoreELEC generic 2g matches on memory/secmon/PSCI/console UART/eMMC but enables absent hardware, binds a different GPU driver, reserves ~284 MiB more media memory (candidate, not coffey-ready) | P | `research/coffey-dtb-comparison-2026-11-04/` |
+| C17 | `odm_ext` is the only firmware partition outside verified boot (no fstab `avb`, not in vbmeta); its PQ database/INI are parsed by root `systemcontrol` with CRC/version checks only; only `init`/`update_engine`/`fsck`/`e2fs` may write it (no app/shell path found) | P | `research/coffey-odmext-consumers-2026-11-04/` |
 
 ## Hard walls (what blocks us)
 

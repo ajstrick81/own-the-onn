@@ -52,7 +52,7 @@ against coffey's own artifacts, not to assume it.
 | Memory | 2 GiB (DTB usable `0x80000000`) |
 | Security state | verified boot green, vbmeta `device_state` locked, SELinux enforcing |
 | Slots | A/B present |
-| `odm_ext` | read-only ext4 mount, `nosuid,nodev`; prior analysis placed it **outside** AVB/dm-verity |
+| `odm_ext` | read-only ext4 mount, `nosuid,nodev`; prior analysis placed it **outside** AVB/dm-verity — **confirmed P 2026-11-04** (no fstab `avb`, not in vbmeta; Phase E) |
 | `param` | writable mount, `nosuid,nodev` (mount writable ≠ shell-writable contents) |
 | Boot packaging | OTA carries Amlogic `@AMLBOOT`/device-FIP with BL2E/BL2X |
 | Vendor DT | `amlogic,meson-uart`; PSCI 0.2 via SMC (do **not** substitute mainline S7D bindings) |
@@ -212,7 +212,15 @@ model + includes; phys/usable/reserved memory; UART compatible/clocks/IRQs/enabl
 assumptions; USB controller/PHY/role; storage + partition metadata; GPU/video/secure-memory deps.
 **Acceptance:** `COFFEY-DTB-COMPARISON.md` semantic diff. A generic 2 GiB DTB is a candidate, not coffey-ready.
 
-### Phase E — Expand odm_ext consumers  _(depends on A)_
+### Phase E — Expand odm_ext consumers  _(status: DONE — 2026-11-04, [`coffey-odmext-consumers-2026-11-04/COFFEY-ODMEXT-CONSUMERS.md`](coffey-odmext-consumers-2026-11-04/COFFEY-ODMEXT-CONSUMERS.md))_
+> **Result (P):** `odm_ext` is a read-only ext4 mount with no fstab `avb` flag and no vbmeta entry, the only
+> firmware partition outside verified boot. It holds the PQ database and defaults (`pq.db`, `pq_default.ini`,
+> `UI_PQSetting.bin`), five TV configs with no consumer, and an inert `chmod_files.sh`. Its privileged reader
+> is root `systemcontrol` via `libpqcontrol` (SQLite/INI/binary; CRC and version checks only). The audio HAL
+> (audioserver) references three INIs that coffey doesn't ship. Only `init`/`update_engine`/`fsck`/`e2fs` may
+> write the block device; no shell- or app-controlled path into `odm_ext` was found.
+
+_Original agenda, kept for reference:_
 Map each candidate consumer to boot stage, privilege, path resolution, integrity check, parser, mutability.
 Search logo/EDID/firmware/PQ references, then confirm *actual* load branches; separate immutable packaged
 input from writable copies/reseeds.

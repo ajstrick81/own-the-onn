@@ -19,13 +19,13 @@
     {"track": "root-runtime", "goal": "per-boot kernel root on coffey", "score": 1, "max": 10,
      "note": "GhostLock affected code confirmed in coffey kernel (P); no coffey exploit attempted"},
     {"track": "boot-policy", "goal": "map the weld; can coffey boot CoreELEC", "score": 2, "max": 10,
-     "note": "coffey artifacts captured (A), DT compared (D), systemcontrol authorization mapped (F); B/E open, weld untouched"}
+     "note": "coffey artifacts captured (A), DT compared (D), odm_ext consumers mapped (E), systemcontrol authorization mapped (F); B open, weld untouched"}
   ],
   "top_level_unmet": [
     "no runtime root on coffey",
     "no bootloader unlock",
     "no alternate-OS boot",
-    "CVE and systemcontrol analysis on coffey's captured artifacts not yet done"
+    "bootloader (the lock's enforcer) stays opaque offline"
   ],
   "confirmed": [
     {"id": "C1", "grade": "P", "claim": "no ACR packages; no screen/TV-input capture perms"},
@@ -43,7 +43,8 @@
     {"id": "C13", "grade": "P/H", "claim": "bootloader = signed Amlogic container S7D-s905x5m-26030511BBST; stage bodies opaque (encrypted vs packed unresolved)"},
     {"id": "C14", "grade": "P", "claim": "kernel source = kernel/common 3d26c188ef7e (android14-5.15-2026-01 branch point); CVE-2026-43499 + CVE-2026-99169 affected code present; Bad Epoll, CVE-2026-43074, -23259, -99221 not applicable"},
     {"id": "C15", "grade": "P/U", "claim": "root systemcontrol HIDL service (setBootEnv, writeSysfs, key/property writes) reachable at SELinux layer by untrusted_app/untrusted_app_32 (not shell/adbd); no caller-identity API imported; own policy cannot write bootloader/boot/vbmeta/super/misc/param; end-to-end untested"},
-    {"id": "C16", "grade": "P", "claim": "shipped DT = Amlogic bm202 reference + 19 onn edits; CoreELEC generic 2g matches memory/secmon/PSCI/console UART/eMMC but enables absent hardware, different GPU binding, ~284 MiB more media memory (candidate, not coffey-ready)"}
+    {"id": "C16", "grade": "P", "claim": "shipped DT = Amlogic bm202 reference + 19 onn edits; CoreELEC generic 2g matches memory/secmon/PSCI/console UART/eMMC but enables absent hardware, different GPU binding, ~284 MiB more media memory (candidate, not coffey-ready)"},
+    {"id": "C17", "grade": "P", "claim": "odm_ext is the only firmware partition outside verified boot (no fstab avb, not in vbmeta); PQ db/INI parsed by root systemcontrol with CRC/version checks only; only init/update_engine/fsck/e2fs may write it"}
   ],
   "hard_walls": [
     "welded bootloader (signed ROM/BL2) -> no flash/persistence/custom-ROM",

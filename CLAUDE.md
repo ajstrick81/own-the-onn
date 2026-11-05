@@ -49,6 +49,8 @@ trustworthy — apply it to every lookup.
   coffey's loaded SELinux policy + binary imports (third-party apps can reach it; disclosure pending)
 - `research/coffey-dtb-comparison-2026-11-04/` — Phase D: coffey's DT vs vendor/CoreELEC trees built from
   pinned source (coffey = bm202 + 19 onn edits); supersedes the 11-02 coffey column
+- `research/coffey-odmext-consumers-2026-11-04/` — Phase E: `odm_ext` contents, consumers, writers (only
+  firmware partition outside verified boot)
 - `research/codex-task-list*.md` — task blocks handed to the second agent ("Chat")
 - `STATUS.md` / `progress.json` — the dashboard (confirmed / hard walls / priority vectors / dead ends)
 - `probes/README.md` — **design doc (not yet built)** for a probe→capture→ledger harness; build the minimal
@@ -60,8 +62,8 @@ trustworthy — apply it to every lookup.
 - **Runtime root:** per-boot only, kernel-memory-safety is the sole live lane. Against coffey's own kernel
   (R4): GhostLock/CVE-2026-43499 affected code **present** (`P`); the epoll pair **not applicable**. Runtime
   root ≠ custom ROM (needs bootloader unlock).
-- **Boot-policy:** coffey artifacts captured (Phase A), DT compared (D), `systemcontrol` authorization mapped
-  (F); B/E next. Don't publish invocation details for `systemcontrol` (C15) while disclosure is undecided.
+- **Boot-policy:** coffey artifacts captured (Phase A), DT compared (D), `odm_ext` mapped (E), `systemcontrol`
+  authorization mapped (F); only B (boot dispatch) remains. Don't publish invocation details for `systemcontrol` (C15) while disclosure is undecided.
 
 ## The one unlock — done
 
@@ -70,7 +72,7 @@ and ingested on 2026-11-03: [`research/coffey-ota-capture-2026-10-09/`](research
 Build verified: `onn/coffey/coffey:14/URO4.260304.011.B1/15051976` (SPL 2026-03-01); kernel GKI
 `5.15.196-android14-11-g3d26c188ef7e-ab14657224`. The bytes live off-repo (maintainer's `E:\Morphe\device\coffey-ota\`)
 and are pinned in that packet's ledger. CVE applicability against this exact kernel is done (R4); next uses
-were `systemcontrol` (Phase F, done), the DT comparison (Phase D, done), and boot-policy Phases B/E.
+were `systemcontrol` (Phase F), the DT comparison (D) and `odm_ext` (E), all done; Phase B remains.
 
 ## Working conventions
 

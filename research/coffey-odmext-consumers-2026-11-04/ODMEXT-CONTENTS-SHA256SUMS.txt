@@ -1,0 +1,12 @@
+# Contents of coffey's odm_ext (OTA URO4.260304.011.B1, slot _b) — vendor data, NOT committed.
+# Image: trust-audit-images/odm_ext.img sha256 ca11823c4ed63ed07467523038db7be557c187e92d1790ed5e3fe0fb5705f55e
+# Paths are relative to the odm_ext filesystem root (mounted at /mnt/vendor/odm_ext on the device).
+13ce691767879720c5d8a1ba40f9f27f155fa2f3b0479294a0309d273842864e  etc/tvconfig/chmod_files.sh  976 bytes
+36bd32740721fe07fb5e6a45cb4069a734a9167b6c35e7e0f3126f9ffcad78d0  etc/tvconfig/pq/UI_PQSetting.bin  6726 bytes
+5f7fb63af05f668d1bf62b7b89101f1f28d8c3c3b386edf6a68d3e7cdb63d129  etc/tvconfig/pq/pq.db  1421312 bytes
+bbd9224aecc0294e1d7abd22d2a3e108429cb60e7bcef6d63a4fcc93673241b0  etc/tvconfig/pq/pq_default.ini  2496 bytes
+fe1fce43e08b3b95dcb3eabae604199f1d52bf08e032442932aae0eeddfa8f0e  etc/tvconfig/tv_default.xml  186164 bytes
+c6f92c7998a2cee68fc92ac99382efef54ba2267da7778d3ecc81986bf9165d2  etc/tvconfig/tv_rrt_define.xml  3784 bytes
+49ac3f396e687d612cc78da1d00b379c36eb79fd142fd882e13977c2ca3d2614  etc/tvconfig/tv_setting_config.cfg  115 bytes
+fe4a571a36185fdeca93ac7c951deffd978d99d419e6bd2953922279bafa407d  etc/tvconfig/tvconfig.conf  1252 bytes
+d57903f7f3392e7fbf5a5b8c02627adcdf7c1d5f994bfc22464f3c5bf958e357  etc/tvconfig/tvscan.conf  2683 bytes
