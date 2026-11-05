@@ -163,6 +163,28 @@ alternate OS (CoreELEC / custom ROM), and what the weld actually verifies, is tr
 We have **not** run any of this against a device. This entry records the CVE identity and applicability for
 the next owner-researcher; we do not reproduce or host the exploit.
 
+### D-ter. KernelPatch / APatch (assessed 2026-11-05)
+[`bmax121/KernelPatch`](https://github.com/bmax121/KernelPatch), the engine behind APatch, patches and hooks a
+stripped arm64 kernel image (code injection, inline and syscall-table hooks, an `su` feature). Its README lists
+**static patching of the kernel image** or **runtime dynamic loading**, and requires arm64, Linux 3.18–6.6 and
+`CONFIG_KALLSYMS=y`.
+
+- **On paper coffey fits (P):** arm64, GKI 5.15.196, and its embedded config has `CONFIG_KALLSYMS=y` and
+  `CONFIG_KALLSYMS_ALL=y`.
+- **Static patching needs a modified `boot.img` to boot:** blocked on coffey. The unit reports
+  `flash.locked=1` / `green`, `boot` is covered by `vbmeta`, and `fastbootd` refuses flashing while locked
+  ([`coffey-boot-dispatch-2026-11-04/`](coffey-boot-dispatch-2026-11-04/INDEX.md),
+  [`coffey-device-checks-2026-11-04/`](coffey-device-checks-2026-11-04/INDEX.md)). Same wall as a custom ROM:
+  needs the bootloader unlock first.
+- **Runtime loading needs kernel write access first:** it's post-exploitation tooling, so it would sit
+  *behind* a kernel bug such as GhostLock (C14), and stay per-boot like the rest of this section.
+- **Hardening to account for:** coffey has `CONFIG_CFI_CLANG=y` and `CONFIG_ARM64_PTR_AUTH_KERNEL=y`
+  (`CONFIG_ARM64_BTI_KERNEL` unset; `CONFIG_MODULE_SIG=y` without `_FORCE`). How KernelPatch handles CFI/PAC
+  wasn't checked.
+
+**Verdict:** not a new route. It's what you'd use *after* an unlock or a kernel compromise, not a way to
+either. Recorded as a bounded comparator; nothing was downloaded, built or run.
+
 ## Method & toolchain (reusable)
 
 - **Firmware pipeline:** [moria](https://github.com/nmatt0/moria) (identify + extract partition images,

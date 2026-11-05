@@ -77,6 +77,7 @@
     "prior coffey-specific CoreELEC/unlock work (bounded across named forums + queries); root part reopened 2026-11-04: public coffey GhostLock repo exists (R)",
     "booting donor CoreELEC recovery as a shortcut (mutates persistent env)",
     "runtime root -> custom ROM (requires bootloader unlock; two separate locks)",
+    "KernelPatch/APatch as a route in (static patch needs unlocked boot; runtime load needs prior kernel compromise)",
     "epoll CVEs on coffey (introducing 5.15.209 refactor absent at 3d26c188ef7e)",
     "Amlogic pppoe_wrapper / DroidLogic subtitle CVEs (no binaries in system/system_ext/product/vendor)"
   ]

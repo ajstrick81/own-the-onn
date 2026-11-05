@@ -78,6 +78,7 @@ analyzed (kernel CVEs, DT, `systemcontrol`, `odm_ext`), but the bootloader that 
 | ~~UART pinout from public docs~~ | **reopened → lead found:** FCC photo review (R2-5) found a candidate 4-pad `GND/TX/RX/GND` header; now priority vector #4, no longer a dead end | `…/COFFEY-R2-5-FCC-PHOTO-REVIEW.md` |
 | Booting donor CoreELEC recovery as a shortcut | disqualified — it mutates persistent env (C7) | `…/COFFEY-CE-RECOVERY-AUDIT.md` |
 | Runtime root → custom ROM | impossible without bootloader unlock (two separate locks) | `research/root-study.md` §D-bis |
+| KernelPatch / APatch as a route in | kernel fits on paper (arm64, 5.15, `KALLSYMS=y`), but static patching needs a booted modified `boot.img` (locked + AVB) and runtime loading needs a prior kernel compromise; a post-unlock/post-exploit tool, not a way in | `research/root-study.md` §D-ter |
 | Epoll CVEs (Bad Epoll CVE-2026-46242, CVE-2026-43074) on coffey | not applicable: coffey's `eventpoll.c` (commit `3d26c188ef7e`) lacks the 5.15.209 refcount refactor that introduced both; the earlier "present" claim matched the newer branch tip | `research/coffey-cve-applicability-r4-2026-11-03/` |
 | Amlogic `pppoe_wrapper` / DroidLogic subtitle CVEs (119737–119739) | no matching binary/service in `system`/`system_ext`/`product`/`vendor` (policy leftovers only); `odm`/`oem` not unpacked | same |
 
