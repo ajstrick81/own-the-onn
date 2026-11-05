@@ -1,0 +1,11 @@
+# Device-tree blobs compared in COFFEY-DTB-COMPARISON-v2.md (NOT committed; rebuild with scripts/build-dtbs.sh).
+# coffey.dtb = OTA URO4.260304.011.B1 vendor_boot DTB, cut to its FDT totalsize (81532 bytes).
+# Donor DTBs built from CoreELEC common_drivers at 4dbe1c27ae176fde4c1cbef7506618fd7f62b976; the build at
+# 8646fbd1a8b0c77d7f73bbbc77b0a660bda4b734 produced identical bytes for every board.
+0c76b1efcd2a20f9707b40c4fb37f690f4629e3cb48929bd80de3bc958c7c2d0  coffey.dtb  81532 bytes
+e8985b53103354c74d305656755475847a3f966983cf6f33e862e7c1822c024c  s7d_s905x5m_bm202.dtb  82087 bytes
+bb867e4507ebf650635901eddc09dbb0f53c0ff24335d2ce4c4bafcf9e207b3b  s7d_s905x5m_bm201.dtb  84138 bytes
+bed657b45796b24d0c94173deb0a13a25f3bf3a306b34aeabe50b5bbdabfeb88  s7d_s905x5m_2g.dtb  76601 bytes
+31932e8728c9d8bf586bd97d764cab46a2a9665908125486076405226cc4b454  s7d_s905x5m_xiaomi_3rd_gen.dtb  76446 bytes
+955b8deb76981ba19f0563baf385f8ed3d059648c0d1405d2a9ca5000d90ff6f  s7d_s905x5m_ugoos_x5m_pro.dtb  78552 bytes
+4c184b3f0650c2f600e43415fae9861cd257dedb9e31d1a34c5d125772fb84ee  s7d_s905x5m_odroid_c5.dtb  78057 bytes

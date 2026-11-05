@@ -197,7 +197,16 @@ substitutions; the nightly only fixes a `UPDATE_SYSTEM.md5` source-name mix-up. 
 can execute this image is entirely unresolved**, and the FAT USB being mounted read-only does *not* stop the
 internal env writes — so it must not be booted on coffey as a substitute for the Phase-A artifact work.
 
-### Phase D — Compare board descriptions without transplanting  _(donor half done 2026-11-02; coffey half unblocked 2026-11-03 — coffey base DT `s7d_s905x5m_bm202` in hand, lineage/arch/driver maps in `coffey-ota-capture-2026-10-09/source-notes/E0003–E0006C`)_
+### Phase D — Compare board descriptions without transplanting  _(status: DONE — 2026-11-04, [`coffey-dtb-comparison-2026-11-04/COFFEY-DTB-COMPARISON-v2.md`](coffey-dtb-comparison-2026-11-04/COFFEY-DTB-COMPARISON-v2.md))_
+> **Result (P):** coffey's shipped DT is vendor `s7d_s905x5m_bm202` + 19 onn property edits and 4 swapped nodes
+> (LEDs, IR map, two extra unifykeys, a boot arg, pin muxes). Donor trees built from pinned `common_drivers`
+> reproduce CoreELEC's shipped generic DTB byte-for-byte. Against CoreELEC generic 2g: memory, secmon, PSCI,
+> console UART and eMMC match. CoreELEC additionally enables Ethernet/SD/second USB host/CVBS/codec (absent
+> on coffey), binds `mali-valhall-csf` instead of coffey's midgard-style GPU strings, and reserves ~284 MiB
+> more for media. A candidate, not coffey-ready; bm202 + the onn edits is the closer description. Supersedes
+> the coffey column of the 11-02 comparison.
+
+_Original agenda, kept for reference:_
 Diff coffey vendor DT vs exact-build CoreELEC Xiaomi/Ugoos/C5 refs and upstream S7D [S5]: root compatible/
 model + includes; phys/usable/reserved memory; UART compatible/clocks/IRQs/enabled; PSCI + firmware
 assumptions; USB controller/PHY/role; storage + partition metadata; GPU/video/secure-memory deps.

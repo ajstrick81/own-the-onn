@@ -3,7 +3,7 @@
 > Single front page for where the study stands. Evidence-weighted and deliberately candid: a documented
 > enforcement boundary is a result, and un-met goals are stated plainly. Grades use **P** inspected primary ·
 > **R** first-hand report · **B** inherited baseline · **H** hypothesis/lead · **U** unresolved. Updated
-> 2026-11-03 (coffey OTA capture ingested; CVE applicability R4; systemcontrol authorization). Machine-readable mirror: [`progress.json`](progress.json).
+> 2026-11-04 (coffey OTA capture ingested; CVE applicability R4; systemcontrol authorization; DT comparison v2). Machine-readable mirror: [`progress.json`](progress.json).
 
 Device: **onn 4K Plus Streaming** (`coffey` / `DV6116N` / `CS116K4`), Amlogic **S905X5M** (S7D), Android 14,
 kernel `5.15.196-android14-11-g3d26c188ef7e-ab14657224` (GKI, built 2026-01-03), SPL `2026-03-01`, build
@@ -15,7 +15,7 @@ kernel `5.15.196-android14-11-g3d26c188ef7e-ab14657224` (GKI, built 2026-01-03),
 |---|---|---|
 | Telemetry audit | What the box sends by itself | **7/10** — one device, scenarios D/E/F + overnight pending |
 | Root (runtime) | Per-boot kernel root on coffey | **1/10** — GhostLock affected code confirmed in coffey's kernel (P); no coffey exploit attempted |
-| Boot-policy / alternate-OS | Map the weld; can coffey boot CoreELEC | **2/10** — public surface mapped; coffey's own OTA/kernel/DTB/ELF now captured (Phase A done), Phases B/D/E/F not yet filled from them |
+| Boot-policy / alternate-OS | Map the weld; can coffey boot CoreELEC | **2/10** — coffey's own artifacts captured (A), DT compared (D), `systemcontrol` authorization mapped (F); B/E open, the weld itself untouched |
 
 **Top-level unmet:** no root, no bootloader unlock, and no alternate-OS boot. coffey's own OTA is captured and
 its DT, modules, and bootloader container are mapped, but the CVE and `systemcontrol` analyses on it haven't
@@ -40,6 +40,7 @@ been done. Nothing here demonstrates a bypass.
 | C13 | Bootloader = signed Amlogic container (build `S7D-s905x5m-26030511BBST`); every stage body after the headers is opaque | P (layout) / H (encrypted vs. packed) | `…/COFFEY-OTA-FINDINGS.md` O7–O9 |
 | C14 | coffey kernel source = `kernel/common` `3d26c188ef7e` (branch point of `android14-5.15-2026-01`). **CVE-2026-43499 (GhostLock) and CVE-2026-99169 affected code present**; Bad Epoll, CVE-2026-43074, -23259, -99221 **not applicable** | P | `research/coffey-cve-applicability-r4-2026-11-03/` |
 | C15 | Root `systemcontrol` HIDL service (`setBootEnv`, `writeSysfs`, key/property writes among ~300 methods) is **reachable at the SELinux layer by third-party apps** (`untrusted_app`, `untrusted_app_32`), not by `shell`/adbd; no caller-identity API imported (in-process check absent: H); its own policy can't write bootloader/boot/vbmeta/super/misc/param partitions | P (policy, imports) / U (end-to-end) | `research/coffey-systemcontrol-authz-2026-11-03/` |
+| C16 | coffey's shipped device tree = Amlogic `bm202` reference board + 19 onn edits; CoreELEC generic 2g matches on memory/secmon/PSCI/console UART/eMMC but enables absent hardware, binds a different GPU driver, reserves ~284 MiB more media memory (candidate, not coffey-ready) | P | `research/coffey-dtb-comparison-2026-11-04/` |
 
 ## Hard walls (what blocks us)
 
