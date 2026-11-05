@@ -15,5 +15,8 @@ settings_*.txt
 dumpsys_*.txt
 __pycache__/
 
+# Unsent security-disclosure drafts: never commit
+disclosure/
+
 # archify visual-check evidence (regenerable)
 diagrams/*.visual-check.*
