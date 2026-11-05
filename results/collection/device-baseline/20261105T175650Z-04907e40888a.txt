@@ -1,0 +1,67 @@
+# probe: collection/device-baseline @ d5110ddb7857aca65ee21904f3c629779d19e380fee43d70116ae2d91bf32ad6
+# class: device
+# inputs:
+#   adb (file): sha256=b4a6b455702684652cccf7b46258b29e653538904359a58fd4931cf3ef286b3f size=8273560
+#   serial (adb): device (serial not recorded; identity is in the probe output)
+# tools: python 3.13.7; os Windows
+# run: 2026-11-05T17:56:50Z
+# body-sha256: 04907e40888a42ed9bf5882d1d61955d75c05d4e4333ad0fd2e6c35d1775d753
+# ---
+{
+ "apex": {
+  "com.android.adbd": "340090000",
+  "com.android.adservices": "340090000",
+  "com.android.apex.cts.shim": "1",
+  "com.android.appsearch": "340090000",
+  "com.android.art": "340090000",
+  "com.android.btservices": "340090000",
+  "com.android.configinfrastructure": "340090000",
+  "com.android.conscrypt": "340090000",
+  "com.android.devicelock": "1",
+  "com.android.healthfitness": "340090000",
+  "com.android.i18n": "1",
+  "com.android.ipsec": "340090000",
+  "com.android.media": "340090000",
+  "com.android.media.swcodec": "340090000",
+  "com.android.mediaprovider": "340090000",
+  "com.android.neuralnetworks": "340090000",
+  "com.android.ondevicepersonalization": "340090000",
+  "com.android.os.statsd": "340090000",
+  "com.android.resolv": "340090000",
+  "com.android.rkpd": "1",
+  "com.android.runtime": "1",
+  "com.android.scheduling": "340090000",
+  "com.android.sdkext": "340090000",
+  "com.android.tethering": "340090000",
+  "com.android.tzdata": "340090000",
+  "com.android.uwb": "340090000",
+  "com.android.virt": "2",
+  "com.android.vndk.v34": "1",
+  "com.android.wifi": "340090000",
+  "com.google.android.extservices": "361153323",
+  "com.google.android.permission": "361524000",
+  "com.google.android.widevine.nonupdatable": "343700000"
+ },
+ "grade": "P",
+ "probe": "collection/device-baseline",
+ "props": {
+  "ro.adb.secure": "1",
+  "ro.boot.flash.locked": "1",
+  "ro.boot.slot_suffix": "_b",
+  "ro.boot.vbmeta.device_state": "locked",
+  "ro.boot.verifiedbootstate": "green",
+  "ro.build.fingerprint": "onn/coffey/coffey:14/URO4.260304.011.B1/15051976:user/release-keys",
+  "ro.build.type": "user",
+  "ro.build.version.security_patch": "2026-03-01",
+  "ro.debuggable": "0",
+  "ro.oem_unlock_supported": "",
+  "ro.product.device": "coffey",
+  "ro.secure": "1",
+  "ro.vendor.build.security_patch": "2026-03-01",
+  "sys.oem_unlock_allowed": "0"
+ },
+ "selinux_mode": "Enforcing",
+ "systemcontrol_label": [
+  "u:r:system_control:s0"
+ ]
+}

@@ -30,7 +30,7 @@ analyzed (kernel CVEs, DT, `systemcontrol`, `odm_ext`), but the bootloader that 
 | C2 | No background mic use; every mic use is a ~5 s foreground press | P | `findings/coffey-2026-09.md` |
 | C3 | Phones home while idle/screen-off (mostly Google + installed apps); Netflix logs while asleep | P | `findings/coffey-2026-09.md` |
 | C4 | Preinstalled factory test tool runs system-privileged; retail upload flow dormant | P | `findings/coffey-2026-09.md` |
-| C5 | Bootloader welded — OEM-unlock disabled, AVB locked, verified-boot green (bootloader-enforced). Owner's unit reports `ro.boot.flash.locked=1`, `verifiedbootstate=green` (2026-11-04) | P (lock state, device-reported) / B (that it can't be flipped) | `research/root-study.md` §A; `research/coffey-device-checks-2026-11-04/` |
+| C5 | Bootloader welded — OEM-unlock disabled, AVB locked, verified-boot green (bootloader-enforced). Owner's unit reports `ro.boot.flash.locked=1`, `verifiedbootstate=green`, `vbmeta.device_state=locked`, `sys.oem_unlock_allowed=0`, `ro.oem_unlock_supported` unset (2026-11-04/05) | P (lock state, device-reported) / B (that it can't be flipped) | `research/root-study.md` §A; `research/coffey-device-checks-2026-11-04/`; probe `results/INDEX.md` PF-4 |
 | C6 | Factory-tool userland doors are real but SELinux-boxed (system-UID, not root) | P | `research/root-study.md` §B/C |
 | C7 | Stock CoreELEC recovery is **state-changing** (writes env via `fw_setenv`, no rollback) — fails a read-only boundary | P | `research/boot-policy-packet-2026-11-02/.../COFFEY-CE-RECOVERY-AUDIT.md` |
 | C8 | CVE-2026-43499 futex-PI fix dated: first GKI tag 2026-08-05, first ASB Nov 2026 | P/R | `research/boot-policy-packet-round2-2026-11-03/COFFEY-R2-1-CVE-TIMELINE.md` |
