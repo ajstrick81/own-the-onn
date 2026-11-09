@@ -1,0 +1,15 @@
+# Build output
+build/
+.gradle/
+local.properties
+*.apk
+*.aab
+
+# Upstream CleanFrame web assets are NOT vendored into this repo.
+# tools/sync-upstream.sh fetches them at the pinned tag in UPSTREAM.
+app/src/main/assets/web/
+
+# Signing material never enters git.
+keystore.properties
+*.jks
+*.keystore

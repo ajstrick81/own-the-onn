@@ -1,0 +1,5 @@
+# Pinned upstream CleanFrame revision that tools/sync-upstream.sh fetches.
+# Bump deliberately: device.js is reimplemented here and may drift from upstream's.
+CLEANFRAME_REPO=https://github.com/nthnclrk/CleanFrame.git
+CLEANFRAME_TAG=v0.7.0
+CLEANFRAME_COMMIT=845f332d083502fab39be49869052966103b564a
