@@ -95,16 +95,40 @@ the remaining route is a factory reset from recovery.
 | App artwork | Android TV banners (16:9), served from `/icon/<package>.png`. Upstream's `iconPath` has no Android analogue. |
 | Brand icons | Upstream's nine Samsung Tizen app IDs are remapped to Google TV packages in `DeviceBridge.kt`. Apps not in that map still appear, just without a brand glyph. |
 
-## Things worth verifying on the device
+## Verified on the device (2026-11-09)
 
-These are untested predictions until someone runs them on real hardware:
+Checked on the owner's unit, build `URO4.260304.011.B1`, via network adb:
 
-- **D-pad feel in WebView.** CleanFrame drives focus itself and the key map
-  already matches what WebView delivers, but WebView's own focus handling can
-  still interfere. This is the most likely thing to need tuning.
-- **First-paint time.** 16 MB of wallpapers from local assets on an S905X5M;
-  if cold start is slow, trimming the wallpaper set is the first lever.
-- **HOME re-press behaviour.** `__cleanframeHome()` currently steps back one
-  level, which is an approximation rather than a verified-correct behaviour.
+- Installs, launches, renders, and does not crash.
+- App discovery returns the installed apps, with Android TV banner artwork
+  served through `IconPathHandler`.
+- D-pad navigation works: RIGHT moves along the dock, UP reaches the controls
+  row, BACK returns to the apps zone without finishing the Activity.
+- The 15 bundled wallpapers and the adaptive-ink treatment load correctly.
+
+### The density trap, if you port this elsewhere
+
+CleanFrame's stage is absolutely positioned at a fixed 1920x1080, and upstream's
+meta is `width=device-width, initial-scale=1`. On Tizen that yields a 1920 CSS px
+viewport because the TV reports density 1. **coffey reports density 2**, so
+device-width is 960 CSS px: the layout viewport becomes 960x540 and only the
+stage's top-left quadrant is on screen. The symptom is a wallpaper and a clock
+with no dock at all — it looks like the app failed to populate, when in fact the
+dock is laid out correctly just below the fold.
+
+`device.js` pins the viewport to `width=1920, height=1080` before `main.js`
+takes its first measurement. Any device with a different density needs that
+pin, not a change to the UI.
+
+## Still unverified
+
+- **First-paint time.** Not measured. If cold start drags, trimming the
+  wallpaper set is the first lever.
+- **HOME re-press behaviour.** `__cleanframeHome()` steps back one level, which
+  is an approximation rather than verified-correct behaviour.
 - **Ambient/screensaver intent.** `android.settings.DREAM_SETTINGS` is not
   guaranteed present on every Google TV build.
+- **Brand icon mapping.** None of the apps installed on this unit matched the
+  brand map in `DeviceBridge.kt`, so the branded-glyph path is untested on
+  hardware. Apps outside the map appear correctly with their own banners.
+- **Promotion to the home screen** (step 4) has not been done on this unit.

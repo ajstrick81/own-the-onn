@@ -85,7 +85,10 @@ class DeviceBridge(private val context: Context) {
                         .put("brand", brand)
                         // Served by IconPathHandler rather than inlined as a
                         // data: URI, to keep the JS payload small on a slow box.
-                        .put("icon", "https://appassets.androidplatform.net/icon/$pkg.png")
+                        // Must stay ROOT-RELATIVE: main.js safeIcon() accepts
+                        // only ^/[^/], file:/// or wgt-package:/// and silently
+                        // drops an absolute https URL.
+                        .put("icon", "/icon/$pkg.png")
                         .put("rank", if (brand.isNotEmpty()) baseRank else baseRank + 10)
                 )
             }

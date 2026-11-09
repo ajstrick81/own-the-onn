@@ -13,6 +13,33 @@
 (function () {
   'use strict';
 
+  // ------------------------------------------------------------- viewport fix
+
+  /* CleanFrame's stage is absolutely positioned at a fixed 1920x1080 (it was
+     built for a 1080p Samsung panel). Upstream's meta is
+     "width=device-width, initial-scale=1", which on Tizen yields a 1920 CSS px
+     viewport because the TV reports density 1.
+
+     coffey reports density 2, so device-width is 960 CSS px: the layout
+     viewport becomes 960x540 and only the stage's top-left quadrant is on
+     screen. The clock (at y=72) shows, the dock (at y=692) is below the fold,
+     and the UI looks like a bare wallpaper with a clock.
+
+     Pinning the viewport to the stage's own 1920x1080 makes the layout
+     density-independent; the browser then scales it to fit the window, which
+     on a 1080p screen at density 2 lands on exact native pixels. This runs
+     before main.js, so its first measurement already sees the right size. */
+  (function fixViewport() {
+    var meta = document.querySelector('meta[name=viewport]');
+    if (!meta) {
+      meta = document.createElement('meta');
+      meta.setAttribute('name', 'viewport');
+      document.head.appendChild(meta);
+    }
+    var wanted = 'width=1920, height=1080, user-scalable=no';
+    if (meta.getAttribute('content') !== wanted) meta.setAttribute('content', wanted);
+  }());
+
   function native() {
     return window.CleanFrameNative || null;
   }
@@ -161,6 +188,89 @@
   function cancelSource() {
     /* Nothing to cancel: there is no pending input switch on this platform. */
   }
+
+  // --------------------------------------------------------- first-run seeding
+
+  /* Upstream's nine default Home slots are Samsung brand ids (main.js:16-25).
+     On Tizen those always resolve, because the TV ships those apps. On Google
+     TV none of them need exist, so an unseeded first run draws an empty dock.
+
+     This runs before main.js and, only when nothing has been saved yet, writes
+     a config whose Home list is built from what is actually installed. After
+     that the user's own saved config is authoritative and this never runs
+     again -- it seeds, it does not override.
+
+     Schema per main.js clean()/serialise(): appRecords supplies names and
+     icons for non-brand apps, home is the ordered id list, CAP is 9. */
+  var STORAGE_KEY = 'cleanframe.home.v1';
+  var LEGACY_KEY = 'cleanframe.shore.v1';
+  var HOME_CAP = 9;
+
+  /* Brand ids main.js already knows; these must stay as brand ids so its own
+     catalog refresh can attach the real package to them. */
+  var PRIMARY_BRANDS = ['stremio', 'netflix', 'disneyplus', 'youtube', 'appletv',
+    'primevideo', 'abciview', 'sbs', 'applemusic'];
+
+  function alreadySeeded() {
+    try {
+      return !!(localStorage.getItem(STORAGE_KEY) || localStorage.getItem(LEGACY_KEY));
+    } catch (err) {
+      /* Storage unavailable: main.js reports that itself; do not seed. */
+      return true;
+    }
+  }
+
+  function seedFromInstalledApps() {
+    var api = native();
+    if (!api || alreadySeeded()) return;
+
+    var entries;
+    try {
+      entries = JSON.parse(api.listApps() || '[]');
+    } catch (err) {
+      return;
+    }
+    if (!entries.length) return;
+
+    var home = [], records = [], i, entry, id, isBrand;
+    for (i = 0; i < entries.length && home.length < HOME_CAP; i++) {
+      entry = entries[i];
+      if (!entry || !entry.appId || !entry.name) continue;
+
+      isBrand = entry.brand && PRIMARY_BRANDS.indexOf(entry.brand) >= 0;
+      id = isBrand ? entry.brand : entry.appId;
+      if (home.indexOf(id) >= 0) continue;
+      home.push(id);
+
+      /* Brand slots already exist in main.js's APPS table with a proper name,
+         so a record would be ignored; only non-brand apps need one. */
+      if (!isBrand) {
+        records.push({
+          id: id,
+          appId: entry.appId,
+          name: String(entry.name).slice(0, 160),
+          brand: '',
+          icon: entry.icon || ''
+        });
+      }
+    }
+    if (!home.length) return;
+
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        version: 2,
+        home: home,
+        dock: home.slice(),
+        recent: [],
+        lastApp: home[0],
+        appRecords: records
+      }));
+    } catch (err) {
+      /* Nothing to do: main.js falls back to its own defaults. */
+    }
+  }
+
+  seedFromInstalledApps();
 
   window.FrameDevice = {
     launch: launch,

@@ -4,9 +4,11 @@ A port of [CleanFrame](https://github.com/nthnclrk/CleanFrame) — a quiet,
 remote-first home screen — from Samsung Tizen to the **onn 4K Plus Streaming**
 (`coffey`, Google TV / Android 14).
 
-> **Status: builds, not yet verified on hardware.** Nothing in here has been run
-> on a physical Onn. The D-pad feel inside WebView is the most likely thing to
-> need tuning. See [`docs/install.md`](docs/install.md) for what is unverified.
+> **Status: running on hardware.** Installed and verified on the owner's onn
+> 4K Plus (`coffey`, build `URO4.260304.011.B1`) on 2026-11-09: renders, lists
+> installed apps with their banners, and D-pad/BACK navigation works. It has
+> **not** yet been promoted to the system home screen. See
+> [`docs/install.md`](docs/install.md) for what is verified and what is not.
 
 No root. No bootloader unlock. This is a sideloaded APK plus `adb` on the
 owner's own device, and it does not touch the boot chain studied in the parent
