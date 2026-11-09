@@ -7,7 +7,8 @@ remote-first home screen — from Samsung Tizen to the **onn 4K Plus Streaming**
 > **Status: running on hardware.** Installed and verified on the owner's onn
 > 4K Plus (`coffey`, build `URO4.260304.011.B1`) on 2026-11-09: renders, lists
 > installed apps with their banners, and D-pad/BACK navigation works. It has
-> **not** yet been promoted to the system home screen. See
+> **not** been promoted to the system home screen: disabling the stock launcher
+> does not work on coffey (`setupwraith` takes HOME instead) and was reverted. See
 > [`docs/install.md`](docs/install.md) for what is verified and what is not.
 
 No root. No bootloader unlock. This is a sideloaded APK plus `adb` on the

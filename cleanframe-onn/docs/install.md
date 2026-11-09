@@ -65,24 +65,53 @@ Take the recovery path first:
 adb shell pm list packages | grep -E 'launcherx|tvlauncher'
 ```
 
-Then disable the stock launcher for the current user:
+### This does NOT work on coffey — tested 2026-11-09
+
+The usual Google TV recipe is to disable the stock launcher:
 
 ```bash
 adb shell pm disable-user --user 0 com.google.android.apps.tv.launcherx
 ```
 
-Press HOME on the remote. CleanFrame should come up.
+**On coffey that does not hand HOME to CleanFrame.** It was tried on the owner's
+unit and reverted. With `launcherx` disabled, three HOME candidates remain:
 
-### Undo
+```
+com.google.android.tungsten.setupwraith   <- wins
+com.android.tv.settings
+com.cleanframe.onn
+```
+
+HOME resolved to `com.google.android.tungsten.setupwraith/.RecoveryActivity`
+(the setup wizard's recovery screen) and pressing HOME on the remote landed
+there, not on CleanFrame. `cmd package set-home-activity com.cleanframe.onn/...`
+returns `Success` and records a preferred-activity entry, but does not override
+it — tried both with `launcherx` enabled and disabled.
+
+The device also dropped off network adb briefly during the revert, which is
+exactly the scenario that makes this risky.
+
+### Undo (verified working)
 
 ```bash
 adb shell pm enable com.google.android.apps.tv.launcherx
 ```
 
-If you are locked out with no working home screen and ADB still connects, that
-single command restores the stock launcher. **Keep a second device with `adb`
-reachable before you run step 4.** If ADB is not reachable and HOME does nothing,
-the remaining route is a factory reset from recovery.
+This restored the stock launcher and HOME immediately, with CleanFrame's saved
+arrangement untouched (`pm enable`/`disable-user` do not clear app data).
+
+**Keep a second device with `adb` reachable before attempting any of this.** If
+adb is not reachable and HOME does nothing, the remaining route is a factory
+reset from recovery.
+
+### What would actually be needed
+
+Unresolved. Promoting CleanFrame to HOME on coffey means outranking
+`setupwraith.RecoveryActivity`, which is a system package. Disabling *that* has
+not been tried and is a worse risk than disabling the launcher, since it is part
+of the setup/recovery path. Until this is solved, CleanFrame runs as a normal
+app from the Google TV apps row, and backing out of a launched app returns to
+the stock launcher rather than to CleanFrame.
 
 ## Known limitations on this hardware
 
