@@ -37,24 +37,28 @@ class DeviceBridge(private val context: Context) {
         "com.google.android.tungsten.setupwraith"
     )
 
-    /** Upstream brand ids mapped to the package serving that brand on Google TV. */
+    /**
+     * Upstream brand ids mapped to the packages that serve that brand on
+     * Google TV. A brand can have several: regional builds and repackaged
+     * variants are common on these boxes, so matching only the stock package
+     * silently loses the brand glyph.
+     */
     private val brandPackages = mapOf(
-        "netflix" to "com.netflix.ninja",
-        "youtube" to "com.google.android.youtube.tv",
-        "disneyplus" to "com.disney.disneyplus",
-        "primevideo" to "com.amazon.amazonvideo.livingroom",
-        "appletv" to "com.apple.atve.androidtv.appletv",
-        "applemusic" to "com.apple.android.music",
-        "spotify" to "com.spotify.tv.android",
-        "stremio" to "com.stremio.one",
-        "tubi" to "com.tubitv",
-        "hbomax" to "com.wbd.stream",
-        "abciview" to "au.net.abc.iview",
-        "sbs" to "au.com.sbs.ondemand.tv"
+        "netflix" to listOf("com.netflix.ninja", "com.netflix.ninja.clone"),
+        "youtube" to listOf("com.google.android.youtube.tv", "org.smarttube.stable"),
+        "disneyplus" to listOf("com.disney.disneyplus"),
+        "primevideo" to listOf("com.amazon.amazonvideo.livingroom"),
+        "appletv" to listOf("com.apple.atve.androidtv.appletv"),
+        "applemusic" to listOf("com.apple.android.music"),
+        "spotify" to listOf("com.spotify.tv.android"),
+        "stremio" to listOf("com.stremio.one"),
+        "tubi" to listOf("com.tubitv"),
+        "hbomax" to listOf("com.wbd.stream")
     )
 
     /** Reverse map, so a discovered package can be tagged with its brand icon. */
-    private val packageBrands = brandPackages.entries.associate { (k, v) -> v to k }
+    private val packageBrands: Map<String, String> =
+        brandPackages.entries.flatMap { (brand, pkgs) -> pkgs.map { it to brand } }.toMap()
 
     // ---------------------------------------------------------------- discovery
 
@@ -71,8 +75,13 @@ class DeviceBridge(private val context: Context) {
 
         fun collect(category: String, baseRank: Int) {
             val intent = Intent(Intent.ACTION_MAIN).addCategory(category)
-            val flags = PackageManager.MATCH_DEFAULT_ONLY
-            for (info in pm.queryIntentActivities(intent, flags)) {
+            // Flags MUST stay 0. MATCH_DEFAULT_ONLY restricts results to
+            // activities declaring CATEGORY_DEFAULT, and launcher entries
+            // normally declare only MAIN + LAUNCHER/LEANBACK_LAUNCHER. On the
+            // reference unit that flag returned 9 of 29 installed TV apps --
+            // Netflix, Prime Video, Disney+, Paramount+, ESPN and Apple TV were
+            // all silently dropped, with no error anywhere.
+            for (info in pm.queryIntentActivities(intent, 0)) {
                 val pkg = info.activityInfo?.packageName ?: continue
                 if (pkg in suppressed || !seen.add(pkg)) continue
                 val label = runCatching { info.loadLabel(pm).toString() }
@@ -113,10 +122,19 @@ class DeviceBridge(private val context: Context) {
         return start(intent)
     }
 
-    /** Launch by upstream brand id, mapping Samsung brands to Google TV packages. */
+    /**
+     * Launch by upstream brand id, mapping Samsung brands to Google TV
+     * packages. A brand may list several candidates, so the first one actually
+     * installed wins.
+     */
     @JavascriptInterface
     fun launchBrand(brand: String?): String {
-        val pkg = brandPackages[brand] ?: return error("This app has no launch target.")
+        val candidates = brandPackages[brand] ?: return error("This app has no launch target.")
+        val pkg = candidates.firstOrNull { leanbackOrMainIntent(it) != null }
+            ?: return error(
+                "That app is not installed on this device.",
+                "Tried: " + candidates.joinToString(", ")
+            )
         return launchPackage(pkg)
     }
 
