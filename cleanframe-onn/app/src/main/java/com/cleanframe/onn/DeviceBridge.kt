@@ -177,6 +177,9 @@ class DeviceBridge(private val context: Context) {
     @JavascriptInterface
     fun openAmbient(): String {
         val candidates = listOf(
+            // Google TV's own Ambient mode screen. coffey has this and neither
+            // of the AOSP actions below (checked 2026-11-11).
+            Intent("com.google.android.tv.settings.ambient"),
             Intent("android.settings.DREAM_SETTINGS"),
             Intent(Settings.ACTION_DISPLAY_SETTINGS)
         )

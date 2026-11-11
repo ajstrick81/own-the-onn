@@ -12,6 +12,10 @@
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
         </intent>
+        <!-- The Art Mode control opens Google TV's Ambient mode settings. -->
+        <intent>
+            <action android:name="com.google.android.tv.settings.ambient" />
+        </intent>
     </queries>
 
     <!-- Google TV boxes report no touchscreen; without this the APK is

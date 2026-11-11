@@ -137,7 +137,7 @@ lines stop matching. Change
 | Upstream feature | On the Onn |
 |---|---|
 | HDMI input switching (`sources`/`setSource`) | **Not available.** The Onn is an HDMI source with no inputs. The row reports empty and is hidden. |
-| Samsung Art Mode (`art`) | **No equivalent.** Mapped to the Google TV ambient/screensaver setting. |
+| Samsung Art Mode (`art`) | **No equivalent.** Opens Google TV's Ambient mode settings (`com.google.android.tv.settings.ambient`); coffey has neither `DREAM_SETTINGS` nor `DISPLAY_SETTINGS`. Verified 2026-11-11. |
 | Samsung Home (`home`) | Mapped to the Google TV launcher, kept as an escape hatch. |
 | App discovery | `PackageManager` leanback + phone launcher entries, instead of `tizen.application.getAppsInfo`. |
 | App artwork | Android TV banners (16:9), served from `/icon/<package>.png`. Upstream's `iconPath` has no Android analogue. |
@@ -172,8 +172,6 @@ pin, not a change to the UI.
 
 - **First-paint time.** Not measured. If cold start drags, trimming the
   wallpaper set is the first lever.
-- **Ambient/screensaver intent.** `android.settings.DREAM_SETTINGS` is not
-  guaranteed present on every Google TV build.
 - **Brand icon mapping.** None of the apps installed on this unit matched the
   brand map in `DeviceBridge.kt`, so the branded-glyph path is untested on
   hardware. Apps outside the map appear correctly with their own banners.
