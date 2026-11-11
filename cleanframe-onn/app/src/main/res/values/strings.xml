@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">CleanFrame</string>
+    <string name="home_guard_label">CleanFrame home button</string>
+    <string name="home_guard_description">Opens CleanFrame when you press HOME, and shows it in place of the Google TV home screen. It sees only the HOME key and when the Google TV home screen appears; it does not read screen content.</string>
 </resources>

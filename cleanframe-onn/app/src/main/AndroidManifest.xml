@@ -54,5 +54,21 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <!-- CleanFrame cannot win the HOME intent on coffey (system packages
+             outrank it), so this claims the HOME key instead. Off until the
+             owner enables it; see docs/install.md step 4. -->
+        <service
+            android:name=".HomeGuardService"
+            android:exported="true"
+            android:label="@string/home_guard_label"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/home_guard" />
+        </service>
     </application>
 </manifest>

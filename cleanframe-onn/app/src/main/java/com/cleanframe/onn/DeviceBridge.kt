@@ -143,6 +143,9 @@ class DeviceBridge(private val context: Context) {
     fun openSystemHome(): String {
         for (pkg in listOf("com.google.android.apps.tv.launcherx", "com.google.android.tvlauncher")) {
             val intent = leanbackOrMainIntent(pkg) ?: continue
+            // Tell HomeGuardService this visit is deliberate, so it does not
+            // pull CleanFrame straight back over the stock home screen.
+            HomeGuard.stockHomeAllowed = true
             return start(intent)
         }
         return error(

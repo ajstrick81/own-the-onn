@@ -56,62 +56,81 @@ is the part that can leave you without a usable home screen.
 
 ## 4. Promote it to the home screen
 
-Google TV has no launcher picker, so the stock launcher has to be stood down.
-This is reversible and does **not** require root.
+Google TV has no launcher picker, and on coffey CleanFrame cannot win the HOME
+intent (see "Why not just disable the stock launcher" below). Instead the APK
+carries a small accessibility service, `HomeGuardService`, that:
 
-Take the recovery path first:
+- claims the HOME key and opens CleanFrame;
+- brings CleanFrame forward whenever the stock home screen surfaces on its own
+  (after boot, or when BACK exits the last app);
+- maps **long-press HOME** to the Google TV home screen, so stock stays one
+  gesture away. CleanFrame's own Home control does the same.
 
-```bash
-adb shell pm list packages | grep -E 'launcherx|tvlauncher'
-```
-
-### This does NOT work on coffey — tested 2026-11-09
-
-The usual Google TV recipe is to disable the stock launcher:
-
-```bash
-adb shell pm disable-user --user 0 com.google.android.apps.tv.launcherx
-```
-
-**On coffey that does not hand HOME to CleanFrame.** It was tried on the owner's
-unit and reverted. With `launcherx` disabled, three HOME candidates remain:
-
-```
-com.google.android.tungsten.setupwraith   <- wins
-com.android.tv.settings
-com.cleanframe.onn
-```
-
-HOME resolved to `com.google.android.tungsten.setupwraith/.RecoveryActivity`
-(the setup wizard's recovery screen) and pressing HOME on the remote landed
-there, not on CleanFrame. `cmd package set-home-activity com.cleanframe.onn/...`
-returns `Success` and records a preferred-activity entry, but does not override
-it — tried both with `launcherx` enabled and disabled.
-
-The device also dropped off network adb briefly during the revert, which is
-exactly the scenario that makes this risky.
-
-### Undo (verified working)
+No system package is disabled. Enable it:
 
 ```bash
-adb shell pm enable com.google.android.apps.tv.launcherx
+adb shell settings put secure enabled_accessibility_services com.cleanframe.onn/com.cleanframe.onn.HomeGuardService
 ```
 
-This restored the stock launcher and HOME immediately, with CleanFrame's saved
-arrangement untouched (`pm enable`/`disable-user` do not clear app data).
+```bash
+adb shell settings put secure accessibility_enabled 1
+```
 
-**Keep a second device with `adb` reachable before attempting any of this.** If
-adb is not reachable and HOME does nothing, the remaining route is a factory
-reset from recovery.
+If `settings get secure enabled_accessibility_services` already lists another
+service, append with `:` rather than overwriting it. Sideloaded apps cannot be
+enabled from the Accessibility settings screen on Android 13+ ("restricted
+setting"), which is why this goes through adb.
 
-### What would actually be needed
+### Undo
 
-Unresolved. Promoting CleanFrame to HOME on coffey means outranking
-`setupwraith.RecoveryActivity`, which is a system package. Disabling *that* has
-not been tried and is a worse risk than disabling the launcher, since it is part
-of the setup/recovery path. Until this is solved, CleanFrame runs as a normal
-app from the Google TV apps row, and backing out of a launched app returns to
-the stock launcher rather than to CleanFrame.
+```bash
+adb shell settings delete secure enabled_accessibility_services
+```
+
+Or switch "CleanFrame home button" off under Settings > System > Accessibility.
+Stock HOME behaviour returns immediately. A force-stop of CleanFrame also
+turns the service off until it is re-enabled.
+
+### Verified 2026-11-11
+
+- Service binds and survives `adb install -r` and a reboot.
+- After a reboot the device settles on CleanFrame with no input.
+- When the stock home screen is started, CleanFrame replaces it in about 100 ms.
+- The HOME key on the real remote reaches the service (logged
+  `HOME released after 202ms`) and opens CleanFrame. `input keyevent` cannot
+  test this: it injects below the accessibility key filter.
+- HOME inside CleanFrame returns to the home stage from any screen without the
+  "Leave Home?" prompt (that prompt belongs to BACK at the top level).
+- **Not verified:** long-press HOME opening the Google TV home screen.
+
+### Why not just disable the stock launcher
+
+Tested 2026-11-09 and reverted. HOME candidates rank by intent-filter priority,
+and only system packages may declare one above 0:
+
+```
+com.google.android.apps.tv.launcherx        priority 2
+com.google.android.tungsten.setupwraith     priority 1
+com.cleanframe.onn                          priority 0
+com.android.tv.settings (FallbackHome)      priority -1000
+```
+
+With `launcherx` disabled, HOME resolves to `setupwraith/.RecoveryActivity` (the
+setup wizard's recovery screen), not CleanFrame. `cmd package
+set-home-activity` returns `Success` but does not override it. Disabling
+`setupwraith` too would remove part of the device's recovery path, and the
+device dropped off network adb during the revert. If you ever tried this,
+`adb shell pm enable com.google.android.apps.tv.launcherx` undoes it.
+
+## More than nine apps on Home
+
+Upstream caps Home at nine because its "Apps on Home" editor draws the Home
+column as a fixed list. `tools/patch-main.pl` (run by `sync-upstream.sh`) raises
+the cap to 24 and makes that column scroll. The same script exposes upstream's
+`goScene()` for the HOME key and relabels "Samsung Home" as "Google TV Home".
+Those are the only edits to upstream's `main.js`; the sync fails if upstream's
+lines stop matching. Change
+`$HOME_CAP` in that script for a different limit.
 
 ## Known limitations on this hardware
 
@@ -153,11 +172,8 @@ pin, not a change to the UI.
 
 - **First-paint time.** Not measured. If cold start drags, trimming the
   wallpaper set is the first lever.
-- **HOME re-press behaviour.** `__cleanframeHome()` steps back one level, which
-  is an approximation rather than verified-correct behaviour.
 - **Ambient/screensaver intent.** `android.settings.DREAM_SETTINGS` is not
   guaranteed present on every Google TV build.
 - **Brand icon mapping.** None of the apps installed on this unit matched the
   brand map in `DeviceBridge.kt`, so the branded-glyph path is untested on
   hardware. Apps outside the map appear correctly with their own banners.
-- **Promotion to the home screen** (step 4) has not been done on this unit.

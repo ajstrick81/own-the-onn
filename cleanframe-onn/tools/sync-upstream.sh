@@ -49,6 +49,10 @@ rm -f "$dest/config.xml"
 # main.js, style.css and every asset are used exactly as upstream ships them.
 cp "$platform/device.js" "$dest/device.js"
 
+# The one edit to upstream's own code: lift the nine-app Home limit. Fails the
+# sync if upstream's lines no longer match. See tools/patch-main.pl.
+perl "$here/tools/patch-main.pl" "$dest/main.js"
+
 cat > "$dest/UPSTREAM-PROVENANCE.txt" <<PROV
 CleanFrame web assets fetched by tools/sync-upstream.sh
 Repository: $CLEANFRAME_REPO
@@ -57,7 +61,8 @@ Commit:     $actual
 
 device.js has been replaced with the Android implementation from
 app/src/main/assets/platform/device.js. config.xml (Tizen manifest) removed.
-Everything else is upstream, unmodified. Upstream is MIT; bundled fonts,
+main.js has been patched by tools/patch-main.pl to lift the nine-app Home
+limit. Everything else is upstream, unmodified. Upstream is MIT; bundled fonts,
 photographs and icons keep their own terms -- see THIRD_PARTY_NOTICES.md.
 PROV
 

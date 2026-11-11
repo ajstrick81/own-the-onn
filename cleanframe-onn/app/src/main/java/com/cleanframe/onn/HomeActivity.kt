@@ -125,6 +125,12 @@ class HomeActivity : AppCompatActivity() {
      */
     override fun onNewIntent(intent: android.content.Intent?) {
         super.onNewIntent(intent)
+        // HomeGuardService also brings this Activity forward when the stock
+        // home screen surfaces on its own (boot, BACK out of an app). That is
+        // not a HOME press and must not step the UI back a level.
+        val homePress = intent?.hasCategory(android.content.Intent.CATEGORY_HOME) == true ||
+            intent?.getBooleanExtra(HomeGuard.EXTRA_HOME_KEY, false) == true
+        if (!homePress) return
         web.evaluateJavascript("window.__cleanframeHome && window.__cleanframeHome()", null)
     }
 

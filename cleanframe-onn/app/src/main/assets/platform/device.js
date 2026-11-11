@@ -201,7 +201,8 @@
      again -- it seeds, it does not override.
 
      Schema per main.js clean()/serialise(): appRecords supplies names and
-     icons for non-brand apps, home is the ordered id list, CAP is 9. */
+     icons for non-brand apps, home is the ordered id list. Only the first
+     nine are seeded; tools/patch-main.pl lets the user add up to 24. */
   var STORAGE_KEY = 'cleanframe.home.v1';
   var LEGACY_KEY = 'cleanframe.shore.v1';
   var HOME_CAP = 9;
@@ -312,10 +313,14 @@
     return true;
   };
 
-  /* HOME pressed while CleanFrame is already foreground: step up one level,
-     which settles an open sheet or detail view back toward the home stage. */
+  /* HOME: return to the home stage from wherever the UI is, without asking.
+     It must not be delivered as BACK, because BACK at the top level opens the
+     "Leave Home?" prompt. tools/patch-main.pl exposes main.js's own goScene()
+     as __cleanframeScene; any name other than its known scenes lands on the
+     bare home stage. Without the patch this does nothing, which is still the
+     right answer for a HOME press on a home screen. */
   window.__cleanframeHome = function () {
-    tap(27);
+    if (typeof window.__cleanframeScene === 'function') window.__cleanframeScene('home');
     return true;
   };
 }());

@@ -4,12 +4,11 @@ A port of [CleanFrame](https://github.com/nthnclrk/CleanFrame) — a quiet,
 remote-first home screen — from Samsung Tizen to the **onn 4K Plus Streaming**
 (`coffey`, Google TV / Android 14).
 
-> **Status: running on hardware.** Installed and verified on the owner's onn
-> 4K Plus (`coffey`, build `URO4.260304.011.B1`) on 2026-11-09: renders, lists
-> installed apps with their banners, and D-pad/BACK navigation works. It has
-> **not** been promoted to the system home screen: disabling the stock launcher
-> does not work on coffey (`setupwraith` takes HOME instead) and was reverted. See
-> [`docs/install.md`](docs/install.md) for what is verified and what is not.
+> **Status: running as the home screen.** Installed on the owner's onn 4K Plus
+> (`coffey`, build `URO4.260304.011.B1`). CleanFrame cannot win the HOME intent
+> on coffey, so an accessibility service claims the HOME key and covers the
+> stock home screen instead; nothing is disabled. Verified 2026-11-11 across a
+> reboot. See [`docs/install.md`](docs/install.md) for what is and is not verified.
 
 No root. No bootloader unlock. This is a sideloaded APK plus `adb` on the
 owner's own device, and it does not touch the boot chain studied in the parent
@@ -26,7 +25,7 @@ exactly what Android WebView delivers for a D-pad.
 So the port reimplements that one file and leaves everything else alone:
 
 ```
-upstream app/main.js  (1922 lines)  ->  used verbatim
+upstream app/main.js  (1922 lines)  ->  used verbatim, bar tools/patch-main.pl
 upstream app/style.css (635 lines)  ->  used verbatim
 upstream app/assets/   (16 MB)      ->  used verbatim, fetched not vendored
 upstream app/device.js (143 lines)  ->  REPLACED  (assets/platform/device.js)
@@ -41,6 +40,8 @@ upstream app/config.xml (Tizen)     ->  REPLACED  (AndroidManifest.xml)
 | `DeviceBridge.kt` | `@JavascriptInterface` implementation of the nine capabilities: app discovery via `PackageManager`, launching via `Intent` |
 | `IconPathHandler.kt` | Serves installed-app banners as `/icon/<package>.png` |
 | `assets/platform/device.js` | ES5 shim re-exposing the bridge as `window.FrameDevice`, so `main.js` is untouched |
+| `HomeGuardService.kt` | Accessibility service that routes HOME to CleanFrame and covers the stock home screen |
+| `tools/patch-main.pl` | The only edits to `main.js`: Home cap 9 -> 24, a HOME hook, Google TV labels |
 | `tools/sync-upstream.sh` | Fetches upstream `app/` at the pinned tag, swaps in the Android `device.js` |
 
 Assets are served over the virtual origin `https://appassets.androidplatform.net`
