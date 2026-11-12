@@ -137,6 +137,17 @@ conclusions.
 > headers is **opaque** (encrypted or packed; transform/key unresolved), so BL33 can't be grepped offline.
 > Phase A is done; B/D/E/F can now use coffey's own data (see each phase).
 
+> **Progress — onn 4K _Pro_ unlock ingest (2026-11-12, grade R):**
+> [`onn-pro-unlock-ingest-2026-11-12/`](onn-pro-unlock-ingest-2026-11-12/). Two third-party OpenEnsemble projects
+> report a persistent **AVB-lock** unlock on sibling onn **4K Pro** boards: `jarvis` (the *same build train*
+> `URO4.260304.011.B1/15051976` as coffey) and `jarvis2` (the *same `S905X5M/S7D` SoC*). The 2024 chain is built
+> from the exact primitives this track mapped on coffey: it sets **`ubootenv.var.storeboot` via SystemControl**
+> (coffey C15/C18), boots an **unsigned EL2 payload off a one-use USB gate**, and calls an **AVB trusted-app**
+> (UUID `023f8f1a-292a-432b-8fc4-de8471358067`, cmd 3) to write secure state `1→0`. The authors state plainly it
+> is **not** a hardware-secure-boot defeat or a BL33/first-stage replacement — so the **alternate-OS wall is
+> untouched**; what reopens is the *AVB unlock → persistent root* question (track §0 Q1), and only at **R** for a
+> *different board*. The decisive coffey-side follow-ups are **offline** (next para + Phase B).
+
 ## 4. Corrections to keep (do not regress — from handoff §7)
 
 1. Same S905X5M SoC ≠ identical U-Boot policy, keys, or OTP.
@@ -175,6 +186,13 @@ originals; never silently merge across OTA builds.
 > and apps may reach `systemcontrol` (C15), so both reach the `lock` variable; whether BL33 honors it is C5.
 > Recovery: sideload/SD/USB updates checked against `otacerts.zip`; wipes incl. `param`; an Amlogic
 > `factory_update_param.aml` from removable media whose authentication isn't visible (H).
+>
+> **Added 2026-11-12 (Pro ingest, R):** the sibling 4K Pro unlock instantiates the `storeboot`/USB tokens this
+> phase already greps for, and adds one new offline discriminating target — the **AVB trusted-app UUID
+> `023f8f1a-292a-432b-8fc4-de8471358067`** (and `*.ta` blobs / invoking strings). Grepping coffey's extracted
+> TEE/`vendor`/`odm` for it is the highest-value next check: a hit means the lock-writing *interface* ships on
+> coffey too (still needs a caller path); a bounded miss means the 2024 TA route doesn't transfer. See
+> [`onn-pro-unlock-ingest-2026-11-12/COFFEY-APPLICABILITY.md`](onn-pro-unlock-ingest-2026-11-12/COFFEY-APPLICABILITY.md) §2.
 
 _Original agenda, kept for reference:_
 A public stage/signature/rollback **scaffold** exists:
