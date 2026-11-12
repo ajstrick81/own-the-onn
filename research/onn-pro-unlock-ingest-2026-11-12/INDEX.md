@@ -36,3 +36,20 @@ quotes ([`SOURCES.md`](SOURCES.md)); this packet adds no firmware blobs, so it c
 - **New priority vector:** test the Pro unlock's preconditions against coffey's own captured artifacts (offline).
 - **Boot-policy track** Phase B annotated: the Pro chain instantiates the `storeboot`/USB tokens Phase B greps
   for; the AVB-TA-UUID grep is added as the next offline discriminating check.
+
+## Credits
+
+All of the primary work ingested here is **OpenEnsemble's**, not ours. The author independently found and
+proved the onn 4K Pro AVB-lock unlock and root — the `storeboot`/SystemControl redirect, the EL2 payload, the
+AVB trusted-app call, the Magisk boot-image patch — and did the hard, risky part: running it on real hardware
+(bricking a first unit in the process), documenting the exact build profiles, hashes, and recovery limits, and
+publishing the mechanism and its honest caveats. This packet only *reads* that work and reasons about whether it
+could transfer to a different board (coffey). Credit for the mechanism, the testing, and the evidence discipline
+belongs to them:
+
+- **2024 onn 4K Pro (`jarvis` / SNA):** `openensemble/onn-4k-pro-unlock-root` ·
+  `https://openensemble.github.io/onn-4k-pro-unlock-root/`
+- **2026 onn 4K Pro (`jarvis2`):** `openensemble/onn-4k-pro-2026-unlock-root`
+
+Go to the originals; this summary is no substitute for their docs, and any real use of their method should
+follow their guidance and their warnings.

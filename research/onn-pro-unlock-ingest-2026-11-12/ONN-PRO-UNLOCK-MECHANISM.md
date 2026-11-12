@@ -6,7 +6,9 @@
 > what does not. Mechanism **identity and enforcement boundary** are recorded per the repo rule; no working
 > payload, offset, or key is reproduced (the sources publish none either). Both projects are single-unit,
 > self-described experimental, and warn that bricking is possible and that no independent unbrick path was
-> proven. Ingested 2026-11-12; sources + verbatim field dumps in [`SOURCES.md`](SOURCES.md).
+> proven. Ingested 2026-11-12; sources + verbatim field dumps in [`SOURCES.md`](SOURCES.md). **The mechanism,
+> the hardware testing, and the evidence discipline below are OpenEnsemble's original work** — see
+> [`INDEX.md` → Credits](INDEX.md#credits).
 
 ## 0. Why this is relevant at all
 
