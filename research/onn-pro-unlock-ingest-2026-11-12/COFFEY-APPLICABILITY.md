@@ -13,7 +13,7 @@ The 2024 Pro chain is, step for step, built from primitives we already documente
 
 | Pro primitive (R) | coffey finding | Match? |
 |---|---|---|
-| Set `ubootenv.var.storeboot` via **SystemControl** | **C15/C18** — root `systemcontrol` writes `ubootenv.var.*` (prefix-only check), reachable by `untrusted_app`; boot steered through the U-Boot env | **Yes, by construction** — coffey's systemcontrol is the same kind of env writer. `storeboot` specifically: not yet confirmed writable (prefix check suggests yes; **H**) |
+| Set `ubootenv.var.storeboot` via **SystemControl** | **C15/C18** — root `systemcontrol` writes `ubootenv.var.*` (prefix-only check), reachable by `untrusted_app`; boot steered through the U-Boot env | **Yes (P, §2.2 done)** — `storeboot` is on no deny/allow list and is written like any `ubootenv.var.*` key to the `env` partition; Android-side write unobstructed. Whether BL33 honors it stays **U** (C13) |
 | First-USB-disk boot gate | **C13/Phase B** — `bootloader.img` has no plaintext dispatch; U-Boot's USB-boot behaviour is **U** (opaque container) | **Unknown** — the decisive, bootloader-specific unknown |
 | Unsigned EL2 payload, fixed addresses | — | **Will not transfer as-is** — "specific to the tested bootloader"; needs coffey's own BL33 (blocked offline, C13) |
 | AVB trusted-service TA `023f8f1a-…`, cmd 3 → state 0 | coffey TEE/TA set not yet enumerated | **Checkable offline** — see §2.1 |
@@ -41,11 +41,16 @@ in ASCII and both packed byte-orders, plus the `*.ta` blob set and the TEE clien
 - **Miss (bounded)** — the outcome — means coffey uses a different/secure-world-internal AVB path; the easy
   transfer hypothesis is removed and the remaining uncertainty collapses onto the C13 opacity wall.
 
-### 2.2 — Can coffey's systemcontrol set `storeboot` specifically?
-We know (C15) the env writer checks only the `ubootenv.var.` prefix and imports no caller-identity API. Confirm
-from the **coffey systemcontrol ELF** that `storeboot` is not on any internal deny/allow list distinct from
-`lock`, and that `set`-path for arbitrary `ubootenv.var.*` reaches the env partition. Output: upgrade the
-`storeboot`-writable cell from **H** to **P/U**.
+### 2.2 — Can coffey's systemcontrol set `storeboot` specifically? — **DONE 2026-11-12: YES (P)**
+> **Result:** coffey's env writer (`Ubootenv.cpp`) gates only on the `ubootenv.var.` namespace prefix, keeps **no
+> protected-key list**, and does not special-case `storeboot` (0 refs) — so `ubootenv.var.storeboot` is writable
+> like any key, to the authorized `env` MTD partition, and is reachable by `untrusted_app` (C15). The Android-side
+> write is **unobstructed (P)**; whether coffey's BL33 honors the change stays **U** (C13). Full write-up:
+> [`COFFEY-STOREBOOT-WRITE.md`](COFFEY-STOREBOOT-WRITE.md).
+
+Confirmed from the coffey `systemcontrol` ELF that `storeboot` is on no internal deny/allow list and that the
+generic `ubootenv.var.*` setter reaches the `env` partition. The `storeboot`-writable cell in §1 moves **H → P**
+(Android-side); the bootloader-honoring half stays **U**.
 
 ### 2.3 — Does coffey boot from a first USB disk at all?
 The hardest and most decisive unknown (C13). Offline, bound it as far as the plaintext allows: re-grep the OTA's
