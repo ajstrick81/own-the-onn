@@ -27,14 +27,19 @@ boot-policy map named the right primitives, now with a sibling showing one way t
 
 Ranked by value ÷ cost. Each is a grep/parse over bytes already in hand; results stay graded.
 
-### 2.1 — **Highest value:** is the AVB trusted-app present on coffey?
-Search coffey's extracted `vendor`/`odm`/`vendor_boot`/TEE images for the TA **UUID**
-`023f8f1a-292a-432b-8fc4-de8471358067` (and its byte-order permutations), plus any `*.ta`/trusted-app blobs and
-the strings that invoke them. 
-- **Hit** → the same AVB lock-state TA ships on coffey; the *interface* that flips the lock exists here too
-  (the write would still need a way to call it — §2.3). Raises the unlock lead to a real **H** on coffey.
-- **Miss** (bounded) → coffey uses a different secure-world AVB path; the 2024 TA route does not transfer. A
-  genuine, useful negative.
+### 2.1 — **Highest value:** is the AVB trusted-app present on coffey? — **DONE 2026-11-12: MISS (bounded)**
+> **Result:** no hit. coffey ships 11 loadable OP-TEE TAs; **none is `023f8f1a-…`**, and the UUID appears in no
+> form (ASCII or either packed byte-order) in those TAs, the four boot images, the TEE client binaries/libs, or
+> `systemcontrol` (2151 files scanned tree-wide + a 25-file explicit set). The 2024 TA route does **not** transfer
+> as a loadable TA — **P (bounded negative)**. Caveat **U**: coffey's BL32/TEE-OS is inside the opaque signed
+> bootloader (C13), so a *built-in* AVB service can't be excluded by a plaintext scan. Full write-up +
+> reproduction: [`COFFEY-TA-UUID-SCAN.md`](COFFEY-TA-UUID-SCAN.md).
+
+Searched coffey's extracted TEE/`vendor`/boot images for the TA **UUID** `023f8f1a-292a-432b-8fc4-de8471358067`
+in ASCII and both packed byte-orders, plus the `*.ta` blob set and the TEE clients that would invoke it.
+- **Hit** would have meant the same AVB lock-state TA ships on coffey (interface present; still needs a caller).
+- **Miss (bounded)** — the outcome — means coffey uses a different/secure-world-internal AVB path; the easy
+  transfer hypothesis is removed and the remaining uncertainty collapses onto the C13 opacity wall.
 
 ### 2.2 — Can coffey's systemcontrol set `storeboot` specifically?
 We know (C15) the env writer checks only the `ubootenv.var.` prefix and imports no caller-identity API. Confirm

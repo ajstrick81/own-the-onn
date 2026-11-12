@@ -10,6 +10,8 @@ quotes ([`SOURCES.md`](SOURCES.md)); this packet adds no firmware blobs, so it c
 |---|---|
 | [`ONN-PRO-UNLOCK-MECHANISM.md`](ONN-PRO-UNLOCK-MECHANISM.md) | What the 2024 `jarvis` + 2026 `jarvis2` projects claim: the overlap table, the AVB-unlock chain (storeboot env → USB/EL2 payload → AVB trusted-app), and the authors' own scope limits |
 | [`COFFEY-APPLICABILITY.md`](COFFEY-APPLICABILITY.md) | How it maps onto coffey's C13/C15/C18; ranked offline discriminating checks (AVB TA UUID grep, storeboot-writability, USB-boot gate); what it changes for root vs alternate-OS |
+| [`COFFEY-TA-UUID-SCAN.md`](COFFEY-TA-UUID-SCAN.md) | **Vector #3 check §2.1, run 2026-11-12:** offline scan of coffey's own images for the AVB TA UUID — **no hit** (bounded negative on the loadable-TA path, P; built-in-service path stays U behind C13) |
+| [`scripts/scan_ta_uuid.py`](scripts/scan_ta_uuid.py) | The scanner (ASCII + both packed byte-orders), read-only, reproducible |
 | [`SOURCES.md`](SOURCES.md) | Exact URLs, fetch date, and verbatim field dumps (tested-profile.json, unlock-after-reset.json, the mechanism strings) |
 
 ## Bottom line
@@ -26,8 +28,11 @@ quotes ([`SOURCES.md`](SOURCES.md)); this packet adds no firmware blobs, so it c
   first-stage/BL33 — so **CoreELEC/custom ROM stays blocked** by coffey's C13 wall.
 - **For coffey this is a lead, not a result (R).** It reopens the C5 "can't be flipped" baseline (graded `B`)
   with a same-silicon counterexample at the AVB layer, and gives three concrete **offline** checks on coffey's
-  captured artifacts — top of them: grep coffey's TEE/vendor images for the AVB TA UUID. Every coffey cell
-  stays `U`/`B`/`H` until those run.
+  captured artifacts.
+- **Check §2.1 is now run (2026-11-12): MISS.** coffey does not ship the Pro's AVB TA as a loadable TA and no
+  readable coffey binary references the UUID (P, bounded) — the easy transfer is ruled out; a built-in secure
+  service stays U behind the C13 opacity wall. Checks §2.2 (storeboot-writability) and §2.3 (USB-boot gate)
+  remain open. Every other coffey cell stays `U`/`B`/`H`.
 
 ## What changed in the dashboards
 - **New confirmed row C19 (R)** in [`../../STATUS.md`](../../STATUS.md) / [`progress.json`](../../progress.json).
