@@ -130,6 +130,12 @@ A public write-up (see Credits: Acheron) documents a per-boot kernel root on the
   factory-reset boot loop — which is exactly why our kernel work stays in the emulator (section Method).
 - **Scope confirms ours:** their root is **per-boot only** (verified boot stays green, no persistence, an
   accepted OTA closes it permanently) — the same ceiling section A/Status describes for coffey.
+- **coffey-targeted follow-ons (R, 2026-11-19, STATUS C20):** `ShaneBreazeale/OnnDemand-4kplus` claims a
+  temporary root + root SSH on one coffey unit on our exact build (`URO4.260304.011.B1/15051976`), retargeted from
+  the jarvis2 temp-root work. It does **not** name the bug (so it is not GhostLock evidence), and its tests reused
+  an existing root session rather than validating a fresh exploit. Same per-boot ceiling; unlock is out of its
+  scope. Our applicability result above stays the stronger evidence (P vs R). Cited only — see
+  [`onn-pro-unlock-ingest-2026-11-12/EXTERNAL-COFFEY-TOOLS-2026-11-19.md`](onn-pro-unlock-ingest-2026-11-12/EXTERNAL-COFFEY-TOOLS-2026-11-19.md).
 
 **Runtime root is not a path to a custom ROM.** This is the key ceiling to understand, because it is easy to
 assume uid 0 means "flash whatever you want." It does not. Runtime root and bootloader unlock are **two
@@ -258,6 +264,10 @@ This research stands entirely on other people's work. Please go to the originals
 - **Acheron** ([acheronsec.com](https://acheronsec.com/research/adb-to-root-on-a-locked-android-tv/)) — the
   GhostLock / **CVE-2026-43499** (futex-PI UAF) per-boot root write-up on the sibling onn 4K Pro (`jarvis2`);
   the external reference for section D-bis. (Device/offset-specific; not reproduced here.)
+- **ShaneBreazeale** ([OnnDemand-4kplus](https://github.com/ShaneBreazeale/OnnDemand-4kplus)) — the coffey
+  temporary-root + root-SSH port cited in D-bis; and **kushmint**
+  ([onn-unlock-probe](https://github.com/kushmint/onn-unlock-probe)) — the read-only AVB lock-bit check proposed
+  for coffey's §2.1. Both build on OpenEnsemble's 4K Pro work. Cited only.
 - **Google kernelCTF / [google/kernel-research](https://github.com/google/kernel-research)** — `libxdk`,
   the exploitation framework the PoCs build on.
 - **[@xairy](https://github.com/xairy/linux-kernel-exploitation)** — the linux-kernel-exploitation

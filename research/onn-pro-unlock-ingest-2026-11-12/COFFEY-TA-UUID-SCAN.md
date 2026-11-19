@@ -63,6 +63,9 @@ match matters for this check.)
 - This **does not** make coffey unlockable or un-unlockable. It removes the *easy* transfer hypothesis (coffey
   shipping the identical callable TA) and shows coffey's equivalent AVB authority, if present, is behind its own
   opaque secure world.
+- **The U half is testable on the device (2026-11-19):** a read-only TEE session open to this UUID from a normal
+  adb shell (`kushmint/onn-unlock-probe`, default mode) distinguishes "built-in AVB TA present" from "absent" —
+  see [`PROPOSAL-UNLOCK-PROBE-READONLY.md`](PROPOSAL-UNLOCK-PROBE-READONLY.md). Proposed, not run.
 - Next discriminating moves stay as in [`COFFEY-APPLICABILITY.md`](COFFEY-APPLICABILITY.md) §2.2 (can coffey
   `systemcontrol` set `ubootenv.var.storeboot`) and §2.3 (USB-boot gate) — both independent of this TA question —
   plus the standing BL32/BL33 opacity wall (C13), which only a readable secure-world image or the UART lead

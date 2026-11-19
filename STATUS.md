@@ -3,7 +3,9 @@
 > Single front page for where the study stands. Evidence-weighted and deliberately candid: a documented
 > enforcement boundary is a result, and un-met goals are stated plainly. Grades use **P** inspected primary ·
 > **R** first-hand report · **B** inherited baseline · **H** hypothesis/lead · **U** unresolved. Updated
-> 2026-11-12 (onn 4K **Pro** unlock ingest — sibling-silicon AVB-unlock evidence, C19/vector #5; prior:
+> 2026-11-19 (two coffey-targeted external tools, C20 — OnnDemand temp root, onn-unlock-probe read-only AVB check
+> proposed for §2.1; prior: 2026-11-12 onn 4K **Pro** unlock ingest — sibling-silicon AVB-unlock evidence,
+> C19/vector #3; prior:
 > 2026-11-04 coffey OTA capture ingested; CVE applicability R4; systemcontrol authorization; DT comparison v2;
 > boot-policy phases B/E; device checks). Machine-readable mirror: [`progress.json`](progress.json).
 
@@ -16,7 +18,7 @@ kernel `5.15.196-android14-11-g3d26c188ef7e-ab14657224` (GKI, built 2026-01-03),
 | Track | Goal | Score |
 |---|---|---|
 | Telemetry audit | What the box sends by itself | **8/10** — A/Z/C/Z2/D/F summarized via probe (PF-5, PF-6); E (voice), B (screensaver) and the LAN-side scan still to capture |
-| Root (runtime) | Per-boot kernel root on coffey | **1/10** — GhostLock affected code confirmed in coffey's kernel (P); no coffey exploit attempted |
+| Root (runtime) | Per-boot kernel root on coffey | **1/10** — GhostLock affected code confirmed in coffey's kernel (P); no coffey exploit attempted. Two public coffey temp-root claims now exist (R, C20; one on our exact build) — score moves only if one reproduces on our unit |
 | Boot-policy / alternate-OS | Map the weld; can coffey boot CoreELEC | **2/10** — all six phases done to the offline ceiling (A, B to plaintext, C, D, E, F); the weld itself is untouched and BL33's decisions stay U. Sibling-silicon AVB-unlock evidence (C19, R) reopens the *unlock* question (not alternate-OS) with offline checks pending (vector #3) |
 
 **Top-level unmet:** no root, no bootloader unlock, and no alternate-OS boot **on coffey**. coffey's own OTA is
@@ -49,6 +51,7 @@ boot or the alternate-OS wall.
 | C17 | `odm_ext` is the only firmware partition outside verified boot (no fstab `avb`, not in vbmeta); its PQ database/INI are parsed by root `systemcontrol` with CRC/version checks only; only `init`/`update_engine`/`fsck`/`e2fs` may write it (no app/shell path found) | P | `research/coffey-odmext-consumers-2026-11-04/` |
 | C18 | Android-side boot steering goes through the U-Boot env as well as `/misc`; boot-control and OEM-lock HALs are `systemcontrol` clients; OEM-unlock-allowed = env `ubootenv.var.lock`, reachable by `shell` (OEM-lock HAL) and apps (via C15); `/misc` writable only by system boot/update components; `fastbootd` lock-gated; `bootloader.img` has no plaintext dispatch logic | P (inputs, policy) / U (what BL33 does) | `research/coffey-boot-dispatch-2026-11-04/`; probe `results/INDEX.md` PF-2 |
 | C19 | Two sibling onn **4K Pro** models have a first-hand persistent **AVB-lock** unlock: `jarvis` (same build train `URO4.260304.011.B1/15051976` as coffey) and `jarvis2` (same `S905X5M/S7D` SoC). 2024 route = set `ubootenv.var.storeboot` via SystemControl → unsigned EL2 payload off a one-use USB gate → AVB trusted-app (UUID `023f8f1a…`, cmd 3) writes secure state `1→0` (`flash.locked=0`, vbmeta unlocked, orange). No key forged; "specific to the tested bootloader." Authors state it is **not** a hardware-secure-boot defeat or BL33 replacement. **coffey-untested** | R | `research/onn-pro-unlock-ingest-2026-11-12/` |
+| C20 | Two public coffey-targeted tools (read at source 2026-11-19): **`ShaneBreazeale/OnnDemand-4kplus`** claims temporary root + root SSH on one coffey unit on our exact build (`URO4.260304.011.B1/15051976`), via a retargeted jarvis2 temp-root path — it does **not** name GhostLock/CVE-2026-43499, and its tests "reused an existing root loop" rather than validating a fresh exploit; per-boot only, no unlock/flash, SELinux + module verification relaxed until reboot. **`kushmint/onn-unlock-probe`** is a non-root, read-only AVB lock-bit reader for TA `023f8f1a…` (cmd 2); its `--toggle-test` writes the bit and has two code defects that can leave the box unlocked — never run it. Cited, not vendored | R | `research/onn-pro-unlock-ingest-2026-11-12/EXTERNAL-COFFEY-TOOLS-2026-11-19.md` |
 
 ## Hard walls (what blocks us)
 
@@ -57,8 +60,8 @@ boot or the alternate-OS wall.
 | Welded bootloader | Hardware secure boot (signed ROM/BL2) + BL33 replacement stay welded → no custom first-stage, no custom ROM. **But the _AVB_ lock is shown flippable on sibling S905X5M/S7D silicon** (C19, R): a TEE AVB trusted-app writes secure state `1→0`, which would ungate `fastbootd` and enable persistent (flashed) root. coffey's own bootloader build differs (fixed-address payload won't port, C13); whether coffey's AVB path is reachable is now empirical, not assumed — vector #5 |
 | SELinux on factory tool | System-UID writes confined to a tiny domain; not root |
 | dm-verity / AVB | Any `boot`/`system`/`vendor` write bricks at next boot on a locked device |
-| `env`/`misc`/`param` unreadable w/o root | Can't back them up → bootloader/env experiments stay documented-not-run |
-| Kernel exploit is arm64 from-scratch | ~~Public GhostLock work is jarvis2-specific~~ — **superseded 2026-11-04:** a public repo claims a coffey-specific GhostLock port for `URO4.260304.011.B1` (R, not opened). The epoll PoCs don't apply to coffey's build (C14). Per-boot root still leaves the bootloader lock intact (C5) |
+| `env`/`misc`/`param` unreadable w/o root | Can't back them up → bootloader/env experiments stay documented-not-run. **Possible opening (R, C20):** OnnDemand's temp-root shell would let the maintainer read them (and capture kernel/DTB/`systemcontrol` live) — only once it reproduces on our unit |
+| Kernel exploit is arm64 from-scratch | ~~Public GhostLock work is jarvis2-specific~~ — **superseded 2026-11-04:** a public repo claims a coffey-specific GhostLock port for `URO4.260304.011.B1` (R, not opened); **2026-11-19:** a second, `OnnDemand-4kplus`, claims coffey temp root on the same build via a retargeted jarvis2 path (R, C20; bug unnamed). The epoll PoCs don't apply to coffey's build (C14). Per-boot root still leaves the bootloader lock intact (C5) |
 | BL2/BL33 opaque offline | Stage bodies after the signed headers show uniform byte statistics and no markers, so U-Boot's env/`bootcmd` handling can't be read offline (C13) |
 
 ## Ranked priority vectors (active leads)
@@ -67,7 +70,7 @@ boot or the alternate-OS wall.
 |---|---|---|---|
 | 1 | ~~Capture coffey's own OTA + kernel + DTB + `systemcontrol` ELF~~ | **DONE** (captured 2026-10-09, ingested 2026-11-03) | now an input to #2/#3 and Phases B/D/E/F — `research/coffey-ota-capture-2026-10-09/` |
 | 2 | CVE-2026-43499 applicability + the ranked post-March CVE check-list | **P — affected code present** (R4); remaining H rows: framework, `wpa_supplicant` patch state. **Unit confirmed (2026-11-04):** on the analyzed build; `adbd`/ART still the shipped `340090000` modules | offline: framework patch comparison, unpack `odm`/`oem`; device: wireless-debugging state |
-| 3 | **Test the onn 4K Pro AVB-unlock preconditions against coffey's own artifacts (C19)** | **§2.1 MISS (P) + §2.2 YES (P), done 2026-11-12; §2.3 open** | §2.1: AVB TA UUID `023f8f1a…` **absent** from coffey's 11 loadable TAs/boot images/TEE clients/`systemcontrol` (easy transfer ruled out; built-in service U behind C13). §2.2: coffey `systemcontrol` **will write** `ubootenv.var.storeboot` (prefix-only gate, no protected-key list) — Android-side redirect unobstructed; BL33 honoring U. Open §2.3: USB-boot gate — gated on C13 / UART (vector #5). See `…/COFFEY-TA-UUID-SCAN.md`, `…/COFFEY-STOREBOOT-WRITE.md` |
+| 3 | **Test the onn 4K Pro AVB-unlock preconditions against coffey's own artifacts (C19)** | **§2.1 MISS (P) + §2.2 YES (P), done 2026-11-12; §2.3 open** | §2.1: AVB TA UUID `023f8f1a…` **absent** from coffey's 11 loadable TAs/boot images/TEE clients/`systemcontrol` (easy transfer ruled out; built-in service U behind C13). §2.2: coffey `systemcontrol` **will write** `ubootenv.var.storeboot` (prefix-only gate, no protected-key list) — Android-side redirect unobstructed; BL33 honoring U. Open §2.3: USB-boot gate — gated on C13 / UART (vector #5). **Next (device, maintainer's step):** read-only `onn-unlock-probe` run to settle §2.1's built-in-TA U — §6 proposal `…/PROPOSAL-UNLOCK-PROBE-READONLY.md` (exit 14 closes it; a read of 1 drops C5 to H). See `…/COFFEY-TA-UUID-SCAN.md`, `…/COFFEY-STOREBOOT-WRITE.md` |
 | 4 | ~~Two epoll CVEs (Bad Epoll / CVE-2026-43074) arm64 root~~ | **closed — not applicable to coffey's build** (R4) | see dead ends; re-check only if coffey takes an OTA to a newer GKI release |
 | 5 | **UART / serial-console path to the env/misc/param wall** | **H — candidate pads found** | match board rev to owner's retail unit label, then continuity/scope-probe the actual board |
 | 6 | darkknight provenance-backed OTA (build-identity comparator) | U | capture from darkknight's real update flow, match build identity |
@@ -80,7 +83,7 @@ boot or the alternate-OS wall.
 |---|---|---|
 | Newer public Android 12–14 `CPQControl`/`systemcontrol` source | all 1 branch + 67 tags of Amlogic frameworks repo (2016–2020), AOSP yukawa a12/13/14/main + BayLibre pkg, enumerated ROM-dump set | `…/COFFEY-PQ-ANCHORS-AD14-DELTA-v2.md` |
 | Provenance-backed **darkknight** stock OTA | not found publicly; Xiaomi guide is docs not firmware; OS3.0.2.0 is a Box 5 *MAX* (`MOB1MB-5M`) report, model-code mismatch vs `MOB2MB-5P` | `…/COFFEY-DARKKNIGHT-OTA-RECON.md` |
-| ~~Prior coffey-specific root/CoreELEC/unlock work~~ | **reopened 2026-11-04:** the 11-03 bounded negative held for its search set, but a public coffey GhostLock root repo (`chaitan3/ghostlock-coffey`, R, not opened) now exists. Still no public coffey CoreELEC/unlock work found | `…/COFFEY-R2-3-COMMUNITY-SWEEP.md`; `research/coffey-device-checks-2026-11-04/` |
+| ~~Prior coffey-specific root/CoreELEC/unlock work~~ | **reopened 2026-11-04:** the 11-03 bounded negative held for its search set, but a public coffey GhostLock root repo (`chaitan3/ghostlock-coffey`, R, not opened) now exists; **2026-11-19:** `ShaneBreazeale/OnnDemand-4kplus` (coffey temp root, R) and `kushmint/onn-unlock-probe` (read-only AVB check naming "onn Plus", R) — C20. Still no public coffey CoreELEC/unlock work found (OnnDemand puts unlock out of scope) | `…/COFFEY-R2-3-COMMUNITY-SWEEP.md`; `research/coffey-device-checks-2026-11-04/` |
 | ~~UART pinout from public docs~~ | **reopened → lead found:** FCC photo review (R2-5) found a candidate 4-pad `GND/TX/RX/GND` header; now priority vector #4, no longer a dead end | `…/COFFEY-R2-5-FCC-PHOTO-REVIEW.md` |
 | Booting donor CoreELEC recovery as a shortcut | disqualified — it mutates persistent env (C7) | `…/COFFEY-CE-RECOVERY-AUDIT.md` |
 | Runtime root → custom ROM | impossible without bootloader unlock (two separate locks) | `research/root-study.md` §D-bis |

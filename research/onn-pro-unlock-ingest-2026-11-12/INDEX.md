@@ -12,6 +12,8 @@ quotes ([`SOURCES.md`](SOURCES.md)); this packet adds no firmware blobs, so it c
 | [`COFFEY-APPLICABILITY.md`](COFFEY-APPLICABILITY.md) | How it maps onto coffey's C13/C15/C18; ranked offline discriminating checks (AVB TA UUID grep, storeboot-writability, USB-boot gate); what it changes for root vs alternate-OS |
 | [`COFFEY-TA-UUID-SCAN.md`](COFFEY-TA-UUID-SCAN.md) | **Vector #3 check §2.1, run 2026-11-12:** offline scan of coffey's own images for the AVB TA UUID — **no hit** (bounded negative on the loadable-TA path, P; built-in-service path stays U behind C13) |
 | [`COFFEY-STOREBOOT-WRITE.md`](COFFEY-STOREBOOT-WRITE.md) | **Vector #3 check §2.2, run 2026-11-12:** coffey's `systemcontrol` env writer permits `ubootenv.var.storeboot` (prefix-only gate, no protected-key list) — Android-side write unobstructed (P); bootloader honoring stays U (C13) |
+| [`EXTERNAL-COFFEY-TOOLS-2026-11-19.md`](EXTERNAL-COFFEY-TOOLS-2026-11-19.md) | **R, 2026-11-19:** source-read review of `ShaneBreazeale/OnnDemand-4kplus` (coffey temp root + root SSH on our exact build; mechanism unstated, not GhostLock-labelled; one unit) and `kushmint/onn-unlock-probe` (read-only AVB lock-bit check against TA `023f8f1a…`; `--toggle-test` defects). Cited, not vendored |
+| [`PROPOSAL-UNLOCK-PROBE-READONLY.md`](PROPOSAL-UNLOCK-PROBE-READONLY.md) | Track-§6 proposal (not run): read-only probe on coffey to close §2.1's built-in-TA "U" — binary pinning, preconditions, procedure, side effects, evidence handling |
 | [`scripts/scan_ta_uuid.py`](scripts/scan_ta_uuid.py) | The §2.1 scanner (ASCII + both packed byte-orders), read-only, reproducible |
 | [`SOURCES.md`](SOURCES.md) | Exact URLs, fetch date, and verbatim field dumps (tested-profile.json, unlock-after-reset.json, the mechanism strings) |
 
@@ -37,6 +39,10 @@ quotes ([`SOURCES.md`](SOURCES.md)); this packet adds no firmware blobs, so it c
   changed `storeboot`, and does it *boot a USB payload* (§2.3) — collapse onto coffey's opaque BL32/BL33 (C13),
   movable only by a readable secure-world image or the UART lead (vector #5). Every other coffey cell stays
   `U`/`B`/`H`.
+- **2026-11-19 — two coffey-targeted external tools (R).** `onn-unlock-probe`'s read-only mode can settle §2.1's
+  built-in-TA question **on the device** without root — proposed as a §6 experiment, not run.
+  `OnnDemand-4kplus` claims temp root + root SSH on our exact build (one unit; it does not name its bug, and its
+  tests reused an existing root session), which would open the `env`/`misc`/`param` wall if it reproduces.
 
 ## What changed in the dashboards
 - **New confirmed row C19 (R)** in [`../../STATUS.md`](../../STATUS.md) / [`progress.json`](../../progress.json).

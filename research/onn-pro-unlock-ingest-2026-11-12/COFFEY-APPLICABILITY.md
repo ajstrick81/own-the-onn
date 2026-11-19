@@ -34,6 +34,13 @@ Ranked by value ÷ cost. Each is a grep/parse over bytes already in hand; result
 > as a loadable TA — **P (bounded negative)**. Caveat **U**: coffey's BL32/TEE-OS is inside the opaque signed
 > bootloader (C13), so a *built-in* AVB service can't be excluded by a plaintext scan. Full write-up +
 > reproduction: [`COFFEY-TA-UUID-SCAN.md`](COFFEY-TA-UUID-SCAN.md).
+>
+> **On-device follow-up for the U half (2026-11-19):** `kushmint/onn-unlock-probe` opens a TEE session to this
+> exact UUID from a normal adb shell and reads the lock bit once (command 2) — a **read-only** test of whether a
+> *built-in* AVB TA exists. Proposed, not run:
+> [`PROPOSAL-UNLOCK-PROBE-READONLY.md`](PROPOSAL-UNLOCK-PROBE-READONLY.md) (review in
+> [`EXTERNAL-COFFEY-TOOLS-2026-11-19.md`](EXTERNAL-COFFEY-TOOLS-2026-11-19.md) §2). Exit 14 closes §2.1 fully;
+> a successful read flips it. Never its `--toggle-test`.
 
 Searched coffey's extracted TEE/`vendor`/boot images for the TA **UUID** `023f8f1a-292a-432b-8fc4-de8471358067`
 in ASCII and both packed byte-orders, plus the `*.ta` blob set and the TEE clients that would invoke it.
