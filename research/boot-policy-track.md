@@ -337,3 +337,8 @@ Full URLs live in the originating handoff doc; pin a revision when acquiring any
 - The upstream and community authors behind the sources above — Amlogic (S7D DT), the U-Boot and AOSP AVB
   documentation, the CoreELEC developers and forum contributors (Portisch, vpeter, and others), the darkknight
   (`xpxp233333`), slimBOX, 4PDA, ZNDS, and Habr/Bastion researchers. Go to the originals.
+- **onn community work** behind the 2026-11-12 → 11-20 results: **OpenEnsemble** (the 4K Pro AVB-lock unlock + root,
+  `openensemble/onn-4k-pro-unlock-root`, `openensemble/onn-4k-pro-2026-unlock-root`), **ShaneBreazeale**
+  (`OnnDemand-4kplus`, the first 4K Plus/coffey temp-root port) and **kushmint** (`onn-unlock-probe`, whose read-only
+  mode gave this track its first on-device evidence, C21). See
+  [`onn-pro-unlock-ingest-2026-11-12/INDEX.md`](onn-pro-unlock-ingest-2026-11-12/INDEX.md#credits).

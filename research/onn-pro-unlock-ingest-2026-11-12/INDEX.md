@@ -72,5 +72,15 @@ belongs to them:
   `https://openensemble.github.io/onn-4k-pro-unlock-root/`
 - **2026 onn 4K Pro (`jarvis2`):** `openensemble/onn-4k-pro-2026-unlock-root`
 
+Two follow-on projects brought that work to **our** board, the onn 4K Plus (`coffey`), and this packet's coffey
+results depend on them:
+
+- **ShaneBreazeale — `ShaneBreazeale/OnnDemand-4kplus`** (`https://github.com/ShaneBreazeale/OnnDemand-4kplus`): the
+  first public coffey port — temporary root + root SSH, tested on our exact original build `15051976`, with clear
+  scope and security caveats ([review](EXTERNAL-COFFEY-TOOLS-2026-11-19.md) §1).
+- **kushmint — `kushmint/onn-unlock-probe`** (`https://github.com/kushmint/onn-unlock-probe`): the non-destructive
+  AVB lock-bit check. Its read-only mode, built from source and run on our unit, produced C21 — coffey's TEE exposes
+  the same AVB trusted app ([result](COFFEY-UNLOCK-PROBE-RESULT.md); [review](EXTERNAL-COFFEY-TOOLS-2026-11-19.md) §2).
+
 Go to the originals; this summary is no substitute for their docs, and any real use of their method should
 follow their guidance and their warnings.

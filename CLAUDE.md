@@ -69,7 +69,8 @@ trustworthy — apply it to every lookup.
 ## Three tracks, one line each
 
 - **Telemetry:** A/Z/C/Z2/D/F summarized via `telemetry/window-summary` (PF-5) and the factory tool's boot
-  behaviour via PF-6; E (real voice query), B (screensaver) and a LAN-side scan still need capturing. Commit
+  behaviour via PF-6; E (real voice query) and B (screensaver) still need capturing; the LAN-side scan is done
+  (`findings/coffey-2026-11-lan.md`, C23). Commit
   only probe summaries and run `tools/privacy_scan.py` first; raw captures stay outside the repo.
 - **Runtime root:** per-boot only, kernel-memory-safety is the sole live lane. Against coffey's own kernel
   (R4): GhostLock/CVE-2026-43499 affected code **present** (`P`); the epoll pair **not applicable**. Runtime

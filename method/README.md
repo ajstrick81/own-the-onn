@@ -42,6 +42,16 @@ Why WireGuard rather than PCAPdroid: it's already used on the device, nothing ex
 routes system-UID traffic through it too. Limitation (shared with PCAPdroid): it doesn't see LAN-local traffic such as
 mDNS, SSDP or ARP. Capture those from the PC with Wireshark (`mdns || ssdp || arp`, filtered to the onn's IP).
 
+### LAN-side capture (as run 2026-11-12)
+
+1. Find the PC's Wi-Fi interface (`dumpcap -D`; the one holding the PC's LAN address) and start, outside the repo:
+   `dumpcap -i <n> -a duration:720 -f "arp or (udp and (port 5353 or port 1900))" -w lan-scan.pcap`.
+2. Right after it starts, run `python -I tools/lan_probe.py <PC's LAN IPv4>` once (standard SSDP M-SEARCH + mDNS PTR
+   queries) so the capture records what the onn answers, not just what it volunteers.
+3. Attribute the onn's frames by its MAC (so its IPv6 and ARP count too), drop the adb session (`tcp port 5555`),
+   and commit only a masked summary (`findings/coffey-2026-11-lan.md` is the template). Note whether ADB over
+   Wi-Fi is on: it makes the box advertise `_adb._tcp` with its serial.
+
 ### Scenarios
 
 | | Scenario | Length |

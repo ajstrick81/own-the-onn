@@ -60,7 +60,7 @@ open leads, and bounded dead ends.
 | ACR | Yes (Alphonso / LG Ad Solutions) | Not found |
 | Idle connections / hour | 107 | ~72 awake-idle · ~173 screen-off |
 | Endpoints / hour | 29 | 33 in 20 min awake · 81 in 33 min asleep |
-| LAN scanning | 38 devices found | SSDP discovery seen on wake; scope *pending* |
+| LAN scanning | 38 devices found | None seen: 1 ARP in 12 min, no SSDP; mDNS answers Cast/Remote queries ([LAN scan](findings/coffey-2026-11-lan.md)) |
 | While "off" | 4,615 requests / 12 h | *rerun pending* (first overnight attempt invalid) |
 
 ## Diagrams
@@ -110,6 +110,21 @@ This study exists because of other people's work. Please go to the originals.
   repo. We borrowed the phrase (and riffed on it for this repo's name), not the code.
 - **Tools:** [mitmproxy](https://mitmproxy.org) (WireGuard mode), [archify](https://github.com/tt-a1i/archify) (diagrams),
   apktool, and Android's own `dumpsys`.
+
+**onn community research — the work our boot-policy results stand on:**
+
+- **OpenEnsemble** — found and proved the onn 4K **Pro** AVB-lock unlock and root, on real hardware, with honest
+  caveats: [onn-4k-pro-unlock-root](https://github.com/openensemble/onn-4k-pro-unlock-root) (2024 `jarvis`) and
+  [onn-4k-pro-2026-unlock-root](https://github.com/openensemble/onn-4k-pro-2026-unlock-root) (2026 `jarvis2`). The AVB
+  trusted-app protocol everything below builds on is theirs.
+- **ShaneBreazeale** — [OnnDemand-4kplus](https://github.com/ShaneBreazeale/OnnDemand-4kplus): the first public
+  temporary-root + root-SSH port to the onn **4K Plus** (`coffey`) itself, tested on our exact original build.
+- **kushmint** — [onn-unlock-probe](https://github.com/kushmint/onn-unlock-probe): the read-only AVB lock-bit check.
+  Running its read-only mode on our unit produced this study's **first on-device boot-policy evidence** — coffey's TEE
+  exposes the same AVB trusted app (STATUS C21).
+
+We cite and link these rather than copying their code. Details:
+[`research/onn-pro-unlock-ingest-2026-11-12/`](research/onn-pro-unlock-ingest-2026-11-12/).
 
 **Root & boot-policy track** builds on others' published work, cited inline in `research/` and its packets:
 the Amlogic U-Boot / AVB / ARM Trusted Firmware documentation; the CoreELEC project; the Acheron GhostLock
