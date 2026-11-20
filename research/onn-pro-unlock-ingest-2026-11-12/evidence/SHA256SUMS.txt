@@ -1,0 +1,8 @@
+# Evidence ledger — onn-unlock-probe read-only run on coffey (2026-11-20T03:53:33Z)
+# Committed captures (verified by CI):
+2bbbf725314be89c6ee5a0d839435cad42557356a83880882b06413bf2b13a18  unlock-probe-readonly-20261120T035333Z.jsonl
+8b999982893784ceff93cb760c426d1cc31ec89f0cf84bd0a678b5e84a058aaa  unlock-probe-readonly-20261120T035333Z.meta.txt
+# Off-repo inputs (not committed; CI skips absent files):
+999c3b5747691fc5af7c2b0cda1213637bda7806d4ac5ef4e00430994b194a46  probe-armeabi-v7a-built-ndk-r28c-windows  10204 bytes
+503dfae755c4bcb9483494d89dc2649c28d9674bee25f9bd2813d871f95d0baf  probe.c@6439f22
+f4dde76ee73651a9047e7390797459bb23ddf911c833a2ebc078f02db2cf30e1  probe-armeabi-v7a-prebuilt@6439f22-NOT-USED  10044 bytes

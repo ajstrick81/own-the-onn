@@ -148,6 +148,14 @@ conclusions.
 > untouched**; what reopens is the *AVB unlock → persistent root* question (track §0 Q1), and only at **R** for a
 > *different board*. The decisive coffey-side follow-ups are **offline** (next para + Phase B).
 
+> **Progress — first on-device boot-policy evidence (2026-11-20, P):**
+> [`onn-pro-unlock-ingest-2026-11-12/COFFEY-UNLOCK-PROBE-RESULT.md`](onn-pro-unlock-ingest-2026-11-12/COFFEY-UNLOCK-PROBE-RESULT.md).
+> A read-only TEE probe (run under a written §6 proposal, built from reviewed source) shows coffey's OP-TEE accepts
+> a session to the jarvis2 AVB trusted app `023f8f1a…` from an **unprivileged adb shell** and reads the lock bit as
+> `1`. The TA is built into the TEE (no `.ta` file). So the lock is a TEE-held flag on the same interface the
+> sibling unlock writes through; whether coffey accepts a write, keeps it, and whether BL33 honors it remain
+> **untested by design**. Hardware secure boot / BL33 replacement (the alternate-OS wall) is unaffected.
+
 ## 4. Corrections to keep (do not regress — from handoff §7)
 
 1. Same S905X5M SoC ≠ identical U-Boot policy, keys, or OTP.
@@ -262,7 +270,7 @@ shell-controlled bytes to a privileged parser.
 > it**, via explicit vendor rules. `shell`/adbd can't. The binary imports no caller-identity API (no in-process
 > check evident, `H`); the env writer checks only the `ubootenv.var.` prefix. The service's own policy denies
 > writes to bootloader/boot/vbmeta/super/misc/param/frp/factory and gives it no `CAP_SYS_ADMIN` or mount.
-> Inherited offset `0x80cd8` is outside this ELF. Disclosure is advisable before publishing.
+> Inherited offset `0x80cd8` is outside this ELF. Vendor notice optional; publishing not gated on it (2026-11-20).
 
 _Original agenda, kept for reference:_
 A search for a newer public `systemcontrol`/`CPQControl` closer to Android 14 found **none**, and the negative

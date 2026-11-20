@@ -27,7 +27,7 @@ boot-policy map named the right primitives, now with a sibling showing one way t
 
 Ranked by value ÷ cost. Each is a grep/parse over bytes already in hand; results stay graded.
 
-### 2.1 — **Highest value:** is the AVB trusted-app present on coffey? — **DONE 2026-11-12: MISS (bounded)**
+### 2.1 — **Highest value:** is the AVB trusted-app present on coffey? — **CLOSED 2026-11-20: loadable MISS (11-12) + on-device HIT, built-in TA (C21)**
 > **Result:** no hit. coffey ships 11 loadable OP-TEE TAs; **none is `023f8f1a-…`**, and the UUID appears in no
 > form (ASCII or either packed byte-order) in those TAs, the four boot images, the TEE client binaries/libs, or
 > `systemcontrol` (2151 files scanned tree-wide + a 25-file explicit set). The 2024 TA route does **not** transfer
@@ -37,7 +37,8 @@ Ranked by value ÷ cost. Each is a grep/parse over bytes already in hand; result
 >
 > **On-device follow-up for the U half (2026-11-19):** `kushmint/onn-unlock-probe` opens a TEE session to this
 > exact UUID from a normal adb shell and reads the lock bit once (command 2) — a **read-only** test of whether a
-> *built-in* AVB TA exists. Proposed, not run:
+> *built-in* AVB TA exists. **Run 2026-11-20 — the session opens and reads 1 (locked): the TA is built in**
+> ([`COFFEY-UNLOCK-PROBE-RESULT.md`](COFFEY-UNLOCK-PROBE-RESULT.md)). Proposal:
 > [`PROPOSAL-UNLOCK-PROBE-READONLY.md`](PROPOSAL-UNLOCK-PROBE-READONLY.md) (review in
 > [`EXTERNAL-COFFEY-TOOLS-2026-11-19.md`](EXTERNAL-COFFEY-TOOLS-2026-11-19.md) §2). Exit 14 closes §2.1 fully;
 > a successful read flips it. Never its `--toggle-test`.

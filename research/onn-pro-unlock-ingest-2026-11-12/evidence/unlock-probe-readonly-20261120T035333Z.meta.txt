@@ -1,0 +1,16 @@
+utc=20261120T035333Z
+binary_sha256=999c3b5747691fc5af7c2b0cda1213637bda7806d4ac5ef4e00430994b194a46
+source=kushmint/onn-unlock-probe@6439f22 native/probe.c
+ro.product.device=coffey
+ro.build.fingerprint=onn/coffey/coffey:14/URO4.260304.092/16202347:user/release-keys
+ro.build.version.incremental=16202347
+ro.boot.slot_suffix=_a
+ro.bootloader=01.01.260305.112513
+ro.build.version.security_patch=2026-09-01
+ro.boot.flash.locked=1
+ro.boot.vbmeta.device_state=locked
+ro.boot.verifiedbootstate=green
+uname_r=5.15.196-android14-11-g3d26c188ef7e-ab14657224
+su_present=none
+removed_after=gone
+log_sha256=2bbbf725314be89c6ee5a0d839435cad42557356a83880882b06413bf2b13a18

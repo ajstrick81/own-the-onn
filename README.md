@@ -14,8 +14,9 @@ Level1Techs (see [Credits](#credits)): ACR audio fingerprinting, home-network sc
 **Scope & ground rules.** This is **owner-authorized research on the maintainer's own hardware**, documented
 for the next owner-researcher. It is **not** an attack kit:
 
-- **Documentation only — no bypass, exploit, or weaponization is published here.** We record CVE *identities
-  and applicability*, enforcement *boundaries*, and honest dead ends. A documented boundary is a valid result;
+- **Documentation, published openly — not an attack kit.** We record CVE *identities and applicability*,
+  mechanism details and on-device results, enforcement *boundaries*, and honest dead ends; public third-party
+  tools are linked and credited, not vendored. A documented boundary is a valid result;
   "we could not" is written as plainly as "we did."
 - **Local-first.** No decryption of anyone's traffic, no network probing of third parties, no redistribution
   of vendor firmware (large blobs stay out of the repo; their hashes don't).

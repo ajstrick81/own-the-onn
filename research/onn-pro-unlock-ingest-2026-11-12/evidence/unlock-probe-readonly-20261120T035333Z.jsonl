@@ -1,0 +1,16 @@
+{"stage":"start","toggle_test_requested":false}
+{"stage":"property","name":"ro.product.device","value":"coffey"}
+{"stage":"property","name":"ro.product.model","value":"onn. 4K Plus Streaming"}
+{"stage":"property","name":"ro.product.manufacturer","value":"onn"}
+{"stage":"property","name":"ro.build.fingerprint","value":"onn/coffey/coffey:14/URO4.260304.092/16202347:user/release-keys"}
+{"stage":"property","name":"ro.boot.flash.locked","value":"1"}
+{"stage":"property","name":"ro.boot.verifiedbootstate","value":"green"}
+{"stage":"property","name":"ro.boot.bootloader","value":"01.01.260305.112513"}
+{"stage":"property","name":"ro.product.cpu.abi","value":"armeabi-v7a"}
+{"stage":"tee_version","impl_id":1,"gen_caps":13}
+{"stage":"open","rc":0,"errno":0,"tee_result":"0x00000000","origin":4}
+{"stage":"request","command":2,"attr":2,"input_value":4294967295}
+{"stage":"response","command":2,"rc":0,"errno":0,"tee_result":"0x00000000","origin":4,"value":1}
+{"stage":"close","rc":0,"errno":0}
+{"stage":"finished","outcome":"locked_read_only_rerun_with_toggle_test_to_probe_further","exit_code":0,"rebooted":false}
+{"stage":"shell_exit","rc":0}

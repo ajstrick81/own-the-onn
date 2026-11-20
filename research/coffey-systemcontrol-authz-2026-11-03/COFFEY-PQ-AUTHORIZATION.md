@@ -10,8 +10,8 @@ sequences, handler addresses, or invocation recipe, and none should be added.
 > **Disclosure note.** §3 documents that the shipped policy lets ordinary third-party apps reach a root vendor
 > service whose interface includes boot-environment, sysfs, key-storage and property writes. That is a
 > security-relevant platform finding, not just a coffey curiosity: the same Amlogic `systemcontrol` and policy
-> are likely shared by other devices. Consider reporting it (Amlogic / onn / Google's Android partner channel)
-> before this repo is public. End-to-end reachability from an app was **not** tested (§6).
+> are likely shared by other devices. Reporting it (Amlogic / onn / Google's Android partner channel) is
+> worthwhile but optional; publishing is not gated on it (owner decision, 2026-11-20). End-to-end reachability from an app was **not** tested (§6).
 
 ## 1. Artifacts
 

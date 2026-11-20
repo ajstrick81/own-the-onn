@@ -13,7 +13,9 @@ quotes ([`SOURCES.md`](SOURCES.md)); this packet adds no firmware blobs, so it c
 | [`COFFEY-TA-UUID-SCAN.md`](COFFEY-TA-UUID-SCAN.md) | **Vector #3 check §2.1, run 2026-11-12:** offline scan of coffey's own images for the AVB TA UUID — **no hit** (bounded negative on the loadable-TA path, P; built-in-service path stays U behind C13) |
 | [`COFFEY-STOREBOOT-WRITE.md`](COFFEY-STOREBOOT-WRITE.md) | **Vector #3 check §2.2, run 2026-11-12:** coffey's `systemcontrol` env writer permits `ubootenv.var.storeboot` (prefix-only gate, no protected-key list) — Android-side write unobstructed (P); bootloader honoring stays U (C13) |
 | [`EXTERNAL-COFFEY-TOOLS-2026-11-19.md`](EXTERNAL-COFFEY-TOOLS-2026-11-19.md) | **R, 2026-11-19:** source-read review of `ShaneBreazeale/OnnDemand-4kplus` (coffey temp root + root SSH on our exact build; mechanism unstated, not GhostLock-labelled; one unit) and `kushmint/onn-unlock-probe` (read-only AVB lock-bit check against TA `023f8f1a…`; `--toggle-test` defects). Cited, not vendored |
-| [`PROPOSAL-UNLOCK-PROBE-READONLY.md`](PROPOSAL-UNLOCK-PROBE-READONLY.md) | Track-§6 proposal (not run): read-only probe on coffey to close §2.1's built-in-TA "U" — binary pinning, preconditions, procedure, side effects, evidence handling |
+| [`PROPOSAL-UNLOCK-PROBE-READONLY.md`](PROPOSAL-UNLOCK-PROBE-READONLY.md) | Track-§6 proposal (**run 2026-11-20**, deviations recorded): read-only probe on coffey to close §2.1's built-in-TA "U" — binary pinning, preconditions, procedure, side effects, evidence handling |
+| [`COFFEY-UNLOCK-PROBE-RESULT.md`](COFFEY-UNLOCK-PROBE-RESULT.md) | **P, 2026-11-20 — first on-device boot-policy evidence:** coffey's TEE opens a session to AVB TA `023f8f1a…` from an unprivileged adb shell and reads `1` (locked); TA is built in. Closes §2.1; C5's flippability → H. Also records the unit's OTA to `16202347` (C22) |
+| [`evidence/`](evidence/) | Probe JSON + run metadata, hash-pinned in [`evidence/SHA256SUMS.txt`](evidence/SHA256SUMS.txt) (built binary + source hashes listed off-repo) |
 | [`scripts/scan_ta_uuid.py`](scripts/scan_ta_uuid.py) | The §2.1 scanner (ASCII + both packed byte-orders), read-only, reproducible |
 | [`SOURCES.md`](SOURCES.md) | Exact URLs, fetch date, and verbatim field dumps (tested-profile.json, unlock-after-reset.json, the mechanism strings) |
 
@@ -43,6 +45,10 @@ quotes ([`SOURCES.md`](SOURCES.md)); this packet adds no firmware blobs, so it c
   built-in-TA question **on the device** without root — proposed as a §6 experiment, not run.
   `OnnDemand-4kplus` claims temp root + root SSH on our exact build (one unit; it does not name its bug, and its
   tests reused an existing root session), which would open the `env`/`misc`/`param` wall if it reproduces.
+- **2026-11-20 — the read-only probe ran on the owner unit: HIT.** coffey's TEE exposes the jarvis2 AVB trusted app
+  (built in, no `.ta` file), an unprivileged adb shell can open it, and it reads `1` (locked). §2.1 is closed; the
+  lock is a TEE-held flag, so C5's "can't be flipped" baseline drops to H. The write side was deliberately not
+  tested. The unit had OTA'd to `16202347` (kernel and SELinux policy unchanged).
 
 ## What changed in the dashboards
 - **New confirmed row C19 (R)** in [`../../STATUS.md`](../../STATUS.md) / [`progress.json`](../../progress.json).

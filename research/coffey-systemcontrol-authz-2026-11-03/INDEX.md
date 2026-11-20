@@ -21,6 +21,6 @@ inputs are hash-pinned in [`POLICY-INPUTS-SHA256SUMS.txt`](POLICY-INPUTS-SHA256S
 - The service's **own** policy stops it from writing bootloader, boot, vbmeta, super, misc, param, frp and
   factory partitions, and gives it no `CAP_SYS_ADMIN` or mount. It may write `env`, `logo`, `cri_data`, generic
   sysfs, key-storage nodes and vendor properties.
-- End-to-end reachability from an app is **untested** (`U`). **Consider disclosure before publishing** (see the
-  report's note).
+- End-to-end reachability from an app is **untested** (`U`). A vendor notice is optional — publishing isn't gated on it (policy
+  2026-11-20; see the report's note).
 - The inherited `0x80cd8` handler offset is outside this ELF's mapped range.

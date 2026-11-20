@@ -1,6 +1,10 @@
 # Proposal — read-only AVB lock-bit probe on coffey (boot-policy track §6)
 
-> **Status: proposed, not run.** A device experiment needs its own concrete proposal (track §6): exact binary,
+> **Status: RUN 2026-11-20T03:53:33Z — TA present, reads locked.** Result:
+> [`COFFEY-UNLOCK-PROBE-RESULT.md`](COFFEY-UNLOCK-PROBE-RESULT.md). Deviations: the unit was on `16202347`, not
+> `15051976` (maintainer chose to proceed); binary built from source on a Windows host. Original text below.
+>
+> **Original status: proposed, not run.** A device experiment needs its own concrete proposal (track §6): exact binary,
 > expected behaviour, persistent-side-effect assessment, recovery prerequisites. This is that proposal for running
 > `kushmint/onn-unlock-probe` in its **default read-only mode** on the maintainer's coffey unit. It is the
 > maintainer's step on his own machine. Background and code review:

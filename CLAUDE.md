@@ -9,14 +9,17 @@ A **local-only, owner-authorized** study of a device the maintainer owns: the on
 (`coffey`, Amlogic S905X5M). Two intertwined aims:
 1. **Telemetry audit** — what the OS + preinstalled apps send by themselves (`findings/`, `method/`, `tools/`).
 2. **Root / boot-policy research** — the welded bootloader, runtime-root ceiling, and whether coffey can boot
-   an alternate OS (`research/`). Documentation-only; no bypass is published.
+   an alternate OS (`research/`). Documentation-first, published openly (policy since 2026-11-20).
 
 ## Ground rules (do not break)
 
 - **Owner's own hardware, authorized research.** Defensive/educational framing; nothing here is for attacking
   others' devices.
-- **No bypass, exploit, offset, or weaponization published.** Record CVE identities, applicability, and
-  enforcement boundaries — not working exploits. A documented boundary is a valid result.
+- **Publish openly; don't build attack kits.** (Relaxed 2026-11-20 — comparable onn work is now public.) Findings,
+  mechanism details (UUIDs, command IDs, env keys, policy paths, invocation shapes) and on-device results may be
+  published as-is; vendor disclosure is an optional courtesy, not a gate on publishing. We still don't write or ship
+  our own turnkey exploit code, and we link + credit public tools instead of vendoring them (several have no
+  license grant). A documented boundary is still a valid result.
 - **No firmware/vendor blobs in git.** Hash-pin them in a `SHA256SUMS` ledger and keep the bytes out (they're
   re-fetchable). CI (`tools/verify_hashes.py`) verifies committed text against the ledgers and skips absent
   blobs.
@@ -46,14 +49,14 @@ trustworthy — apply it to every lookup.
 - `research/coffey-cve-applicability-r4-2026-11-03/` — R3 matrix re-run against coffey's own kernel source
   (`3d26c188ef7e`) and OTA images
 - `research/coffey-systemcontrol-authz-2026-11-03/` — Phase F: `systemcontrol` caller authorization from
-  coffey's loaded SELinux policy + binary imports (third-party apps can reach it; disclosure pending)
+  coffey's loaded SELinux policy + binary imports (third-party apps can reach it)
 - `research/coffey-dtb-comparison-2026-11-04/` — Phase D: coffey's DT vs vendor/CoreELEC trees built from
   pinned source (coffey = bm202 + 19 onn edits); supersedes the 11-02 coffey column
 - `research/coffey-odmext-consumers-2026-11-04/` — Phase E: `odm_ext` contents, consumers, writers (only
   firmware partition outside verified boot)
 - `research/coffey-device-checks-2026-11-04/` — owner unit confirmed on the analyzed build, locked + green;
   no newer coffey OTA in the public catalog; a public coffey GhostLock repo noted (R)
-- `disclosure/` — **git-ignored** unsent disclosure drafts; never commit or publish
+- `disclosure/` — **git-ignored** drafts of optional vendor notices (kept local; publishing isn't gated on them)
 - `research/coffey-boot-dispatch-2026-11-04/` — Phase B: boot-policy map from plaintext ramdisks, steering HALs
   and policy (env + `/misc`; OEM-unlock-allowed = `ubootenv.var.lock`; BL33 logic U)
 - `research/codex-task-list*.md` — task blocks handed to the second agent ("Chat")
@@ -72,7 +75,7 @@ trustworthy — apply it to every lookup.
   (R4): GhostLock/CVE-2026-43499 affected code **present** (`P`); the epoll pair **not applicable**. Runtime
   root ≠ custom ROM (needs bootloader unlock).
 - **Boot-policy:** all six phases done to the offline ceiling. What remains needs either a readable BL33
-  (blocked, C13) or a separately approved device experiment (track §6). Don't publish invocation details for `systemcontrol` (C15) while disclosure is undecided.
+  (blocked, C13) or a separately approved device experiment (track §6).
 
 ## The one unlock — done
 

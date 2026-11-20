@@ -63,7 +63,8 @@ match matters for this check.)
 - This **does not** make coffey unlockable or un-unlockable. It removes the *easy* transfer hypothesis (coffey
   shipping the identical callable TA) and shows coffey's equivalent AVB authority, if present, is behind its own
   opaque secure world.
-- **The U half is testable on the device (2026-11-19):** a read-only TEE session open to this UUID from a normal
+- **Resolved on the device (2026-11-20): TA present, built in** — the read-only probe's session opens and reads 1
+  ([`COFFEY-UNLOCK-PROBE-RESULT.md`](COFFEY-UNLOCK-PROBE-RESULT.md), C21). It was proposed as follows: a read-only TEE session open to this UUID from a normal
   adb shell (`kushmint/onn-unlock-probe`, default mode) distinguishes "built-in AVB TA present" from "absent" —
   see [`PROPOSAL-UNLOCK-PROBE-READONLY.md`](PROPOSAL-UNLOCK-PROBE-READONLY.md). Proposed, not run.
 - Next discriminating moves stay as in [`COFFEY-APPLICABILITY.md`](COFFEY-APPLICABILITY.md) §2.2 (can coffey
